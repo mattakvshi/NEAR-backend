@@ -1,4 +1,12 @@
 # NEAR-backend
 
 ## Used stack
-- React Native
+- Java
+- Spring
+- PostgreSQL
+- MongeDB
+- Redis
+- Apache Kafka
+- Doker
+- Kubernetes
+- Nginx
