@@ -5,7 +5,7 @@
 - Java
 - Spring
 - PostgreSQL
-- MongeDB
+- MongoDB
 - Redis
 - Apache Kafka
 - Doker
