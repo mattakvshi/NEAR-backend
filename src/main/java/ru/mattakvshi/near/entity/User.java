@@ -52,7 +52,7 @@ public class User {
     @Column(name = "district")
     private String district;
 
-    @CreationTimestamp //Заполняется первый раз при регестрации
+    @CreationTimestamp //Заполняется первый раз при регистрации
     @Column(name = "registration_date", updatable = false) //и после не изменяется никогда
     private LocalDate registrationDate;
 
@@ -86,8 +86,8 @@ public class User {
     @OneToMany(mappedBy = "owner")
     private List<NotificationTemplate> notificationTemplates;
 
-    @PrePersist //Вызываем метод перед сохранением сущьности в базу
-    @PreUpdate //Вызываем метод перед обновлением сущьности
+    @PrePersist //Вызываем метод перед сохранением сущности в базу
+    @PreUpdate //Вызываем метод перед обновлением сущности
     public void calculateAge() {
         if (birthday != null) {
             this.age = Period.between(birthday, LocalDate.now()).getYears();

@@ -1,4 +1,4 @@
 package ru.mattakvshi.near.dao;
 
-public class CommunityDAO {
+public interface CommunityDAO {
 }
