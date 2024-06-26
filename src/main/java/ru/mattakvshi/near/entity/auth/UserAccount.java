@@ -9,6 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
+import ru.mattakvshi.near.entity.User;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -39,6 +40,10 @@ public class UserAccount implements UserDetails {
 
     @Column(name = "password")
     private String password;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
