@@ -2,6 +2,7 @@ package ru.mattakvshi.near.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
@@ -27,10 +28,10 @@ public class UserRegistrationRequest {
     private String password;
 
     @NotEmpty
-    @Pattern(regexp = "^[A-ZА-Я][a-zа-я\\-]+(\\s[A-ZА-Я][a-zа-я\\-]+)*,\\s[A-ZА-Я][a-zа-я\\-]+(\\s[A-ZА-Я][a-zа-я\\-]+)*,\\s[A-ZА-Я][a-zа-я\\-]+(\\s[A-ZА-Я][a-zа-я\\-]+)*$")
+    @Pattern(regexp = "^[A-ZА-Я][a-zа-я\\-]*(\\s[a-zа-яA-ZА-Я\\-]*)*\\s*,\\s*[A-ZА-Я][a-zа-я\\-]*(\\s[a-zа-яA-ZА-Я\\-]*)*\\s*,\\s*[A-ZА-Я][a-zа-я\\-]*(\\s[a-zа-яA-ZА-Я\\-]*)*$")
     private String location;
 
-    @NotEmpty
+    @NotNull
     private LocalDate birthday;
 
     @NotEmpty
@@ -51,8 +52,8 @@ public class UserRegistrationRequest {
         user.setLastName(splintName[1]);
         String[] splintLocation = this.location.split(", ");
         user.setCountry(splintLocation[0]);
-        user.setCity(splintLocation[2]);
-        user.setDistrict(splintLocation[3]);
+        user.setCity(splintLocation[1]);
+        user.setDistrict(splintLocation[2]);
         user.setBirthday(birthday);
         user.setSelectedOptions(selectedOptions);
 
