@@ -1,4 +1,4 @@
-package ru.mattakvshi.near.config.security.user;
+package ru.mattakvshi.near.config.security.community;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -11,7 +11,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
-import ru.mattakvshi.near.entity.auth.UserAccount;
+import ru.mattakvshi.near.entity.auth.CommunityAccount;
 
 import java.io.IOException;
 
@@ -19,19 +19,18 @@ import static io.jsonwebtoken.lang.Strings.hasText;
 
 @Log
 @Component
-public class UserJWTFilter extends GenericFilterBean {
+public class CommunityJWTFilter extends GenericFilterBean {
 
     public static final String AUTHORIZATION_HEADER = "Authorization";
 
     @Autowired
-
-    private UserJWTProvider UserJWTProvider;
+    private CommunityJWTProvider communityJWTProvider;
 
     @Autowired
-    private UserDetailsService userDetailsService;
+    private CommunityDetailsService communityDetailsService;
 
     //Каждый раз как будет приходить запрос мы по токену будем вытаскивать пользователя и вставлять в SecurityContextHolder,
-    // это нужно чтобы далее получать пользователя, который пришёл по этому токену
+    // это нужно чтобы далее получать пользователя который пришёл по этому токену
 
     //На низком уровне всё работает на сервлетах
 
@@ -41,12 +40,12 @@ public class UserJWTFilter extends GenericFilterBean {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        logger.info("UserJWTFilter do filter...");
+        logger.info("CommunityJWTFilter do filter...");
         String token = getTokenFromRequests((HttpServletRequest) servletRequest);
-        if (token != null && UserJWTProvider.validateToken(token)) {
-            String email = UserJWTProvider.getLoginFromToken(token);
-            UserAccount userAccount = (UserAccount) userDetailsService.loadUserByUsername(email);
-            UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userAccount, null, userAccount.getAuthorities());
+        if (token != null && communityJWTProvider.validateToken(token)) {
+            String userLogin = communityJWTProvider.getLoginFromToken(token);
+            CommunityAccount communityAccount = (CommunityAccount) communityDetailsService.loadUserByUsername(userLogin);
+            UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(communityAccount, null, communityAccount.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(auth);
         }
         filterChain.doFilter(servletRequest, servletResponse);

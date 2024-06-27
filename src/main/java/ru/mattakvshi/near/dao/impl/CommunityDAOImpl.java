@@ -7,7 +7,7 @@ import ru.mattakvshi.near.dao.repository.CommunityRepository;
 
 
 @Component
-public class CommunityRepositoryImpl implements CommunityDAO {
+public class CommunityDAOImpl implements CommunityDAO {
 
     @Autowired
     private CommunityRepository communityRepository;

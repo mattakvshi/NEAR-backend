@@ -5,18 +5,20 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import ru.mattakvshi.near.entity.auth.CommunityAccount;
 import ru.mattakvshi.near.entity.auth.UserAccount;
+import ru.mattakvshi.near.service.impl.CommunityAccountService;
 import ru.mattakvshi.near.service.impl.UserAccountService;
 
 @Service
 public class CommunityDetailsService implements UserDetailsService {
 
     @Autowired
-    private UserAccountService userAccountService;
+    private CommunityAccountService communityAccountService;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserAccount userAccount = userAccountService.findByEmail(username);
-        return userAccount;
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        CommunityAccount communityAccount = communityAccountService.findByEmail(email);
+        return communityAccount;
     }
 }
