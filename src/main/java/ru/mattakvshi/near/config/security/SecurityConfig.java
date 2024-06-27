@@ -5,6 +5,7 @@ import jakarta.servlet.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.SecurityConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -27,10 +28,13 @@ import ru.mattakvshi.near.entity.auth.SystemRole;
 public class SecurityConfig {
 
     @Autowired
+    @Lazy
     private UserJWTFilter userJWTFilter;
 
     @Autowired
+    @Lazy
     private CommunityJWTFilter communityJWTFilter;
+
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -53,10 +57,8 @@ public class SecurityConfig {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
+    public PasswordEncoder PasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-
 
 }
