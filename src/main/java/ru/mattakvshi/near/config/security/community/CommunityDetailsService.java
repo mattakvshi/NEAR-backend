@@ -6,9 +6,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.mattakvshi.near.entity.auth.CommunityAccount;
-import ru.mattakvshi.near.entity.auth.UserAccount;
-import ru.mattakvshi.near.service.impl.CommunityAccountService;
-import ru.mattakvshi.near.service.impl.UserAccountService;
+import ru.mattakvshi.near.service.CommunityAccountService;
+import ru.mattakvshi.near.service.impl.CommunityAccountServiceImpl;
 
 @Service
 public class CommunityDetailsService implements UserDetailsService {

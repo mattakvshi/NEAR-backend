@@ -4,10 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import ru.mattakvshi.near.entity.auth.CommunityAccount;
 import ru.mattakvshi.near.entity.auth.UserAccount;
-import ru.mattakvshi.near.service.impl.CommunityAccountService;
-import ru.mattakvshi.near.service.impl.UserAccountService;
+import ru.mattakvshi.near.service.UserAccountService;
+import ru.mattakvshi.near.service.impl.UserAccountServiceImpl;
 
 @Service
 public class UserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {

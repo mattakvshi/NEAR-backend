@@ -1,9 +1,6 @@
 package ru.mattakvshi.near.config.security.community;
 
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.ServletRequest;
-import jakarta.servlet.ServletResponse;
+import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +37,7 @@ public class CommunityJWTFilter extends GenericFilterBean {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        logger.info("CommunityJWTFilter do filter...");
+        log.info("CommunityJWTFilter do filter...");
         String token = getTokenFromRequests((HttpServletRequest) servletRequest);
         if (token != null && communityJWTProvider.validateToken(token)) {
             String userLogin = communityJWTProvider.getLoginFromToken(token);

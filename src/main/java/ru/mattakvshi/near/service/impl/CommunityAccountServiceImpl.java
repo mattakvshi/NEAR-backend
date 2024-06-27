@@ -2,16 +2,13 @@ package ru.mattakvshi.near.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import ru.mattakvshi.near.dao.repository.auth.CommunityAccountRepository;
-import ru.mattakvshi.near.dao.repository.auth.UserAccountRepository;
 import ru.mattakvshi.near.entity.auth.CommunityAccount;
-import ru.mattakvshi.near.entity.auth.UserAccount;
+import ru.mattakvshi.near.service.CommunityAccountService;
 
 @Service
-public class CommunityAccountService {
-
+public class CommunityAccountServiceImpl implements CommunityAccountService {
 
     @Autowired
     private CommunityAccountRepository communityAccountRepository;

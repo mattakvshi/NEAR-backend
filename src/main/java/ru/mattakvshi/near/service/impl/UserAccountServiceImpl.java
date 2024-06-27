@@ -5,10 +5,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.mattakvshi.near.dao.repository.auth.UserAccountRepository;
 import ru.mattakvshi.near.entity.auth.UserAccount;
+import ru.mattakvshi.near.service.UserAccountService;
 
 @Service
-public class UserAccountService {
-
+public class UserAccountServiceImpl implements UserAccountService {
 
     @Autowired
     private UserAccountRepository accountRepository;

@@ -24,7 +24,6 @@ public class UserJWTFilter extends GenericFilterBean {
     public static final String AUTHORIZATION_HEADER = "Authorization";
 
     @Autowired
-
     private UserJWTProvider UserJWTProvider;
 
     @Autowired
@@ -41,7 +40,7 @@ public class UserJWTFilter extends GenericFilterBean {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        logger.info("UserJWTFilter do filter...");
+        log.info("UserJWTFilter do filter...");
         String token = getTokenFromRequests((HttpServletRequest) servletRequest);
         if (token != null && UserJWTProvider.validateToken(token)) {
             String email = UserJWTProvider.getLoginFromToken(token);
