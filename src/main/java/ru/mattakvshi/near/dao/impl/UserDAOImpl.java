@@ -20,4 +20,9 @@ public class UserDAOImpl implements UserDAO {
         User savedUser = userRepository.save(user);
         return savedUser.getId();
     }
+
+    @Override
+    public User findById(UUID id) {
+        return userRepository.findById(id).orElse(null);
+    }
 }
