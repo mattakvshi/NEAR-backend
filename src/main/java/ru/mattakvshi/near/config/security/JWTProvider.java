@@ -1,4 +1,4 @@
-package ru.mattakvshi.near.config.security.community;
+package ru.mattakvshi.near.config.security;
 
 
 import io.jsonwebtoken.Claims;
@@ -15,7 +15,7 @@ import java.util.Date;
 
 @Log
 @Component
-public class CommunityJWTProvider {
+public class JWTProvider {
     @Value("${jwt.secret}") //Берём секретное слово из property
     private String jwtSecret;
 
@@ -39,7 +39,7 @@ public class CommunityJWTProvider {
             Jwts.parser().setSigningKey(key).build().parseClaimsJws(token);
             return true;
         } catch (Exception e) {
-            log.severe("CommunityJWTProvider: Invalid JWT");
+            log.severe("JWTProvider: Invalid JWT");
         }
         return false;
     }

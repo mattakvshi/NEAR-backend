@@ -4,10 +4,8 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import ru.mattakvshi.near.config.security.community.CommunityJWTProvider;
-import ru.mattakvshi.near.config.security.user.UserJWTProvider;
+import ru.mattakvshi.near.config.security.JWTProvider;
 import ru.mattakvshi.near.dto.AuthRequests;
 import ru.mattakvshi.near.dto.AuthResponse;
 import ru.mattakvshi.near.dto.CommunityRegistrationRequest;
@@ -35,11 +33,8 @@ public class AuthorizationController extends BaseController{
 
     @Autowired
     @Lazy
-    private UserJWTProvider userJWTProvider;
+    private JWTProvider jwtProvider;
 
-    @Autowired
-    @Lazy
-    private CommunityJWTProvider communityJWTProvider;
 
     @Autowired
     @Lazy
@@ -61,7 +56,7 @@ public class AuthorizationController extends BaseController{
     @PostMapping("/login/account")
     public AuthResponse authUser(@RequestBody AuthRequests request){
         UserAccount userAccount = userAccountService.findByEmailAndPassword(request.getEmail(), request.getPassword());
-        String token = userJWTProvider.generateToken(userAccount.getEmail());
+        String token = jwtProvider.generateToken(userAccount.getEmail());
         return new AuthResponse(token, userAccount.getId());
     }
 
@@ -85,7 +80,7 @@ public class AuthorizationController extends BaseController{
     @PostMapping("/login/community")
     public AuthResponse authCommunity(@RequestBody AuthRequests request){
         CommunityAccount communityAccount = communityAccountService.findByEmailAndPassword(request.getEmail(), request.getPassword());
-        String token = communityJWTProvider.generateToken(communityAccount.getEmail());
+        String token = jwtProvider.generateToken(communityAccount.getEmail());
         return new AuthResponse(token, communityAccount.getId());
     }
 
