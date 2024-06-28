@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import ru.mattakvshi.near.dao.repository.auth.UserAccountRepository;
 import ru.mattakvshi.near.entity.auth.UserAccount;
 
+import java.util.UUID;
+
 public interface UserAccountService {
     @Transactional
     UserAccount saveUser(UserAccount userAccount);
@@ -14,4 +16,6 @@ public interface UserAccountService {
     UserAccount findByEmail(String email);
 
     UserAccount findByEmailAndPassword(String email, String password);
+
+    UserAccount findById(UUID id);
 }

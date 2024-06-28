@@ -14,7 +14,13 @@ public class EmergencyTypes {
     @Column(name = "type_id")
     private int id;
 
-    @Column(name = "type")
-    private String type;
+    @Column(name = "title")
+    private String title;
+
+    @Column(name = "color")
+    private String  color;
+
+    @Column(name = "bg_color")
+    private String bgColor;
 
 }

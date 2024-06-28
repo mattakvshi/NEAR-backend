@@ -24,7 +24,7 @@ public class CommunityJWTFilter extends GenericFilterBean {
     private CommunityJWTProvider communityJWTProvider;
 
     @Autowired
-    private CommunityDetailsService communityDetailsService;
+    private CustomCommunityDetailsService communityDetailsService;
 
     //Каждый раз как будет приходить запрос мы по токену будем вытаскивать пользователя и вставлять в SecurityContextHolder,
     // это нужно чтобы далее получать пользователя который пришёл по этому токену

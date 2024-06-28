@@ -27,7 +27,7 @@ public class UserJWTFilter extends GenericFilterBean {
     private UserJWTProvider UserJWTProvider;
 
     @Autowired
-    private UserDetailsService userDetailsService;
+    private CustomUserDetailsService userDetailsService;
 
     //Каждый раз как будет приходить запрос мы по токену будем вытаскивать пользователя и вставлять в SecurityContextHolder,
     // это нужно чтобы далее получать пользователя, который пришёл по этому токену

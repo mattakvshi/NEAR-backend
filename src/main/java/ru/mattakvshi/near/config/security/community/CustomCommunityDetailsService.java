@@ -7,10 +7,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.mattakvshi.near.entity.auth.CommunityAccount;
 import ru.mattakvshi.near.service.CommunityAccountService;
-import ru.mattakvshi.near.service.impl.CommunityAccountServiceImpl;
 
 @Service
-public class CommunityDetailsService implements UserDetailsService {
+public class CustomCommunityDetailsService implements UserDetailsService {
 
     @Autowired
     private CommunityAccountService communityAccountService;

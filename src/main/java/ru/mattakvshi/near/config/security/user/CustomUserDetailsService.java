@@ -2,14 +2,14 @@ package ru.mattakvshi.near.config.security.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.mattakvshi.near.entity.auth.UserAccount;
 import ru.mattakvshi.near.service.UserAccountService;
-import ru.mattakvshi.near.service.impl.UserAccountServiceImpl;
 
 @Service
-public class UserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
+public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired
     private UserAccountService userAccountService;

@@ -2,65 +2,91 @@ package ru.mattakvshi.near.controller;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
 import ru.mattakvshi.near.config.security.community.CommunityJWTProvider;
 import ru.mattakvshi.near.config.security.user.UserJWTProvider;
 import ru.mattakvshi.near.dto.AuthRequests;
 import ru.mattakvshi.near.dto.AuthResponse;
 import ru.mattakvshi.near.dto.CommunityRegistrationRequest;
 import ru.mattakvshi.near.dto.UserRegistrationRequest;
+import ru.mattakvshi.near.entity.User;
 import ru.mattakvshi.near.entity.auth.CommunityAccount;
 import ru.mattakvshi.near.entity.auth.UserAccount;
 import ru.mattakvshi.near.service.CommunityAccountService;
+import ru.mattakvshi.near.service.CommunityService;
 import ru.mattakvshi.near.service.UserAccountService;
 import ru.mattakvshi.near.service.UserService;
+
+import java.util.UUID;
 
 @RestController
 public class AuthorizationController extends BaseController{
 
     @Autowired
+    @Lazy
     private UserAccountService userAccountService;
 
     @Autowired
+    @Lazy
     private CommunityAccountService communityAccountService;
 
     @Autowired
+    @Lazy
     private UserJWTProvider userJWTProvider;
 
     @Autowired
+    @Lazy
     private CommunityJWTProvider communityJWTProvider;
 
     @Autowired
+    @Lazy
     private UserService userService;
+
+    @Autowired
+    @Lazy
+    private CommunityService communityService;
+
+    //USER ACCOUNT
 
     @PostMapping("/signup/account")
     public String registerUser(@RequestBody @Valid UserRegistrationRequest userRegistrationRequest) {
         UserAccount userAccount = userRegistrationRequest.toAccount();
         userAccountService.saveUser(userAccount);
-        userService.saveUser(userAccount.getUser());
-        return "OK";
+        return "OK" + userService.saveUser(userAccount.getUser());
     }
 
     @PostMapping("/login/account")
     public AuthResponse authUser(@RequestBody AuthRequests request){
         UserAccount userAccount = userAccountService.findByEmailAndPassword(request.getEmail(), request.getPassword());
         String token = userJWTProvider.generateToken(userAccount.getEmail());
-        return new AuthResponse(token);
+        return new AuthResponse(token, userAccount.getId());
     }
+
+    @GetMapping("/user/{id}")
+    public ResponseEntity<User> getCurrentUser(@PathVariable UUID id) {
+        //UserAccount userAccount = (UserAccount) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserAccount userAccount = userAccountService.findById(id);
+        return ResponseEntity.ok(userAccount.getUser());
+    }
+
+
+    //COMMUNITY ACCOUNT
 
     @PostMapping("/signup/community")
     public String registerCommunity(@RequestBody @Valid CommunityRegistrationRequest communityRegistrationRequest) {
-        communityAccountService.saveCommunity(communityRegistrationRequest.toAccount());
-        return "OK";
+        CommunityAccount communityAccount = communityRegistrationRequest.toAccount();
+        communityAccountService.saveCommunity(communityAccount);
+        return "OK" + communityService.saveCommunity(communityAccount.getCommunity());
     }
 
     @PostMapping("/login/community")
     public AuthResponse authCommunity(@RequestBody AuthRequests request){
         CommunityAccount communityAccount = communityAccountService.findByEmailAndPassword(request.getEmail(), request.getPassword());
         String token = communityJWTProvider.generateToken(communityAccount.getEmail());
-        return new AuthResponse(token);
+        return new AuthResponse(token, communityAccount.getId());
     }
 
 

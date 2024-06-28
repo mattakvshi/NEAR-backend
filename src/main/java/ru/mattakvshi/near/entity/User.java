@@ -65,6 +65,14 @@ public class User {
     private List<NotificationOptions> selectedOptions;
 
 
+    @ManyToMany
+    @JoinTable(
+            name = "User_Friends",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "friend_id")
+    )
+    private List<User> friends;
+
     @OneToMany(mappedBy = "owner")
     private List<Group> groups;
 
