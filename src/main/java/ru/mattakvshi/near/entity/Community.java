@@ -4,9 +4,12 @@ package ru.mattakvshi.near.entity;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 
 import jakarta.persistence.*;
+
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -43,6 +46,10 @@ public class Community {
 
     @Column(name = "district")
     private String district;
+
+    @CreationTimestamp //Заполняется первый раз при регистрации
+    @Column(name = "registration_date", updatable = false) //и после не изменяется никогда
+    private LocalDate registrationDate;
 
     @ManyToMany(mappedBy = "subscriptions")
     private List<User> subscribers;

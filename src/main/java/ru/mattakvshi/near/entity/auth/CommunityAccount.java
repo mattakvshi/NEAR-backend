@@ -22,7 +22,6 @@ import java.util.UUID;
 @Table(name = "Community_account_data")
 public class CommunityAccount implements UserDetails {
 
-
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(

@@ -67,7 +67,6 @@ public class AuthorizationController extends BaseController{
         return ResponseEntity.ok(userAccount.getUser());
     }
 
-
     //COMMUNITY ACCOUNT
 
     @PostMapping("/signup/community")
