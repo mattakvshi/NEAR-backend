@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
 import ru.mattakvshi.near.SystemConstants;
@@ -50,31 +51,27 @@ public class JWTFilter extends GenericFilterBean {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        String requestURI = ((HttpServletRequest) servletRequest).getRequestURI();
-        String token = getTokenFromRequests((HttpServletRequest) servletRequest);
+        var token = getTokenFromRequests((HttpServletRequest) servletRequest);
+        var requestURI = ((HttpServletRequest) servletRequest).getRequestURI();
 
         if (token != null && jwtProvider.validateToken(token)) {
+            var email = jwtProvider.getLoginFromToken(token);
+            UserDetails userDetails = null;
 
             if (requestURI.startsWith(SystemConstants.BASE_URL + "/user/")) {
                 log.info("JWTFilter do filter user...");
-
-
-                    var email = jwtProvider.getLoginFromToken(token);
-                    UserAccount userAccount = (UserAccount) userDetailsService.loadUserByUsername(email);
-                    UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userAccount, null, userAccount.getAuthorities());
-                    SecurityContextHolder.getContext().setAuthentication(auth);
-
+                userDetails  = userDetailsService.loadUserByUsername(email);
             }
-
-            if (requestURI.startsWith(SystemConstants.BASE_URL + "/community/")) {
+            else if (requestURI.startsWith(SystemConstants.BASE_URL + "/community/")) {
                 log.info("JWTFilter do filter community...");
-
-                var email = jwtProvider.getLoginFromToken(token);
-                CommunityAccount communityAccount = (CommunityAccount) communityDetailsService.loadUserByUsername(email);
-                UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(communityAccount, null, communityAccount.getAuthorities());
+                userDetails  = communityDetailsService.loadUserByUsername(email);
+            }
+            if (userDetails != null) {
+                var auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(auth);
             }
         }
+
         filterChain.doFilter(servletRequest, servletResponse);
     }
 
