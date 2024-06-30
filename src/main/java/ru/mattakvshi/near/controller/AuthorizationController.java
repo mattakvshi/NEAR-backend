@@ -1,6 +1,7 @@
 package ru.mattakvshi.near.controller;
 
 import jakarta.validation.Valid;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,7 @@ import ru.mattakvshi.near.service.UserService;
 import java.util.UUID;
 
 @RestController
+@Log
 public class AuthorizationController extends BaseController{
 
     @Autowired
@@ -57,10 +59,14 @@ public class AuthorizationController extends BaseController{
     }
 
     @PostMapping("/login/account")
-    public AuthResponse authUser(@RequestBody AuthRequests request){
-        UserAccount userAccount = userAccountService.findByEmailAndPassword(request.getEmail(), request.getPassword());
-        String token = jwtProvider.generateToken(userAccount.getEmail());
-        return new AuthResponse(token, userAccount.getId());
+    public ResponseEntity<AuthResponse> authUser(@RequestBody AuthRequests authRequest){
+        try {
+            final AuthResponse authResponse = userAccountService.login(authRequest);
+            return ResponseEntity.ok(authResponse);
+        } catch (Exception e) {
+            log.info("Auth error: " + e);
+            return ResponseEntity.internalServerError().body(new AuthResponse(null, e.getMessage(), null));
+        }
     }
 
 //    @GetMapping("/user/{id}")
@@ -101,7 +107,7 @@ public class AuthorizationController extends BaseController{
 //        CommunityAccount communityAccount = communityAccountService.findByEmailAndPassword(request.getEmail(), request.getPassword());
 //        String token = jwtProvider.generateToken(communityAccount.getEmail());
 //        return new AuthResponse(token, communityAccount.getId());
-    }
+//    }
 
 
 }
