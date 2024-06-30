@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,7 +20,7 @@ import java.util.UUID;
 @Data
 @Entity
 @Table(name = "User_account_data")
-public class UserAccount implements UserDetails {
+public class UserAccount implements UserDetails, Authentication {
 
     @Id
     @GeneratedValue(generator = "UUID")
@@ -45,9 +46,36 @@ public class UserAccount implements UserDetails {
     @JoinColumn(name = "user_id")
     private User user;
 
+    private boolean authenticated;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singletonList(new SimpleGrantedAuthority(SystemRole.User.toString()));
+    }
+
+    @Override
+    public Object getCredentials() {
+        return null;
+    }
+
+    @Override
+    public Object getDetails() {
+        return null;
+    }
+
+    @Override
+    public Object getPrincipal() {
+        return user;
+    }
+
+    @Override
+    public boolean isAuthenticated() {
+        return authenticated;
+    }
+
+    @Override
+    public void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException {
+        this.authenticated = isAuthenticated;
     }
 
     @Override
@@ -78,5 +106,10 @@ public class UserAccount implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    @Override
+    public String getName() {
+        return user.getFirstName();
     }
 }

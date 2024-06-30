@@ -1,5 +1,6 @@
 package ru.mattakvshi.near.config.security;
 
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
@@ -16,8 +17,6 @@ import org.springframework.web.filter.GenericFilterBean;
 import ru.mattakvshi.near.SystemConstants;
 import ru.mattakvshi.near.config.security.community.CustomCommunityDetailsService;
 import ru.mattakvshi.near.config.security.user.CustomUserDetailsService;
-import ru.mattakvshi.near.entity.auth.CommunityAccount;
-import ru.mattakvshi.near.entity.auth.UserAccount;
 
 import java.io.IOException;
 
@@ -54,8 +53,8 @@ public class JWTFilter extends GenericFilterBean {
         var token = getTokenFromRequests((HttpServletRequest) servletRequest);
         var requestURI = ((HttpServletRequest) servletRequest).getRequestURI();
 
-        if (token != null && jwtProvider.validateToken(token)) {
-            var email = jwtProvider.getLoginFromToken(token);
+        if (token != null && jwtProvider.validateAccessToken(token)) {
+            var email = jwtProvider.getLoginFromAccessToken(token);
             UserDetails userDetails = null;
 
             if (requestURI.startsWith(SystemConstants.BASE_URL + "/user/")) {

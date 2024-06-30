@@ -9,7 +9,11 @@ import java.util.UUID;
 @AllArgsConstructor
 public class AuthResponse {
 
-    private String jwtToken;
+    private final String type = "Bearer";
+
+    private String accessToken;
+
+    private String refreshToken;
 
     private UUID uuid;
 }

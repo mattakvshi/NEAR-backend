@@ -4,8 +4,11 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import ru.mattakvshi.near.config.security.JWTProvider;
+import ru.mattakvshi.near.config.security.JWTProviderOld;
 import ru.mattakvshi.near.dto.AuthRequests;
 import ru.mattakvshi.near.dto.AuthResponse;
 import ru.mattakvshi.near.dto.CommunityRegistrationRequest;
@@ -60,27 +63,44 @@ public class AuthorizationController extends BaseController{
         return new AuthResponse(token, userAccount.getId());
     }
 
-    @GetMapping("/user/{id}")
-    public ResponseEntity<User> getCurrentUser(@PathVariable UUID id) {
-        //UserAccount userAccount = (UserAccount) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UserAccount userAccount = userAccountService.findById(id);
-        return ResponseEntity.ok(userAccount.getUser());
+//    @GetMapping("/user/{id}")
+//    public ResponseEntity<User> getCurrentUser(@PathVariable UUID id) {
+//        //UserAccount userAccount = (UserAccount) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        UserAccount userAccount = userAccountService.findById(id);
+//        return ResponseEntity.ok(userAccount.getUser());
+//    }
+
+    @GetMapping("/user/me")
+    public ResponseEntity<User> getCurrentUser() {
+        Authentication userAccount = SecurityContextHolder.getContext().getAuthentication();
+        return ResponseEntity.ok((User) userAccount.getPrincipal());
+    }
+
+    @PostMapping("/user/refresh")
+    public ResponseEntity<AuthResponse> getNewRefreshToken(@RequestBody RefreshJwtRequest request) {
+        try {
+            final JwtResponse token = authService.refresh(request.getRefreshToken());
+            return ResponseEntity.ok(token);
+        } catch (Exception e) {
+            log.info("Auth error: " + e);
+            return ResponseEntity.internalServerError().body(new JwtResponse(null, e.getMessage()));
+        }
     }
 
     //COMMUNITY ACCOUNT
 
-    @PostMapping("/signup/community")
-    public String registerCommunity(@RequestBody @Valid CommunityRegistrationRequest communityRegistrationRequest) {
-        CommunityAccount communityAccount = communityRegistrationRequest.toAccount();
-        communityAccountService.saveCommunity(communityAccount);
-        return "OK" + communityService.saveCommunity(communityAccount.getCommunity());
-    }
-
-    @PostMapping("/login/community")
-    public AuthResponse authCommunity(@RequestBody AuthRequests request){
-        CommunityAccount communityAccount = communityAccountService.findByEmailAndPassword(request.getEmail(), request.getPassword());
-        String token = jwtProvider.generateToken(communityAccount.getEmail());
-        return new AuthResponse(token, communityAccount.getId());
+//    @PostMapping("/signup/community")
+//    public String registerCommunity(@RequestBody @Valid CommunityRegistrationRequest communityRegistrationRequest) {
+//        CommunityAccount communityAccount = communityRegistrationRequest.toAccount();
+//        communityAccountService.saveCommunity(communityAccount);
+//        return "OK" + communityService.saveCommunity(communityAccount.getCommunity());
+//    }
+//
+//    @PostMapping("/login/community")
+//    public AuthResponse authCommunity(@RequestBody AuthRequests request){
+//        CommunityAccount communityAccount = communityAccountService.findByEmailAndPassword(request.getEmail(), request.getPassword());
+//        String token = jwtProvider.generateToken(communityAccount.getEmail());
+//        return new AuthResponse(token, communityAccount.getId());
     }
 
 
