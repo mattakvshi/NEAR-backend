@@ -56,7 +56,7 @@ public class User {
     @Column(name = "registration_date", updatable = false) //и после не изменяется никогда
     private LocalDate registrationDate;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "Selected_options",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -65,7 +65,7 @@ public class User {
     private List<NotificationOptions> selectedOptions;
 
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "User_Friends",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -73,7 +73,7 @@ public class User {
     )
     private List<User> friends;
 
-    @OneToMany(mappedBy = "owner")
+    @OneToMany(fetch = FetchType.EAGER,mappedBy = "owner")
     private List<Group> groups;
 
 //    """
@@ -83,7 +83,7 @@ public class User {
 //    которое устанавливает связь с родительской сущностью.
 //    """
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "subscriptions",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -91,7 +91,7 @@ public class User {
     )
     private List<Community> subscriptions;
 
-    @OneToMany(mappedBy = "owner")
+    @OneToMany(fetch = FetchType.EAGER,mappedBy = "owner")
     private List<NotificationTemplate> notificationTemplates;
 
     @PrePersist //Вызываем метод перед сохранением сущности в базу

@@ -16,6 +16,11 @@ public interface UserAccountService {
     @Transactional
     AuthResponse login(AuthRequests authRequests) throws AuthException;
 
+    AuthResponse getAccessToken(String refreshToken) throws AuthException;
+
+    AuthResponse refresh(String refreshToken) throws AuthException;
+
+    @Transactional
     UserAccount saveUser(UserAccount userAccount);
 
     UserAccount findByEmail(String email);

@@ -1,5 +1,6 @@
 package ru.mattakvshi.near.controller;
 
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,11 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import ru.mattakvshi.near.config.security.JWTProvider;
-import ru.mattakvshi.near.config.security.JWTProviderOld;
-import ru.mattakvshi.near.dto.AuthRequests;
-import ru.mattakvshi.near.dto.AuthResponse;
-import ru.mattakvshi.near.dto.CommunityRegistrationRequest;
-import ru.mattakvshi.near.dto.UserRegistrationRequest;
+import ru.mattakvshi.near.dto.*;
 import ru.mattakvshi.near.entity.User;
 import ru.mattakvshi.near.entity.auth.CommunityAccount;
 import ru.mattakvshi.near.entity.auth.UserAccount;
@@ -69,6 +66,29 @@ public class AuthorizationController extends BaseController{
         }
     }
 
+    @PostMapping("/token/account")
+    public ResponseEntity<AuthResponse> getNewAccessTokenForUser(@RequestBody RefreshJwtRequest refreshJwtRequest){
+        try {
+            final AuthResponse authResponse = userAccountService.getAccessToken(refreshJwtRequest.getRefreshToken());
+            return ResponseEntity.ok(authResponse);
+        } catch (Exception e) {
+            log.info("Auth error: " + e);
+            return ResponseEntity.internalServerError().body(new AuthResponse(null, e.getMessage(), null));
+        }
+    }
+
+    @PostMapping("/user/refresh")
+    public ResponseEntity<AuthResponse> getNewRefreshTokenUser(@RequestBody RefreshJwtRequest refreshJwtRequest) {
+        try {
+            final AuthResponse authResponse = userAccountService.refresh(refreshJwtRequest.getRefreshToken());
+            return ResponseEntity.ok(authResponse);
+        } catch (Exception e) {
+            log.info("Auth error: " + e);
+            return ResponseEntity.internalServerError().body(new AuthResponse(null, e.getMessage(), null));
+        }
+    }
+
+
 //    @GetMapping("/user/{id}")
 //    public ResponseEntity<User> getCurrentUser(@PathVariable UUID id) {
 //        //UserAccount userAccount = (UserAccount) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -77,21 +97,13 @@ public class AuthorizationController extends BaseController{
 //    }
 
     @GetMapping("/user/me")
+    @Transactional
     public ResponseEntity<User> getCurrentUser() {
-        Authentication userAccount = SecurityContextHolder.getContext().getAuthentication();
-        return ResponseEntity.ok((User) userAccount.getPrincipal());
+        UserAccount userAccount = (UserAccount) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return ResponseEntity.ok(userAccount.getUser());
     }
 
-    @PostMapping("/user/refresh")
-    public ResponseEntity<AuthResponse> getNewRefreshToken(@RequestBody RefreshJwtRequest request) {
-        try {
-            final JwtResponse token = authService.refresh(request.getRefreshToken());
-            return ResponseEntity.ok(token);
-        } catch (Exception e) {
-            log.info("Auth error: " + e);
-            return ResponseEntity.internalServerError().body(new JwtResponse(null, e.getMessage()));
-        }
-    }
+
 
     //COMMUNITY ACCOUNT
 

@@ -1,7 +1,9 @@
 package ru.mattakvshi.near.service.impl;
 
+import io.jsonwebtoken.Claims;
 import jakarta.security.auth.message.AuthException;
 import jakarta.transaction.Transactional;
+import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -37,7 +39,7 @@ public class UserAccountServiceImpl implements UserAccountService {
 
     @Override
     @Transactional
-    public AuthResponse login(AuthRequests authRequests) throws AuthException {
+    public AuthResponse login(@NonNull AuthRequests authRequests) throws AuthException {
         UserAccount userAccount = findByEmailAndPassword(authRequests.getEmail(), authRequests.getPassword());
         if (userAccount != null) {
             final String accessToken = jwtProvider.generateAccessToken(userAccount);
@@ -49,6 +51,46 @@ public class UserAccountServiceImpl implements UserAccountService {
         }
     }
 
+    @Override
+    public AuthResponse getAccessToken(@NonNull String refreshToken) throws AuthException {
+        if (jwtProvider.validateRefreshToken(refreshToken)) {
+            var email = jwtProvider.getLoginFromRefreshToken(refreshToken);
+            final String saveRefreshToken = refreshRepository.findRefreshTokenByEmail(email);
+            if (saveRefreshToken != null && saveRefreshToken.equals(refreshToken)) {
+                final UserAccount userAccount = findByEmail(email);
+                if (userAccount != null) {
+                    final String accessToken = jwtProvider.generateAccessToken(userAccount);
+                    return new AuthResponse(accessToken, null, null);
+                } else {
+                    throw new AuthException("Пользователь не найден");
+                }
+            }
+        }
+        return new AuthResponse(null, null, null);
+    }
+
+    @Override
+    public AuthResponse refresh(@NonNull String refreshToken) throws AuthException {
+        if (jwtProvider.validateRefreshToken(refreshToken)) {
+            var email = jwtProvider.getLoginFromRefreshToken(refreshToken);
+            final String saveRefreshToken = refreshRepository.findRefreshTokenByEmail(email);
+            if (saveRefreshToken != null && saveRefreshToken.equals(refreshToken)) {
+                final UserAccount userAccount = findByEmail(email);
+
+                if (userAccount != null) {
+                    final String accessToken = jwtProvider.generateAccessToken(userAccount);
+                    final String newRefreshToken = jwtProvider.generateRefreshToken(userAccount);
+                    refreshRepository.save(new RefreshStorage(userAccount.getEmail(), newRefreshToken));
+                    return new AuthResponse(accessToken, newRefreshToken, null);
+                } else {
+                     throw new AuthException("Пользователь не найден");
+                }
+            }
+        }
+        throw new AuthException("Невалидный JWT токен");
+    }
+
+    @Transactional
     public UserAccount saveUser(UserAccount userAccount) {
 
         userAccount.setPassword(passwordEncoder.encode(userAccount.getPassword()));
