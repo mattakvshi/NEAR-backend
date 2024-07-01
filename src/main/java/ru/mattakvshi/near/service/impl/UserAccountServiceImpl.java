@@ -1,6 +1,5 @@
 package ru.mattakvshi.near.service.impl;
 
-import io.jsonwebtoken.Claims;
 import jakarta.security.auth.message.AuthException;
 import jakarta.transaction.Transactional;
 import lombok.NonNull;
@@ -8,11 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import ru.mattakvshi.near.dao.repository.auth.RefreshRepository;
+import ru.mattakvshi.near.dao.repository.auth.UserRefreshRepository;
 import ru.mattakvshi.near.dao.repository.auth.UserAccountRepository;
 import ru.mattakvshi.near.dto.AuthRequests;
 import ru.mattakvshi.near.dto.AuthResponse;
-import ru.mattakvshi.near.entity.auth.RefreshStorage;
+import ru.mattakvshi.near.entity.auth.UserRefreshStorage;
 import ru.mattakvshi.near.entity.auth.UserAccount;
 import ru.mattakvshi.near.service.UserAccountService;
 import ru.mattakvshi.near.config.security.JWTProvider;
@@ -35,7 +34,7 @@ public class UserAccountServiceImpl implements UserAccountService {
     private JWTProvider jwtProvider;
 
     @Autowired
-    private RefreshRepository refreshRepository;
+    private UserRefreshRepository userRefreshRepository;
 
     @Override
     @Transactional
@@ -44,7 +43,7 @@ public class UserAccountServiceImpl implements UserAccountService {
         if (userAccount != null) {
             final String accessToken = jwtProvider.generateAccessToken(userAccount);
             final String refreshToken = jwtProvider.generateRefreshToken(userAccount);
-            refreshRepository.save(new RefreshStorage(userAccount.getEmail(), refreshToken));
+            userRefreshRepository.save(new UserRefreshStorage(userAccount.getEmail(), refreshToken));
             return new AuthResponse(accessToken, refreshToken, userAccount.getId());
         } else {
             throw new AuthException("Пользователь не найден");
@@ -55,7 +54,7 @@ public class UserAccountServiceImpl implements UserAccountService {
     public AuthResponse getAccessToken(@NonNull String refreshToken) throws AuthException {
         if (jwtProvider.validateRefreshToken(refreshToken)) {
             var email = jwtProvider.getLoginFromRefreshToken(refreshToken);
-            final String saveRefreshToken = refreshRepository.findRefreshTokenByEmail(email);
+            final String saveRefreshToken = userRefreshRepository.findRefreshTokenByEmail(email);
             if (saveRefreshToken != null && saveRefreshToken.equals(refreshToken)) {
                 final UserAccount userAccount = findByEmail(email);
                 if (userAccount != null) {
@@ -73,14 +72,14 @@ public class UserAccountServiceImpl implements UserAccountService {
     public AuthResponse refresh(@NonNull String refreshToken) throws AuthException {
         if (jwtProvider.validateRefreshToken(refreshToken)) {
             var email = jwtProvider.getLoginFromRefreshToken(refreshToken);
-            final String saveRefreshToken = refreshRepository.findRefreshTokenByEmail(email);
+            final String saveRefreshToken = userRefreshRepository.findRefreshTokenByEmail(email);
             if (saveRefreshToken != null && saveRefreshToken.equals(refreshToken)) {
                 final UserAccount userAccount = findByEmail(email);
 
                 if (userAccount != null) {
                     final String accessToken = jwtProvider.generateAccessToken(userAccount);
                     final String newRefreshToken = jwtProvider.generateRefreshToken(userAccount);
-                    refreshRepository.save(new RefreshStorage(userAccount.getEmail(), newRefreshToken));
+                    userRefreshRepository.save(new UserRefreshStorage(userAccount.getEmail(), newRefreshToken));
                     return new AuthResponse(accessToken, newRefreshToken, null);
                 } else {
                      throw new AuthException("Пользователь не найден");

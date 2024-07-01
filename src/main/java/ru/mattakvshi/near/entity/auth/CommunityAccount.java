@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,7 +21,7 @@ import java.util.UUID;
 @Data
 @Entity
 @Table(name = "Community_account_data")
-public class CommunityAccount implements UserDetails {
+public class CommunityAccount implements UserDetails, Authentication {
 
     @Id
     @GeneratedValue(generator = "UUID")
@@ -46,9 +47,36 @@ public class CommunityAccount implements UserDetails {
     @JoinColumn(name = "community_id")
     private Community community;
 
+    private boolean authenticated;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singletonList(new SimpleGrantedAuthority(SystemRole.Community.toString()));
+    }
+
+    @Override
+    public Object getCredentials() {
+        return null;
+    }
+
+    @Override
+    public Object getDetails() {
+        return null;
+    }
+
+    @Override
+    public Object getPrincipal() {
+        return community;
+    }
+
+    @Override
+    public boolean isAuthenticated() {
+        return authenticated;
+    }
+
+    @Override
+    public void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException {
+        this.authenticated = isAuthenticated;
     }
 
     @Override
@@ -79,5 +107,10 @@ public class CommunityAccount implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    @Override
+    public String getName() {
+        return community.getCommunityName();
     }
 }

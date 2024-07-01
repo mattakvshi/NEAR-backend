@@ -51,10 +51,10 @@ public class Community {
     @Column(name = "registration_date", updatable = false) //и после не изменяется никогда
     private LocalDate registrationDate;
 
-    @ManyToMany(mappedBy = "subscriptions")
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "subscriptions")
     private List<User> subscribers;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "Monitored_emergency",
             joinColumns = @JoinColumn(name = "community_id"),

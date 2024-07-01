@@ -4,15 +4,19 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 
 @Getter
 @Setter
 @Entity
-@Table(name = "refresh_storage")
+@Table(name = "community_refresh_storage")
 @AllArgsConstructor
 @NoArgsConstructor
-public class RefreshStorage {
+public class CommunityRefreshStorage {
 
     @Id
     @Column(name = "email")
@@ -22,3 +26,7 @@ public class RefreshStorage {
     private String refreshToken;
 
 }
+
+
+
+
