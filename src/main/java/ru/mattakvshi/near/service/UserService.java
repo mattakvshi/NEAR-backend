@@ -7,4 +7,6 @@ import java.util.UUID;
 
 public interface UserService {
     UUID saveUser(User user);
+
+    void subscribeUserToCommunity(UUID userId, UUID communityId);
 }

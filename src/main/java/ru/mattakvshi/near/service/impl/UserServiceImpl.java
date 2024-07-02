@@ -4,7 +4,9 @@ import lombok.extern.java.Log;
 import org.quartz.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.mattakvshi.near.dao.CommunityDAO;
 import ru.mattakvshi.near.dao.UserDAO;
+import ru.mattakvshi.near.entity.Community;
 import ru.mattakvshi.near.entity.User;
 import ru.mattakvshi.near.jobs.BirthdayJob;
 import ru.mattakvshi.near.service.UserService;
@@ -19,6 +21,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserDAO userDAO;
+
+    @Autowired
+    private CommunityDAO communityDAO;
 
     @Autowired
     Scheduler scheduler;
@@ -57,5 +62,26 @@ public class UserServiceImpl implements UserService {
         }
 
         return uuid;
+    }
+
+    public void subscribeUserToCommunity(UUID userId, UUID communityId) {
+        User user = userDAO.findById(userId);
+        Community community = communityDAO.findById(communityId);
+
+        if(user != null && community != null) {
+
+            user.getSubscriptions().add(community);
+            community.getSubscribers().add(user);
+
+            userDAO.saveUser(user);
+            communityDAO.saveCommunity(community);
+
+        } else if (user == null) {
+            throw new RuntimeException("User not found");
+        } else {
+            throw new RuntimeException("Community not found");
+        }
+
+
     }
 }
