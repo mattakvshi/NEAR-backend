@@ -74,19 +74,11 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void subscribeUserToCommunity(UUID userId, UUID communityId) {
         User user = userDAO.findById(userId);
-
-        log.info("User: " + user.toString());
-
         Community community = communityDAO.findById(communityId);
 
-        log.info("Community: " + community.toString());
-
         if(user != null && community != null) {
-            log.info("Check:");
-            //user.getSubscriptions().add(community);
-            //getSubscribers().add(user);
-
-            log.info("Check:" + user.getSubscriptions() + community.getSubscribers());
+            user.getSubscriptions().add(community);
+            community.getSubscribers().add(user);
 
             userDAO.saveUser(user);
             communityDAO.saveCommunity(community);
