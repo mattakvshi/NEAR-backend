@@ -89,4 +89,23 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException("Community not found");
         }
     }
+
+    @Override
+    public void addNewFriend(UUID userId, UUID friend1Id) {
+        User user = userDAO.findById(userId);
+        User friend = userDAO.findById(friend1Id);
+
+        if(user != null && friend != null) {
+            user.getFriends().add(friend);
+            friend.getFriends().add(user);
+
+            userDAO.saveUser(user);
+            userDAO.saveUser(friend);
+
+        } else if (user == null) {
+            throw new RuntimeException("User not found");
+        } else {
+            throw new RuntimeException("Friend not found");
+        }
+    }
 }
