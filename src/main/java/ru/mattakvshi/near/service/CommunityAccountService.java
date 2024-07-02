@@ -2,10 +2,9 @@ package ru.mattakvshi.near.service;
 
 import jakarta.security.auth.message.AuthException;
 import jakarta.transaction.Transactional;
-import ru.mattakvshi.near.dto.AuthRequests;
-import ru.mattakvshi.near.dto.AuthResponse;
+import ru.mattakvshi.near.dto.auth.AuthRequests;
+import ru.mattakvshi.near.dto.auth.AuthResponse;
 import ru.mattakvshi.near.entity.auth.CommunityAccount;
-import ru.mattakvshi.near.entity.auth.UserAccount;
 
 public interface CommunityAccountService {
     @Transactional

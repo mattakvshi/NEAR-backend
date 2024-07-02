@@ -1,4 +1,4 @@
-package ru.mattakvshi.near.dto;
+package ru.mattakvshi.near.dto.auth;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
@@ -7,7 +7,6 @@ import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 import ru.mattakvshi.near.entity.Community;
 import ru.mattakvshi.near.entity.EmergencyTypes;
-import ru.mattakvshi.near.entity.NotificationOptions;
 import ru.mattakvshi.near.entity.auth.CommunityAccount;
 
 import java.util.List;

@@ -10,12 +10,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import ru.mattakvshi.near.dto.CommunityDTOForCommunity;
+import ru.mattakvshi.near.dto.CommunityDTOForUser;
 import ru.mattakvshi.near.entity.Community;
-import ru.mattakvshi.near.entity.User;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -66,7 +66,7 @@ public class CommunityAccount implements UserDetails, Authentication {
 
     @Override
     public Object getPrincipal() {
-        return community;
+        return CommunityDTOForCommunity.from(community);
     }
 
     @Override

@@ -8,9 +8,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import ru.mattakvshi.near.dto.*;
-import ru.mattakvshi.near.entity.Community;
-import ru.mattakvshi.near.entity.User;
+import ru.mattakvshi.near.dto.auth.*;
 import ru.mattakvshi.near.entity.auth.CommunityAccount;
 import ru.mattakvshi.near.entity.auth.UserAccount;
 import ru.mattakvshi.near.service.CommunityAccountService;
@@ -83,9 +81,9 @@ public class AuthorizationController extends BaseController{
 
     @GetMapping("/user/me")
     @Transactional
-    public ResponseEntity<UserAccount> getCurrentUser() {
+    public ResponseEntity<Object> getCurrentUser() {
         UserAccount userAccount = (UserAccount) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return ResponseEntity.ok(userAccount);
+        return ResponseEntity.ok(userAccount.getPrincipal());
     }
 
 
@@ -135,9 +133,9 @@ public class AuthorizationController extends BaseController{
 
     @GetMapping("/community/me")
     @Transactional
-    public ResponseEntity<Community> getCurrentCommunity() {
+    public ResponseEntity<Object> getCurrentCommunity() {
         CommunityAccount communityAccount = (CommunityAccount) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return ResponseEntity.ok(communityAccount.getCommunity());
+        return ResponseEntity.ok(communityAccount.getPrincipal());
     }
 
 

@@ -1,4 +1,4 @@
-package ru.mattakvshi.near.dto;
+package ru.mattakvshi.near.dto.auth;
 
 import lombok.Data;
 
