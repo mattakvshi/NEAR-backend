@@ -30,8 +30,8 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(authorizeHttpRequests ->
                         authorizeHttpRequests
-                                .requestMatchers("*/user/*").hasAnyAuthority(SystemRole.User.name())
-                                .requestMatchers("*/community/*").hasAnyAuthority(SystemRole.Community.name())
+                                .requestMatchers("*/user/**").hasAnyAuthority(SystemRole.User.name())
+                                .requestMatchers("*/community/**").hasAnyAuthority(SystemRole.Community.name())
                                 .requestMatchers("*/signup/account", "*/login/account","*/token/account" ,"*/signup/community", "*/login/community","*/token/community").permitAll()
                                 .anyRequest().authenticated()
                 )

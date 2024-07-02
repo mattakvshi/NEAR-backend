@@ -1,5 +1,6 @@
 package ru.mattakvshi.near.dao.impl;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.mattakvshi.near.dao.UserDAO;
@@ -16,6 +17,7 @@ public class UserDAOImpl implements UserDAO {
     private UserRepository userRepository;
 
     @Override
+    @Transactional
     public UUID saveUser(User user) {
         User savedUser = userRepository.save(user);
         return savedUser.getId();

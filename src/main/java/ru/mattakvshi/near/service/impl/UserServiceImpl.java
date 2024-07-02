@@ -1,5 +1,6 @@
 package ru.mattakvshi.near.service.impl;
 
+import jakarta.transaction.Transactional;
 import lombok.extern.java.Log;
 import org.quartz.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,8 @@ public class UserServiceImpl implements UserService {
     Scheduler scheduler;
 
     @Override
-    public UUID saveUser(User user) {
+    @Transactional
+    public UUID saveUserForFirstTime(User user) {
             //Сохраняем сущность
             UUID uuid = userDAO.saveUser(user);
 
@@ -64,14 +66,27 @@ public class UserServiceImpl implements UserService {
         return uuid;
     }
 
+    @Override
+    public UUID saveUser(User user) {
+        return userDAO.saveUser(user);
+    }
+
+    @Transactional
     public void subscribeUserToCommunity(UUID userId, UUID communityId) {
         User user = userDAO.findById(userId);
+
+        log.info("User: " + user.toString());
+
         Community community = communityDAO.findById(communityId);
 
-        if(user != null && community != null) {
+        log.info("Community: " + community.toString());
 
-            user.getSubscriptions().add(community);
-            community.getSubscribers().add(user);
+        if(user != null && community != null) {
+            log.info("Check:");
+            //user.getSubscriptions().add(community);
+            //getSubscribers().add(user);
+
+            log.info("Check:" + user.getSubscriptions() + community.getSubscribers());
 
             userDAO.saveUser(user);
             communityDAO.saveCommunity(community);
@@ -81,7 +96,5 @@ public class UserServiceImpl implements UserService {
         } else {
             throw new RuntimeException("Community not found");
         }
-
-
     }
 }

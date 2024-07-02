@@ -1,5 +1,6 @@
 package ru.mattakvshi.near.dao.impl;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.mattakvshi.near.dao.CommunityDAO;
@@ -17,6 +18,7 @@ public class CommunityDAOImpl implements CommunityDAO {
     private CommunityRepository communityRepository;
 
     @Override
+    @Transactional
     public UUID saveCommunity(Community community) {
         Community savedCommunity = communityRepository.save(community);
         return savedCommunity.getId();

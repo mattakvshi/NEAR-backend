@@ -6,10 +6,8 @@ import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import ru.mattakvshi.near.config.security.JWTProvider;
 import ru.mattakvshi.near.dto.*;
 import ru.mattakvshi.near.entity.Community;
 import ru.mattakvshi.near.entity.User;
@@ -19,8 +17,6 @@ import ru.mattakvshi.near.service.CommunityAccountService;
 import ru.mattakvshi.near.service.CommunityService;
 import ru.mattakvshi.near.service.UserAccountService;
 import ru.mattakvshi.near.service.UserService;
-
-import java.util.UUID;
 
 @RestController
 @Log
@@ -49,7 +45,7 @@ public class AuthorizationController extends BaseController{
     public String registerUser(@RequestBody @Valid UserRegistrationRequest userRegistrationRequest) {
         UserAccount userAccount = userRegistrationRequest.toAccount();
         userAccountService.saveUser(userAccount);
-        return "OK" + userService.saveUser(userAccount.getUser());
+        return "OK" + userService.saveUserForFirstTime(userAccount.getUser());
     }
 
     @PostMapping("/login/account")
@@ -87,9 +83,9 @@ public class AuthorizationController extends BaseController{
 
     @GetMapping("/user/me")
     @Transactional
-    public ResponseEntity<User> getCurrentUser() {
+    public ResponseEntity<UserAccount> getCurrentUser() {
         UserAccount userAccount = (UserAccount) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return ResponseEntity.ok(userAccount.getUser());
+        return ResponseEntity.ok(userAccount);
     }
 
 
