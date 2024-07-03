@@ -35,5 +35,15 @@ public class NotificationTemplate {
     @JoinColumn(name = "owner_id")
     private User owner;
 
-    // Другие поля и методы, если необходимо
+    @Column(name = "notification_message")
+    private String message;
+
+    @OneToOne
+    @JoinColumn(name = "emergency_type_id")
+    private EmergencyTypes emergencyType;
+
+
+
+
+
 }
