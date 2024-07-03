@@ -73,6 +73,22 @@ public class User {
     )
     private List<User> friends;
 
+    @ManyToMany
+    @JoinTable(
+            name = "friend_requests_sent",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "receiver_id")
+    )
+    private List<User> sentRequests;
+
+    @ManyToMany
+    @JoinTable(
+            name = "friend_requests_received",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "sender_id")
+    )
+    private List<User> receivedRequests;
+
     @OneToMany(fetch = FetchType.EAGER,mappedBy = "owner")
     private List<Group> groups;
 

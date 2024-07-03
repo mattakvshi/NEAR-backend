@@ -6,6 +6,8 @@ import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
 import jakarta.persistence.*;
+
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -34,5 +36,11 @@ public class Group {
     @JoinColumn(name = "owner_id")
     private User owner;
 
-    // Другие поля и методы, если необходимо
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "groups_members",
+            joinColumns = @JoinColumn(name = "group_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private List<User> members;
 }

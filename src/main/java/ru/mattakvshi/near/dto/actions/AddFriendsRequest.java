@@ -7,7 +7,7 @@ import java.util.UUID;
 @Data
 public class AddFriendsRequest {
 
-    private UUID userId;
+    //private UUID userId;
 
     private UUID friendId;
 }

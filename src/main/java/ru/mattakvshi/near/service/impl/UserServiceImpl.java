@@ -104,7 +104,9 @@ public class UserServiceImpl implements UserService {
         Community community = communityDAO.findById(communityId);
 
         if(user != null && community != null) {
+
             if(user.getSubscriptions().contains(community)) {
+
                 user.getSubscriptions().remove(community);
                 community.getSubscribers().remove(user);
 
@@ -112,7 +114,6 @@ public class UserServiceImpl implements UserService {
                 communityDAO.saveCommunity(community);
 
             } else {
-                // Обработка ситуации, когда пользователь уже подписан на сообщество
                 throw new RuntimeException("User is not subscribed to the community");
             }
 
@@ -124,21 +125,112 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void addNewFriend(UUID userId, UUID friend1Id) {
+    public void friendRequest(UUID userId, UUID friendId) {
         User user = userDAO.findById(userId);
-        User friend = userDAO.findById(friend1Id);
+        User friend = userDAO.findById(friendId);
 
         if(user != null && friend != null) {
-            user.getFriends().add(friend);
-            friend.getFriends().add(user);
 
-            userDAO.saveUser(user);
-            userDAO.saveUser(friend);
+            if(!user.getSentRequests().contains(friend)){
+
+                user.getSentRequests().add(friend); // Нам добавляем в отправленные запросы
+                friend.getReceivedRequests().add(user); //Ему добавляем в полученные запросы
+
+                userDAO.saveUser(user);
+                userDAO.saveUser(friend);
+
+            } else {
+                throw new RuntimeException("A friend request has already been sent to this user");
+            }
 
         } else if (user == null) {
             throw new RuntimeException("User not found");
         } else {
             throw new RuntimeException("Friend not found");
         }
+    }
+
+    @Override
+    public void addNewFriend(UUID userId, UUID friendId) {
+        User user = userDAO.findById(userId);
+        User friend = userDAO.findById(friendId);
+
+        if(user != null && friend != null) {
+
+            if(!user.getFriends().contains(friend) && user.getReceivedRequests().contains(friend)){
+
+                user.getFriends().add(friend);
+                friend.getFriends().add(user);
+
+                user.getReceivedRequests().remove(friend); // Если мы кого-то добавили, удаляем его из полученных запросов у нас
+                friend.getSentRequests().remove(user); // У него удаляем из отправленных
+
+                userDAO.saveUser(user);
+                userDAO.saveUser(friend);
+
+            } else {
+                throw new RuntimeException("This user is already your friend or don't send friend request");
+            }
+
+        } else if (user == null) {
+            throw new RuntimeException("User not found");
+        } else {
+            throw new RuntimeException("Friend not found");
+        }
+    }
+
+    @Override
+    public void rejectFriendsRequest(UUID userId, UUID friendId) {
+
+        User user = userDAO.findById(userId);
+        User friend = userDAO.findById(friendId);
+
+        if(user != null && friend != null) {
+
+            if(user.getReceivedRequests().contains(friend)){
+
+                user.getReceivedRequests().remove(friend); // При отклонении заявки удаляем у нас из полученных
+                friend.getSentRequests().remove(user); // У него из отправленных
+
+                userDAO.saveUser(user);
+                userDAO.saveUser(friend);
+
+            } else {
+                throw new RuntimeException("The friend request has already been rejected");
+            }
+
+        } else if (user == null) {
+            throw new RuntimeException("User not found");
+        } else {
+            throw new RuntimeException("Friend not found");
+        }
+    }
+
+    @Override
+    public void deleteFriend(UUID userId, UUID friendId) {
+
+        User user = userDAO.findById(userId);
+        User friend = userDAO.findById(friendId);
+
+        if(user != null && friend != null) {
+
+            if(user.getFriends().contains(friend)){
+
+                user.getFriends().remove(friend);
+                friend.getFriends().remove(user);
+
+                userDAO.saveUser(user);
+                userDAO.saveUser(friend);
+
+            } else {
+                throw new RuntimeException("This user is already not your friend");
+            }
+
+        } else if (user == null) {
+            throw new RuntimeException("User not found");
+        } else {
+            throw new RuntimeException("Friend not found");
+        }
+
     }
 }

@@ -19,5 +19,14 @@ public interface UserService {
     void cancelSubscriptionUserToCommunity(UUID userId, UUID communityId);
 
     @Transactional
-    void addNewFriend(UUID userId, UUID friend1Id);
+    void friendRequest(UUID userId, UUID friendId);
+
+    @Transactional
+    void addNewFriend(UUID userId, UUID friendId);
+
+    @Transactional
+    void rejectFriendsRequest(UUID userId, UUID friendId);
+
+    @Transactional
+    void deleteFriend(UUID userId, UUID friendId);
 }
