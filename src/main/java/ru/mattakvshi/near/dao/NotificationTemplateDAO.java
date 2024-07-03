@@ -8,4 +8,10 @@ import java.util.UUID;
 public interface NotificationTemplateDAO {
     @Transactional
     UUID saveTemplate(NotificationTemplate template);
+
+    @Transactional
+    UUID updateTemplate(NotificationTemplate template);
+
+    @Transactional
+    void deleteTemplate(NotificationTemplate template);
 }

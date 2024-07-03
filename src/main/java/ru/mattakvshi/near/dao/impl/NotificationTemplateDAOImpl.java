@@ -22,5 +22,15 @@ public class NotificationTemplateDAOImpl implements NotificationTemplateDAO {
         return notificationTemplateRepository.save(template).getId();
     }
 
+    @Override
+    public UUID updateTemplate(NotificationTemplate template) {
+        return notificationTemplateRepository.save(template).getId();
+    }
+
+    @Override
+    public void deleteTemplate(NotificationTemplate template) {
+        notificationTemplateRepository.delete(template);
+    }
+
 
 }

@@ -9,4 +9,10 @@ import java.util.UUID;
 public interface NotificationTemplateService {
     @Transactional
     UUID saveTemplate(NotificationTemplate notificationTemplate);
+
+    @Transactional
+    UUID updateTemplate(NotificationTemplate notificationTemplate);
+
+    @Transactional
+    void deleteTemplate(NotificationTemplate notificationTemplate);
 }
