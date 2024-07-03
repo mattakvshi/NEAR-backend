@@ -42,8 +42,4 @@ public class NotificationTemplate {
     @JoinColumn(name = "emergency_type_id")
     private EmergencyTypes emergencyType;
 
-
-
-
-
 }

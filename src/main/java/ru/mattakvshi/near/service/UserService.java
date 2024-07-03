@@ -29,4 +29,6 @@ public interface UserService {
 
     @Transactional
     void deleteFriend(UUID userId, UUID friendId);
+
+
 }
