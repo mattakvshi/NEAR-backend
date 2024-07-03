@@ -16,5 +16,8 @@ public interface UserService {
     void subscribeUserToCommunity(UUID userId, UUID communityId);
 
     @Transactional
+    void cancelSubscriptionUserToCommunity(UUID userId, UUID communityId);
+
+    @Transactional
     void addNewFriend(UUID userId, UUID friend1Id);
 }

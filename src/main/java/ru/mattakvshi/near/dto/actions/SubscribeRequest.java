@@ -7,7 +7,7 @@ import java.util.UUID;
 @Data
 public class SubscribeRequest {
 
-    private UUID userId;
+    //private UUID userId;
 
     private UUID communityId;
 }

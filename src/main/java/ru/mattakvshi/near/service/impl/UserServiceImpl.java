@@ -71,17 +71,50 @@ public class UserServiceImpl implements UserService {
         return userDAO.saveUser(user);
     }
 
+    @Override
     @Transactional
     public void subscribeUserToCommunity(UUID userId, UUID communityId) {
         User user = userDAO.findById(userId);
         Community community = communityDAO.findById(communityId);
 
         if(user != null && community != null) {
-            user.getSubscriptions().add(community);
-            community.getSubscribers().add(user);
+            // Проверяем, не подписан ли уже пользователь на сообщество
+            if(!user.getSubscriptions().contains(community)) {
+                user.getSubscriptions().add(community);
+                community.getSubscribers().add(user);
 
-            userDAO.saveUser(user);
-            communityDAO.saveCommunity(community);
+                userDAO.saveUser(user);
+                communityDAO.saveCommunity(community);
+            } else {
+                // Обработка ситуации, когда пользователь уже подписан на сообщество
+                throw new RuntimeException("User is already subscribed to the community");
+            }
+
+        } else if (user == null) {
+            throw new RuntimeException("User not found");
+        } else {
+            throw new RuntimeException("Community not found");
+        }
+    }
+
+    @Override
+    @Transactional
+    public void cancelSubscriptionUserToCommunity(UUID userId, UUID communityId) {
+        User user = userDAO.findById(userId);
+        Community community = communityDAO.findById(communityId);
+
+        if(user != null && community != null) {
+            if(user.getSubscriptions().contains(community)) {
+                user.getSubscriptions().remove(community);
+                community.getSubscribers().remove(user);
+
+                userDAO.saveUser(user);
+                communityDAO.saveCommunity(community);
+
+            } else {
+                // Обработка ситуации, когда пользователь уже подписан на сообщество
+                throw new RuntimeException("User is not subscribed to the community");
+            }
 
         } else if (user == null) {
             throw new RuntimeException("User not found");
