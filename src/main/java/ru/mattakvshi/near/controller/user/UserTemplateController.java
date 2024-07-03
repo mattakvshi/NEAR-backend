@@ -5,14 +5,12 @@ import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import ru.mattakvshi.near.dto.actions.AddFriendsRequest;
 import ru.mattakvshi.near.dto.actions.NotificationTemplateRequest;
 import ru.mattakvshi.near.dto.actions.SendTemplateRequest;
 import ru.mattakvshi.near.entity.NotificationTemplate;
 import ru.mattakvshi.near.entity.auth.UserAccount;
 import ru.mattakvshi.near.service.NotificationTemplateService;
-import ru.mattakvshi.near.service.UserService;
-import ru.mattakvshi.near.utils.NotificationTemplateBuilder;
+import ru.mattakvshi.near.helpers.NotificationTemplateBuilder;
 
 @Log
 @RestController
