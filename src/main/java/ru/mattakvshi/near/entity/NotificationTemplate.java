@@ -6,6 +6,8 @@ import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
 import jakarta.persistence.*;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import java.util.UUID;
 
 @Data

@@ -1,5 +1,6 @@
 package ru.mattakvshi.near.helpers;
 
+import org.springframework.security.core.userdetails.UserDetails;
 import ru.mattakvshi.near.dto.actions.NotificationTemplateRequest;
 import ru.mattakvshi.near.entity.NotificationTemplate;
 import ru.mattakvshi.near.entity.User;
