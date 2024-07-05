@@ -11,8 +11,8 @@ public interface NotificationTemplateService {
     UUID saveTemplate(NotificationTemplate notificationTemplate);
 
     @Transactional
-    UUID updateTemplate(NotificationTemplate notificationTemplate);
+    UUID updateTemplate(NotificationTemplate notificationTemplate, UUID templateId);
 
     @Transactional
-    void deleteTemplate(NotificationTemplate notificationTemplate);
+    void deleteTemplate(NotificationTemplate notificationTemplate, UUID templateId);
 }

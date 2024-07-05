@@ -10,8 +10,8 @@ public interface NotificationTemplateDAO {
     UUID saveTemplate(NotificationTemplate template);
 
     @Transactional
-    UUID updateTemplate(NotificationTemplate template);
+    UUID updateTemplate(NotificationTemplate template, UUID templateId);
 
     @Transactional
-    void deleteTemplate(NotificationTemplate template);
+    void deleteTemplate(NotificationTemplate template, UUID templateId);
 }

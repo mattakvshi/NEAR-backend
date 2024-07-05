@@ -8,6 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import ru.mattakvshi.near.dto.actions.NotificationTemplateRequest;
 import ru.mattakvshi.near.dto.actions.SendTemplateRequest;
+import ru.mattakvshi.near.dto.actions.TemplateFindRequest;
 import ru.mattakvshi.near.entity.NotificationTemplate;
 import ru.mattakvshi.near.entity.base.TemplateOwner;
 import ru.mattakvshi.near.service.NotificationTemplateService;
@@ -34,12 +35,16 @@ public class NotificationTemplateController extends BaseController {
     }
 
     @PutMapping(value = {"/user/template/update", "/community/template/update"})
-    public String updateTemplate(@RequestBody NotificationTemplateRequest notificationTemplateRequest) {
+    public String updateTemplate(@RequestBody TemplateFindRequest templateFindRequest) {
         try{
             Authentication account = (Authentication) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            NotificationTemplateRequest notificationTemplateRequest = new NotificationTemplateRequest(
+                    templateFindRequest.getTemplateName(),
+                    templateFindRequest.getMessage(),
+                    templateFindRequest.getEmergencyType()
+            );
             NotificationTemplate notificationTemplate = NotificationTemplateBuilder.from((TemplateOwner) account.getDetails(), notificationTemplateRequest);
-            notificationTemplateService.updateTemplate(notificationTemplate);
-
+            notificationTemplateService.updateTemplate(notificationTemplate, templateFindRequest.getTemplateId());
             return "OK";
         } catch (Exception e) {
             log.info("Exception: " + e);
@@ -48,12 +53,16 @@ public class NotificationTemplateController extends BaseController {
     }
 
     @DeleteMapping(value = {"/user/template/delete", "/community/template/delete"})
-    public String deleteTemplate(@RequestBody NotificationTemplateRequest notificationTemplateRequest) {
+    public String deleteTemplate(@RequestBody TemplateFindRequest templateFindRequest) {
         try{
             Authentication account = (Authentication) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            NotificationTemplateRequest notificationTemplateRequest = new NotificationTemplateRequest(
+                    templateFindRequest.getTemplateName(),
+                    templateFindRequest.getMessage(),
+                    templateFindRequest.getEmergencyType()
+            );
             NotificationTemplate notificationTemplate = NotificationTemplateBuilder.from((TemplateOwner) account.getDetails(), notificationTemplateRequest);
-            notificationTemplateService.deleteTemplate(notificationTemplate);
-
+            notificationTemplateService.deleteTemplate(notificationTemplate, templateFindRequest.getTemplateId());
             return "OK";
         } catch (Exception e) {
             log.info("Exception: " + e);

@@ -16,18 +16,18 @@ public class NotificationTemplateServiceImpl implements NotificationTemplateServ
     private NotificationTemplateDAO notificationTemplateDAO;
 
     @Override
-    public UUID saveTemplate(NotificationTemplate notificationTemplate) {
+    public UUID saveTemplate(NotificationTemplate notificationTemplate){
         return notificationTemplateDAO.saveTemplate(notificationTemplate);
     }
 
     @Override
-    public UUID updateTemplate(NotificationTemplate notificationTemplate) {
-        return notificationTemplateDAO.updateTemplate(notificationTemplate);
+    public UUID updateTemplate(NotificationTemplate notificationTemplate, UUID templateId) {
+        return notificationTemplateDAO.updateTemplate(notificationTemplate, templateId);
     }
 
     @Override
-    public void deleteTemplate(NotificationTemplate notificationTemplate) {
-        notificationTemplateDAO.deleteTemplate(notificationTemplate);
+    public void deleteTemplate(NotificationTemplate notificationTemplate, UUID templateId) {
+        notificationTemplateDAO.deleteTemplate(notificationTemplate, templateId);
     }
 
 }

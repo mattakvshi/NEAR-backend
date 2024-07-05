@@ -79,7 +79,7 @@ public class User extends TemplateOwner {
     )
     private List<User> friends;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "friend_requests_sent",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -87,7 +87,7 @@ public class User extends TemplateOwner {
     )
     private List<User> sentRequests;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "friend_requests_received",
             joinColumns = @JoinColumn(name = "user_id"),

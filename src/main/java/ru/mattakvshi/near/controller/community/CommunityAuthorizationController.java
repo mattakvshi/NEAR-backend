@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import ru.mattakvshi.near.controller.BaseController;
 import ru.mattakvshi.near.dto.auth.AuthRequests;
 import ru.mattakvshi.near.dto.auth.AuthResponse;
 import ru.mattakvshi.near.dto.auth.CommunityRegistrationRequest;
@@ -21,7 +22,7 @@ import ru.mattakvshi.near.service.CommunityService;
 
 @Log
 @RestController
-public class CommunityAuthorizationController {
+public class CommunityAuthorizationController extends BaseController {
 
     @Autowired
     @Lazy
