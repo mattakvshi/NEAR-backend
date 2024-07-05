@@ -10,7 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import ru.mattakvshi.near.dto.CommunityDTOForCommunity;
+import ru.mattakvshi.near.dto.community.CommunityDTOForCommunity;
 import ru.mattakvshi.near.entity.base.Community;
 
 import java.util.Collection;

@@ -1,4 +1,4 @@
-package ru.mattakvshi.near.dto;
+package ru.mattakvshi.near.dto.user;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
@@ -9,10 +9,9 @@ import ru.mattakvshi.near.entity.EmergencyTypes;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Data
-public class CommunityDTOForCommunity {
+public class CommunityDTOForUser {
 
     @JsonSerialize(using = ToStringSerializer.class)
     private UUID id;
@@ -29,12 +28,12 @@ public class CommunityDTOForCommunity {
 
     private LocalDate registrationDate;
 
-    private List<UserDTOForCommunity> subscribers;
+    private int subscribersCount;
 
     private List<EmergencyTypes> monitoredEmergencyTypesCount;
 
-    public static CommunityDTOForCommunity from(Community community) {
-        CommunityDTOForCommunity dto = new CommunityDTOForCommunity();
+    public static CommunityDTOForUser from(Community community) {
+        CommunityDTOForUser dto = new CommunityDTOForUser();
         dto.setId(community.getId());
         dto.setCommunityName(community.getCommunityName());
         dto.setDescription(community.getDescription());
@@ -42,14 +41,7 @@ public class CommunityDTOForCommunity {
         dto.setCity(community.getCity());
         dto.setDistrict(community.getDistrict());
         dto.setRegistrationDate(community.getRegistrationDate());
-
-        dto.setSubscribers(
-                community.getSubscribers()
-                        .stream()
-                        .map(UserDTOForCommunity::from)
-                        .collect(Collectors.toList())
-        );
-
+        dto.setSubscribersCount(community.getSubscribers() != null ? community.getSubscribers().size() : 0);
         dto.setMonitoredEmergencyTypesCount(community.getMonitoredEmergencyTypes());
 
         return dto;

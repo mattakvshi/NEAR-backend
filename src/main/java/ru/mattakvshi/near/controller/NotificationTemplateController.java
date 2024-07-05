@@ -1,4 +1,4 @@
-package ru.mattakvshi.near.controller.user;
+package ru.mattakvshi.near.controller;
 
 
 import lombok.extern.java.Log;
@@ -15,7 +15,7 @@ import ru.mattakvshi.near.helpers.NotificationTemplateBuilder;
 
 @Log
 @RestController
-public class UserTemplateController {
+public class NotificationTemplateController extends BaseController {
 
     @Autowired
     private NotificationTemplateService notificationTemplateService;

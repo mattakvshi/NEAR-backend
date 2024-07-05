@@ -1,18 +1,17 @@
-package ru.mattakvshi.near.dto;
+package ru.mattakvshi.near.dto.community;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
-import ru.mattakvshi.near.entity.*;
+import ru.mattakvshi.near.entity.NotificationOptions;
 import ru.mattakvshi.near.entity.base.User;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Data
-public class UserDTOForUser {
+public class UserDTOForCommunity {
 
     @JsonSerialize(using = ToStringSerializer.class)
     private UUID id;
@@ -35,16 +34,16 @@ public class UserDTOForUser {
 
     private List<NotificationOptions> selectedOptions;
 
-    private List<UserDTOForCommunity> friends;
+    private int friendsCount;
 
-    private List<Group> groups;
+    //private int groupsCount;
 
-    private List<CommunityDTOForUser> subscriptions;
+    private int subscriptionsCount;
 
-    private List<NotificationTemplate> notificationTemplates;
+    //private int notificationTemplatesCount;
 
-    public static UserDTOForUser from(User user) {
-        UserDTOForUser dto = new UserDTOForUser();
+    public static UserDTOForCommunity from(User user) {
+        UserDTOForCommunity dto = new UserDTOForCommunity();
         dto.setId(user.getId());
         dto.setFirstName(user.getFirstName());
         dto.setLastName(user.getLastName());
@@ -56,23 +55,12 @@ public class UserDTOForUser {
         dto.setRegistrationDate(user.getRegistrationDate());
         dto.setSelectedOptions(user.getSelectedOptions());
 
-        dto.setFriends(
-                user.getFriends()
-                .stream()
-                .map(UserDTOForCommunity::from)
-                .collect(Collectors.toList())
-        );
+        dto.setFriendsCount(user.getFriends() != null ? user.getFriends().size() : 0);
+        //dto.setGroupsCount(user.getGroups() != null ? user.getGroups().size() : 0);
 
-        dto.setGroups(user.getGroups());
+        dto.setSubscriptionsCount(user.getSubscriptions() != null ? user.getSubscriptions().size() : 0);
 
-        dto.setSubscriptions(
-                user.getSubscriptions()
-                .stream()
-                .map(CommunityDTOForUser::from)
-                .collect(Collectors.toList())
-        );
-
-        dto.setNotificationTemplates(user.getNotificationTemplates());
+        //dto.setNotificationTemplatesCount(user.getNotificationTemplates() != null ? user.getNotificationTemplates().size() : 0);
 
         return dto;
     }
