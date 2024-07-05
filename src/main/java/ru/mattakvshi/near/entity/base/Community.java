@@ -20,6 +20,8 @@ import java.util.UUID;
 @Table(name = "Communities")
 public class Community extends TemplateOwner {
 
+    //Вынес id в супер класс, так как нужны уникальные на уровне двух сущностей, для работы с шаблонами
+
 //    @Id
 //    @GeneratedValue(generator = "UUID")
 //    @GenericGenerator(
