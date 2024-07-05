@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
 import ru.mattakvshi.near.entity.*;
+import ru.mattakvshi.near.entity.base.User;
 
 import java.time.LocalDate;
 import java.util.List;

@@ -2,7 +2,7 @@ package ru.mattakvshi.near.dao.repository;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
-import ru.mattakvshi.near.entity.Community;
+import ru.mattakvshi.near.entity.base.Community;
 
 import java.util.UUID;
 

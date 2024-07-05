@@ -1,14 +1,13 @@
 package ru.mattakvshi.near.helpers;
 
-import org.springframework.security.core.userdetails.UserDetails;
 import ru.mattakvshi.near.dto.actions.NotificationTemplateRequest;
 import ru.mattakvshi.near.entity.NotificationTemplate;
-import ru.mattakvshi.near.entity.User;
+import ru.mattakvshi.near.entity.base.TemplateOwner;
 
 
 public class NotificationTemplateBuilder {
 
-    public static NotificationTemplate from(User owner, NotificationTemplateRequest notificationTemplateRequest) {
+    public static NotificationTemplate from(TemplateOwner owner, NotificationTemplateRequest notificationTemplateRequest) {
 
         NotificationTemplate notificationTemplate = new NotificationTemplate();
         notificationTemplate.setTemplateName(notificationTemplateRequest.getTemplateName());

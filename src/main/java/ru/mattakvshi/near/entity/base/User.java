@@ -1,4 +1,4 @@
-package ru.mattakvshi.near.entity;
+package ru.mattakvshi.near.entity.base;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
@@ -7,6 +7,10 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 
 import jakarta.persistence.*;
+import ru.mattakvshi.near.entity.Group;
+import ru.mattakvshi.near.entity.NotificationOptions;
+import ru.mattakvshi.near.entity.NotificationTemplate;
+
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
@@ -15,7 +19,7 @@ import java.util.UUID;
 @Data
 @Entity
 @Table(name ="Users")
-public class User {
+public class User extends TemplateOwner {
 
     @Id
     @GeneratedValue(generator = "UUID")
@@ -107,7 +111,7 @@ public class User {
     )
     private List<Community> subscriptions;
 
-    @OneToMany(fetch = FetchType.EAGER,mappedBy = "owner")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "owner")
     private List<NotificationTemplate> notificationTemplates;
 
     @PrePersist //Вызываем метод перед сохранением сущности в базу

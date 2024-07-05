@@ -5,8 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.mattakvshi.near.dao.CommunityDAO;
 import ru.mattakvshi.near.dao.repository.CommunityRepository;
-import ru.mattakvshi.near.entity.Community;
-import ru.mattakvshi.near.entity.User;
+import ru.mattakvshi.near.entity.base.Community;
 
 import java.util.UUID;
 

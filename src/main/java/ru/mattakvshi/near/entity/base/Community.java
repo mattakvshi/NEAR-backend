@@ -1,4 +1,4 @@
-package ru.mattakvshi.near.entity;
+package ru.mattakvshi.near.entity.base;
 
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -8,6 +8,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 
 import jakarta.persistence.*;
+import ru.mattakvshi.near.entity.EmergencyTypes;
+import ru.mattakvshi.near.entity.NotificationTemplate;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -16,7 +18,7 @@ import java.util.UUID;
 @Data
 @Entity
 @Table(name = "Communities")
-public class Community {
+public class Community extends TemplateOwner {
 
     @Id
     @GeneratedValue(generator = "UUID")
@@ -61,5 +63,8 @@ public class Community {
             inverseJoinColumns = @JoinColumn(name = "type_id")
     )
     private List<EmergencyTypes> monitoredEmergencyTypes;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "owner")
+    private List<NotificationTemplate> notificationTemplates;
 
 }

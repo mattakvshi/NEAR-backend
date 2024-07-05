@@ -7,8 +7,7 @@ import org.quartz.JobExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.mattakvshi.near.dao.UserDAO;
-import ru.mattakvshi.near.dao.repository.UserRepository;
-import ru.mattakvshi.near.entity.User;
+import ru.mattakvshi.near.entity.base.User;
 
 import java.util.UUID;
 

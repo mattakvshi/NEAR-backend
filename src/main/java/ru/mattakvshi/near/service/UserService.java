@@ -1,7 +1,7 @@
 package ru.mattakvshi.near.service;
 
 import jakarta.transaction.Transactional;
-import ru.mattakvshi.near.entity.User;
+import ru.mattakvshi.near.entity.base.User;
 
 import java.util.UUID;
 

@@ -6,6 +6,7 @@ import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
 import jakarta.persistence.*;
+import ru.mattakvshi.near.entity.base.User;
 
 import java.util.List;
 import java.util.UUID;

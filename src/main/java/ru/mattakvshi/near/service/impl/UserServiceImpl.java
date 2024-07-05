@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.mattakvshi.near.dao.CommunityDAO;
 import ru.mattakvshi.near.dao.UserDAO;
-import ru.mattakvshi.near.entity.Community;
-import ru.mattakvshi.near.entity.User;
+import ru.mattakvshi.near.entity.base.Community;
+import ru.mattakvshi.near.entity.base.User;
 import ru.mattakvshi.near.jobs.BirthdayJob;
 import ru.mattakvshi.near.service.UserService;
 

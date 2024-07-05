@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 import ru.mattakvshi.near.entity.NotificationOptions;
-import ru.mattakvshi.near.entity.User;
+import ru.mattakvshi.near.entity.base.User;
 import ru.mattakvshi.near.entity.auth.UserAccount;
 
 import java.time.LocalDate;

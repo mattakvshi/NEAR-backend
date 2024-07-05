@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
-import ru.mattakvshi.near.entity.Community;
+import ru.mattakvshi.near.entity.base.Community;
 import ru.mattakvshi.near.entity.EmergencyTypes;
 import ru.mattakvshi.near.entity.auth.CommunityAccount;
 

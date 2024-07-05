@@ -10,7 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import ru.mattakvshi.near.dto.UserDTOForUser;
-import ru.mattakvshi.near.entity.User;
+import ru.mattakvshi.near.entity.base.User;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -59,7 +59,7 @@ public class UserAccount implements UserDetails, Authentication {
 
     @Override
     public Object getDetails() {
-        return null;
+        return user;
     }
 
     @Override

@@ -11,8 +11,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import ru.mattakvshi.near.dto.CommunityDTOForCommunity;
-import ru.mattakvshi.near.dto.CommunityDTOForUser;
-import ru.mattakvshi.near.entity.Community;
+import ru.mattakvshi.near.entity.base.Community;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -61,7 +60,7 @@ public class CommunityAccount implements UserDetails, Authentication {
 
     @Override
     public Object getDetails() {
-        return null;
+        return community;
     }
 
     @Override

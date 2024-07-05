@@ -1,8 +1,7 @@
 package ru.mattakvshi.near.dao;
 
 import jakarta.transaction.Transactional;
-import ru.mattakvshi.near.entity.Community;
-import ru.mattakvshi.near.entity.User;
+import ru.mattakvshi.near.entity.base.Community;
 
 import java.util.UUID;
 

@@ -6,7 +6,7 @@ import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
 import jakarta.persistence.*;
-import org.springframework.security.core.userdetails.UserDetails;
+import ru.mattakvshi.near.entity.base.TemplateOwner;
 
 import java.util.UUID;
 
@@ -35,7 +35,7 @@ public class NotificationTemplate {
 
     @ManyToOne
     @JoinColumn(name = "owner_id")
-    private User owner;
+    private TemplateOwner owner;
 
     @Column(name = "notification_message")
     private String message;

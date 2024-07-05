@@ -3,7 +3,7 @@ package ru.mattakvshi.near.dto;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
-import ru.mattakvshi.near.entity.Community;
+import ru.mattakvshi.near.entity.base.Community;
 import ru.mattakvshi.near.entity.EmergencyTypes;
 
 import java.time.LocalDate;

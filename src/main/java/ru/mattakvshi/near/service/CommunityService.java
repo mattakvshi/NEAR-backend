@@ -1,6 +1,6 @@
 package ru.mattakvshi.near.service;
 
-import ru.mattakvshi.near.entity.Community;
+import ru.mattakvshi.near.entity.base.Community;
 
 import java.util.UUID;
 
