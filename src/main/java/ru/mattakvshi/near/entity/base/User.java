@@ -21,19 +21,19 @@ import java.util.UUID;
 @Table(name ="Users")
 public class User extends TemplateOwner {
 
-    @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator"
-    )
-    @Column(
-            name = "user_id",
-            updatable = false,
-            nullable = false
-    )
-    @JsonSerialize(using = ToStringSerializer.class)
-    private UUID id;
+//    @Id
+//    @GeneratedValue(generator = "UUID")
+//    @GenericGenerator(
+//            name = "UUID",
+//            strategy = "org.hibernate.id.UUIDGenerator"
+//    )
+//    @Column(
+//            name = "user_id",
+//            updatable = false,
+//            nullable = false
+//    )
+//    @JsonSerialize(using = ToStringSerializer.class)
+//    private UUID id;
 
     @Column(name = "first_name")
     private String firstName;
@@ -111,8 +111,8 @@ public class User extends TemplateOwner {
     )
     private List<Community> subscriptions;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "owner")
-    private List<NotificationTemplate> notificationTemplates;
+//    @OneToMany(fetch = FetchType.EAGER, mappedBy = "owner")
+//    private List<NotificationTemplate> notificationTemplates;
 
     @PrePersist //Вызываем метод перед сохранением сущности в базу
     @PreUpdate //Вызываем метод перед обновлением сущности

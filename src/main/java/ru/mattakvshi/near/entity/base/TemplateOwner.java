@@ -2,18 +2,21 @@ package ru.mattakvshi.near.entity.base;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
+import ru.mattakvshi.near.entity.NotificationTemplate;
 
+import java.util.List;
 import java.util.UUID;
 
 @Data
-@MappedSuperclass
-public abstract class TemplateOwner {
+//@MappedSuperclass
+@Table(name = "Owners_data")
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+public class TemplateOwner {
+
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(
@@ -21,12 +24,15 @@ public abstract class TemplateOwner {
             strategy = "org.hibernate.id.UUIDGenerator"
     )
     @Column(
-            name = "owner_id",
+            name = "id",
             updatable = false,
             nullable = false
     )
     @JsonSerialize(using = ToStringSerializer.class)
-    private UUID templateOwnerId;
+    private UUID id;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "owner")
+    private List<NotificationTemplate> notificationTemplates;
 
 }
 
@@ -47,3 +53,17 @@ public abstract class TemplateOwner {
 //Это очень полезно в ситуациях, когда у вас есть общие атрибуты или поведение, которые вы хотите включить в несколько сущностей
 // в вашем приложении. Использование @MappedSuperclass облегчает поддержку и расширение кода, так как изменения
 // в общих полях или методах нужно вносить только в одном месте.
+
+//Аннотация @Inheritance(strategy = InheritanceType.JOINED) в Java Persistence API (JPA) используется для указания стратегии
+// наследования между сущностями в иерархии классов. В контексте JPA, стратегия JOINED означает, что каждый класс в иерархии наследования
+// будет соответствовать отдельной таблице в базе данных.
+//
+//Вот как это работает:
+//
+//Для каждого класса в иерархии создается отдельная таблица.
+//Таблицы связаны между собой через внешние ключи, которые соответствуют первичным ключам родительских таблиц.
+//Когда происходит запрос к дочернему классу, JPA выполняет соединение (JOIN) таблиц родителя и потомка,
+// чтобы собрать все поля, относящиеся к дочернему классу.
+//Эта стратегия часто используется, когда в дочерних классах есть уникальные атрибуты, которые не присутствуют в родительском классе,
+// и когда необходимо оптимизировать производительность за счет уменьшения количества ненужных столбцов в таблицах.
+//

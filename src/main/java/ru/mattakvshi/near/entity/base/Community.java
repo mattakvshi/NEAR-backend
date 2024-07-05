@@ -20,19 +20,19 @@ import java.util.UUID;
 @Table(name = "Communities")
 public class Community extends TemplateOwner {
 
-    @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator"
-    )
-    @Column(
-            name = "community_id",
-            updatable = false,
-            nullable = false
-    )
-    @JsonSerialize(using = ToStringSerializer.class)
-    private UUID id;
+//    @Id
+//    @GeneratedValue(generator = "UUID")
+//    @GenericGenerator(
+//            name = "UUID",
+//            strategy = "org.hibernate.id.UUIDGenerator"
+//    )
+//    @Column(
+//            name = "community_id",
+//            updatable = false,
+//            nullable = false
+//    )
+//    @JsonSerialize(using = ToStringSerializer.class)
+//    private UUID id;
 
     @Column(name = "community_name")
     private String communityName;
@@ -64,7 +64,7 @@ public class Community extends TemplateOwner {
     )
     private List<EmergencyTypes> monitoredEmergencyTypes;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "owner")
-    private List<NotificationTemplate> notificationTemplates;
+//    @OneToMany(fetch = FetchType.EAGER, mappedBy = "owner")
+//    private List<NotificationTemplate> notificationTemplates;
 
 }
