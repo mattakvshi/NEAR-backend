@@ -2,6 +2,7 @@ package ru.mattakvshi.near.service;
 
 
 import jakarta.transaction.Transactional;
+import org.springframework.security.core.Authentication;
 import ru.mattakvshi.near.dto.actions.SendTemplateRequest;
 import ru.mattakvshi.near.entity.NotificationTemplate;
 
@@ -17,5 +18,5 @@ public interface NotificationTemplateService {
     @Transactional
     void deleteTemplate(NotificationTemplate notificationTemplate, UUID templateId);
 
-    void sendTemplate(SendTemplateRequest sendTemplateRequest);
+    void sendTemplate(SendTemplateRequest sendTemplateRequest, Authentication account);
 }

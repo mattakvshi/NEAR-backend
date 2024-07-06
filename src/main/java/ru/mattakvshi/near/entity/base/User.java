@@ -58,6 +58,15 @@ public class User extends TemplateOwner {
     @Column(name = "district")
     private String district;
 
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "phone_number")
+    private String phoneNumber;
+
+    @Column(name = "telegram_short_name")
+    private String telegramShortName;
+
     @CreationTimestamp //Заполняется первый раз при регистрации
     @Column(name = "registration_date", updatable = false) //и после не изменяется никогда
     private LocalDate registrationDate;

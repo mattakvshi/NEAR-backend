@@ -109,6 +109,6 @@ public class UserAccount implements UserDetails, Authentication {
 
     @Override
     public String getName() {
-        return user.getFirstName();
+        return user.getFirstName() + " " + user.getLastName();
     }
 }

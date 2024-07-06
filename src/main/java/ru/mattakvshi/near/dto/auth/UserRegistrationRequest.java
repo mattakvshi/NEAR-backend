@@ -1,11 +1,10 @@
 package ru.mattakvshi.near.dto.auth;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
+import jakarta.persistence.Column;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.format.annotation.NumberFormat;
 import ru.mattakvshi.near.entity.NotificationOptions;
 import ru.mattakvshi.near.entity.base.User;
 import ru.mattakvshi.near.entity.auth.UserAccount;
@@ -16,25 +15,33 @@ import java.util.List;
 @Data
 public class UserRegistrationRequest {
 
-    @NotEmpty
+    //@NotEmpty - @NotBlank знал что эта аннотация строже
+    @NotBlank
     private String userName;
 
-    @NotEmpty
+    @NotBlank
     @Email
     private String email;
 
-    @NotEmpty
+    @NotBlank
     @Length(min = 8)
     private String password;
 
-    @NotEmpty
+    @Pattern(regexp = "^\\+?[0-9. ()-]{7,25}$", message = "Invalid phone number")
+    private String phoneNumber;
+
+    @Size(min = 5, max = 32, message = "Telegram short name must be between 5 and 32 characters")
+    @Pattern(regexp = "^[a-zA-Z][a-zA-Z0-9_]{4,31}$", message = "Invalid Telegram short name")
+    private String telegramShortName;
+
+    @NotBlank
     @Pattern(regexp = "^[A-ZА-Я][a-zа-я\\-]*(\\s[a-zа-яA-ZА-Я\\-]*)*\\s*,\\s*[A-ZА-Я][a-zа-я\\-]*(\\s[a-zа-яA-ZА-Я\\-]*)*\\s*,\\s*[A-ZА-Я][a-zа-я\\-]*(\\s[a-zа-яA-ZА-Я\\-]*)*$")
     private String location;
 
     @NotNull
     private LocalDate birthday;
 
-    @NotEmpty
+    @NotBlank
     private List<NotificationOptions> selectedOptions;
 
 
@@ -55,6 +62,11 @@ public class UserRegistrationRequest {
         user.setCity(splintLocation[1]);
         user.setDistrict(splintLocation[2]);
         user.setBirthday(birthday);
+
+        user.setEmail(this.email);
+        user.setPhoneNumber(this.phoneNumber);
+        user.setTelegramShortName(this.telegramShortName);
+
         user.setSelectedOptions(selectedOptions);
 
         //Связываем пользовательский аккаунт с пользователем

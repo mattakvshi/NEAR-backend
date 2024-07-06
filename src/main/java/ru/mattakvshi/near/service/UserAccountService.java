@@ -5,6 +5,7 @@ import jakarta.transaction.Transactional;
 import ru.mattakvshi.near.dto.auth.AuthRequests;
 import ru.mattakvshi.near.dto.auth.AuthResponse;
 import ru.mattakvshi.near.entity.auth.UserAccount;
+import ru.mattakvshi.near.entity.base.User;
 
 import java.util.UUID;
 
@@ -24,4 +25,5 @@ public interface UserAccountService {
     UserAccount findByEmailAndPassword(String email, String password) throws AuthException;
 
     UserAccount findById(UUID id);
+
 }

@@ -9,4 +9,4 @@ import lombok.Setter;
 @Setter
 public class EmailMessage extends NotificationMessage{
     private String email;
-}
+}s

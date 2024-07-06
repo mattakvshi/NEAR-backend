@@ -73,7 +73,8 @@ public class NotificationTemplateController extends BaseController {
     @PostMapping(value = {"/user/template/send", "/community/template/send"})
     public String sendTemplate(@RequestBody SendTemplateRequest sendTemplateRequest) {
         try{
-            notificationTemplateService.sendTemplate(sendTemplateRequest);
+            Authentication account = (Authentication) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            notificationTemplateService.sendTemplate(sendTemplateRequest, account);
             return "OK";
         } catch (Exception e) {
             log.info("Exception: " + e);

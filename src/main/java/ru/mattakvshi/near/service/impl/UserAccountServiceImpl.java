@@ -13,6 +13,7 @@ import ru.mattakvshi.near.dto.auth.AuthRequests;
 import ru.mattakvshi.near.dto.auth.AuthResponse;
 import ru.mattakvshi.near.entity.auth.UserRefreshStorage;
 import ru.mattakvshi.near.entity.auth.UserAccount;
+import ru.mattakvshi.near.entity.base.User;
 import ru.mattakvshi.near.service.UserAccountService;
 import ru.mattakvshi.near.config.security.JWTProvider;
 

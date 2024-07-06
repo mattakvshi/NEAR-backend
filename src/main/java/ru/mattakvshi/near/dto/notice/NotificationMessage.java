@@ -12,9 +12,9 @@ import ru.mattakvshi.near.entity.base.User;
 public class NotificationMessage {
     private String templateName;
 
-    private TemplateOwner owner;
+    private String owner;
 
     private String message;
 
-    private EmergencyTypes emergencyType;
+    private String emergencyType;
 }
