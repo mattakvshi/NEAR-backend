@@ -73,7 +73,7 @@ public class NotificationTemplateController extends BaseController {
     @PostMapping(value = {"/user/template/send", "/community/template/send"})
     public String sendTemplate(@RequestBody SendTemplateRequest sendTemplateRequest) {
         try{
-
+            notificationTemplateService.sendTemplate(sendTemplateRequest);
             return "OK";
         } catch (Exception e) {
             log.info("Exception: " + e);

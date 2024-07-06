@@ -7,6 +7,7 @@ import ru.mattakvshi.near.dao.UserDAO;
 import ru.mattakvshi.near.dao.repository.UserRepository;
 import ru.mattakvshi.near.entity.base.User;
 
+import java.util.List;
 import java.util.UUID;
 
 
@@ -26,5 +27,10 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public User findById(UUID id) {
         return userRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public List<User> findAllById(List<UUID> ids) {
+        return (List<User>) userRepository.findAllById(ids);
     }
 }

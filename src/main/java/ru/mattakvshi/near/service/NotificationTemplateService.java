@@ -2,6 +2,7 @@ package ru.mattakvshi.near.service;
 
 
 import jakarta.transaction.Transactional;
+import ru.mattakvshi.near.dto.actions.SendTemplateRequest;
 import ru.mattakvshi.near.entity.NotificationTemplate;
 
 import java.util.UUID;
@@ -15,4 +16,6 @@ public interface NotificationTemplateService {
 
     @Transactional
     void deleteTemplate(NotificationTemplate notificationTemplate, UUID templateId);
+
+    void sendTemplate(SendTemplateRequest sendTemplateRequest);
 }

@@ -3,7 +3,7 @@ package ru.mattakvshi.near.dto.user;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
-import ru.mattakvshi.near.dto.NoticeTemplDTOForOwner;
+import ru.mattakvshi.near.dto.notice.NoticeTemplDTOForOwner;
 import ru.mattakvshi.near.dto.community.UserDTOForCommunity;
 import ru.mattakvshi.near.entity.*;
 import ru.mattakvshi.near.entity.base.User;

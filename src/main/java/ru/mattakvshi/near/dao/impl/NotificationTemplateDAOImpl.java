@@ -28,8 +28,7 @@ public class NotificationTemplateDAOImpl implements NotificationTemplateDAO {
 
     @Override
     public UUID updateTemplate(NotificationTemplate template, UUID templateId) {
-        NotificationTemplate existingTemplate = notificationTemplateRepository.findById(templateId)
-                .orElseThrow(() -> new EntityNotFoundException("Template with ID " + templateId + " not found."));
+        NotificationTemplate existingTemplate = findById(templateId);
         existingTemplate.setTemplateName(template.getTemplateName());
         existingTemplate.setMessage(template.getMessage());
         existingTemplate.setEmergencyType(template.getEmergencyType());
@@ -38,13 +37,18 @@ public class NotificationTemplateDAOImpl implements NotificationTemplateDAO {
 
     @Override
     public void deleteTemplate(NotificationTemplate template, UUID templateId) {
-        NotificationTemplate existingTemplate = notificationTemplateRepository.findById(templateId)
-                .orElseThrow(() -> new EntityNotFoundException("Template with ID " + templateId + " not found."));
+        NotificationTemplate existingTemplate = findById(templateId);
         existingTemplate.setTemplateName(template.getTemplateName());
         existingTemplate.setMessage(template.getMessage());
         existingTemplate.setOwner(template.getOwner());
         existingTemplate.setEmergencyType(template.getEmergencyType());
         notificationTemplateRepository.delete(existingTemplate);
+    }
+
+    @Override
+    public NotificationTemplate findById(UUID templateId) {
+        return notificationTemplateRepository.findById(templateId)
+                .orElseThrow(() -> new EntityNotFoundException("Template with ID " + templateId + " not found."));
     }
 
 

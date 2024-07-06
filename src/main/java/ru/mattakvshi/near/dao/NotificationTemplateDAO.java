@@ -14,4 +14,6 @@ public interface NotificationTemplateDAO {
 
     @Transactional
     void deleteTemplate(NotificationTemplate template, UUID templateId);
+
+    NotificationTemplate findById(UUID templateId);
 }
