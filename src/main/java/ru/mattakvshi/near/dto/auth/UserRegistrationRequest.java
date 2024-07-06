@@ -34,6 +34,8 @@ public class UserRegistrationRequest {
     @Pattern(regexp = "^[a-zA-Z][a-zA-Z0-9_]{4,31}$", message = "Invalid Telegram short name")
     private String telegramShortName;
 
+    private String deviceToken;
+
     @NotBlank
     @Pattern(regexp = "^[A-ZА-Я][a-zа-я\\-]*(\\s[a-zа-яA-ZА-Я\\-]*)*\\s*,\\s*[A-ZА-Я][a-zа-я\\-]*(\\s[a-zа-яA-ZА-Я\\-]*)*\\s*,\\s*[A-ZА-Я][a-zа-я\\-]*(\\s[a-zа-яA-ZА-Я\\-]*)*$")
     private String location;

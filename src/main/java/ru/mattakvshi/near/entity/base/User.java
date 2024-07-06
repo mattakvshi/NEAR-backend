@@ -64,6 +64,9 @@ public class User extends TemplateOwner {
     @Column(name = "phone_number")
     private String phoneNumber;
 
+    @Column(name = "device_token")
+    private String deviceToken;
+
     @Column(name = "telegram_short_name")
     private String telegramShortName;
 
