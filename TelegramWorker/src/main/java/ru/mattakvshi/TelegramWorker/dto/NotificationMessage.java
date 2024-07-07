@@ -1,19 +1,13 @@
-package ru.mattakvshi.near.dto.notice;
+package ru.mattakvshi.TelegramWorker.dto;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-import ru.mattakvshi.near.entity.EmergencyTypes;
-import ru.mattakvshi.near.entity.base.TemplateOwner;
-import ru.mattakvshi.near.entity.base.User;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = EmailMessage.class, name = "Email"),
         @JsonSubTypes.Type(value = TelegramMessage.class, name = "Telegram"),
-        @JsonSubTypes.Type(value = PushMessage.class, name = "Mobile_Notification")
 })
 @Getter
 @Setter

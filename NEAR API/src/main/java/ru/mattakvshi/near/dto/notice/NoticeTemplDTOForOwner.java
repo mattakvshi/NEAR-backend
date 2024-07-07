@@ -1,5 +1,7 @@
 package ru.mattakvshi.near.dto.notice;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
 import ru.mattakvshi.near.entity.EmergencyTypes;
 import ru.mattakvshi.near.entity.NotificationTemplate;
@@ -9,6 +11,7 @@ import java.util.UUID;
 @Data
 public class NoticeTemplDTOForOwner {
 
+    @JsonSerialize(using = ToStringSerializer.class)
     private UUID id;
 
     private String templateName;

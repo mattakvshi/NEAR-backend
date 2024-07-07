@@ -34,7 +34,7 @@ public class NotificationDispatcherImpl implements NotificationDispatcher {
                 // Отправка сообщения в топик, соответствующий типу уведомления
                 //В нашем случае порядок не важен, поэтому буду использовать перегрузку метода без ключа (Подробнее об этом снизу под классом в комментариях)
                 log.info("Message: " + message);
-                kafkaTemplate.send(option.getTitle(), message);
+                kafkaTemplate.send(replaceSpaces(option.getTitle()), message);
             });
         }
     }
@@ -78,6 +78,11 @@ public class NotificationDispatcherImpl implements NotificationDispatcher {
             default -> throw new IllegalStateException("Unexpected value: " + option.getTitle());
         }
     }
+
+    private String replaceSpaces(String input) {
+        return input.replace(" ", "_");
+    }
+
 }
 
 
