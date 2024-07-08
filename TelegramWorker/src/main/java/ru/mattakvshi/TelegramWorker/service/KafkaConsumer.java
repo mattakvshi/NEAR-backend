@@ -12,6 +12,7 @@ public class KafkaConsumer {
 
     @KafkaListener(topics = "Telegram", groupId = "telegram_consumer")
     public void listen(NotificationMessage message) {
-        log.info(message.getTemplateName() + ": " + message.getMessage());
+        TelegramMessage telegramMessage = (TelegramMessage) message;
+        log.info(telegramMessage.toString());
     }
 }

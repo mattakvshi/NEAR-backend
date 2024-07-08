@@ -1,4 +1,4 @@
-package ru.mattakvshi.TelegramWorker.dto;
+package ru.mattakvshi.MobilePushWorker.dto;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -8,7 +8,7 @@ import lombok.ToString;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = TelegramMessage.class, name = "Telegram"),
+        @JsonSubTypes.Type(value = PushMessage.class, name = "Mobile_Notification"),
 })
 @Getter
 @Setter
