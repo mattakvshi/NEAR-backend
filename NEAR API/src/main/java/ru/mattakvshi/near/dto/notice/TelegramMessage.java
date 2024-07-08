@@ -8,5 +8,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class TelegramMessage extends NotificationMessage{
+
     private String phoneNumber;
+
+    private String shortName;
 }

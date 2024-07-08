@@ -9,6 +9,8 @@ import lombok.ToString;
 public class TelegramMessage extends NotificationMessage{
     private String phoneNumber;
 
+    private String shortName;
+
     @Override
     public String toString() {
         return super.toString() + " " +

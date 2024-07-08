@@ -61,6 +61,7 @@ public class NotificationDispatcherImpl implements NotificationDispatcher {
                 message.setEmergencyType(template.getEmergencyType().getTitle());
 
                 message.setPhoneNumber(recipient.getTelegramShortName());
+                message.setShortName(recipient.getTelegramShortName());
 
                 return message;
             }
