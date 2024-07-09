@@ -13,7 +13,6 @@ public class TelegramMessage extends NotificationMessage{
 
     @Override
     public String toString() {
-        return super.toString() + " " +
-                "TelegramMessage [phoneNumber=" + phoneNumber + "]";
+        return super.toString();
     }
 }

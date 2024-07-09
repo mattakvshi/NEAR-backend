@@ -1,12 +1,17 @@
 package ru.mattakvshi.TelegramWorker.entity;
 
+import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.Objects;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Embeddable
 public class TelegramUserInfoId implements Serializable {
     private String userName;
     private String phoneNumber;

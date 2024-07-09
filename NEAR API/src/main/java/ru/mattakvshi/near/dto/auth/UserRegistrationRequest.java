@@ -43,7 +43,7 @@ public class UserRegistrationRequest {
     @NotNull
     private LocalDate birthday;
 
-    @NotBlank
+    @NotNull
     private List<NotificationOptions> selectedOptions;
 
 

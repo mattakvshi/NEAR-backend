@@ -1,4 +1,4 @@
-package ru.mattakvshi.TelegramWorker.dao.Impl;
+package ru.mattakvshi.TelegramWorker.dao.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

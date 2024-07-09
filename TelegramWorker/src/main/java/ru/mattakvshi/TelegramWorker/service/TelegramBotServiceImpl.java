@@ -38,19 +38,27 @@ public class TelegramBotServiceImpl extends TelegramLongPollingBot implements Te
     @Override
     public void onUpdateReceived(Update update) {
         if (update.hasMessage() && update.getMessage().hasText()) {
-            // Получаем chat_id из сообщения
-            var chatId = update.getMessage().getChatId().toString();
-            var userName = update.getMessage().getFrom().getUserName();
-            var phoneNumber = update.getMessage().getContact().getPhoneNumber();
+                // Получаем chat_id из сообщения
 
-            TelegramUserInfo telegramUserInfo = new TelegramUserInfo();
-            telegramUserInfo.setChatId(chatId);
-            telegramUserInfo.setUserName(userName);
-            telegramUserInfo.setPhoneNumber(phoneNumber);
+                
 
-            telegramInfoDAO.saveUserInfo(telegramUserInfo);
+                var chatId = update.getMessage().getChatId().toString();
+                var userName = update.getMessage().getFrom().getUserName();
+                var phoneNumber = update.getMessage().getContact().getPhoneNumber();
 
+                if(update.getMessage().getText().equals("/start")) {
 
+                    TelegramUserInfoId id = new TelegramUserInfoId(userName, phoneNumber);
+                    TelegramUserInfo telegramUserInfo = new TelegramUserInfo();
+                    telegramUserInfo.setId(id);
+                    telegramUserInfo.setChatId(chatId);
+
+                    telegramInfoDAO.saveUserInfo(telegramUserInfo);
+
+                    sendMessage("Отправив сообщение боту вы дали разрешение, на отправление вам сообщений из рассылок на которые вы подписаны в NEAR!", chatId);
+                } else {
+                    sendMessage("Нет необходимости писать сюда что-то лишнее не в рамках команд, ведь это никем не будет прочтено, я просто бот.", chatId);
+                }
         }
     }
 
@@ -60,9 +68,7 @@ public class TelegramBotServiceImpl extends TelegramLongPollingBot implements Te
         telegramUserInfoId.setUserName(message.getShortName());
         telegramUserInfoId.setPhoneNumber(message.getPhoneNumber());
 
-        TelegramUserInfo telegramUserInfo = telegramInfoDAO.getUserInfoById(telegramUserInfoId);
-
-        String chartId = telegramUserInfo.getChatId();
+        var chartId = getChatId(telegramUserInfoId);
 
         sendMessage(message.toString(), chartId);
     }
@@ -79,11 +85,9 @@ public class TelegramBotServiceImpl extends TelegramLongPollingBot implements Te
         }
     }
 
-    private String getChartId(TelegramUserInfoId id){
+    private String getChatId(TelegramUserInfoId id){
         TelegramUserInfo telegramUserInfo = telegramInfoDAO.getUserInfoById(id);
         return telegramUserInfo.getChatId();
     }
-
-
 
 }
