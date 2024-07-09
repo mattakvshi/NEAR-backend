@@ -17,6 +17,8 @@ import ru.mattakvshi.TelegramWorker.entity.TelegramUserInfoId;
 import ru.mattakvshi.TelegramWorker.service.TelegramBotService;
 
 
+//Другая реализация через Webhook, возможно потом доделаю
+
 @Log
 @Service
 //@Primary
