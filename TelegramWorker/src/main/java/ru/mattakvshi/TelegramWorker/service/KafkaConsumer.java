@@ -17,7 +17,14 @@ public class KafkaConsumer {
     @KafkaListener(topics = "Telegram", groupId = "telegram_consumer")
     public void listen(NotificationMessage message) {
         TelegramMessage telegramMessage = (TelegramMessage) message;
-        telegramBotService.sendNotificationMessage(telegramMessage);
+
+        log.info(message.toString() + " " + telegramMessage.getPhoneNumber() + " " + telegramMessage.getShortName());
+
+        try {
+            telegramBotService.sendNotificationMessage(telegramMessage);
+        } catch (Exception e) {
+            log.info("Error sending notification message: " + e.getMessage());
+        }
         log.info(telegramMessage.toString());
     }
 }
