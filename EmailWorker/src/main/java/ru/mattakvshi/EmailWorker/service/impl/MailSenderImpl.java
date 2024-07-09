@@ -1,5 +1,6 @@
 package ru.mattakvshi.EmailWorker.service.impl;
 
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
@@ -7,6 +8,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import ru.mattakvshi.EmailWorker.service.MailSender;
 
+@Log
 @Service
 public class MailSenderImpl implements MailSender {
 
@@ -25,6 +27,12 @@ public class MailSenderImpl implements MailSender {
         mailMessage.setSubject(subject);
         mailMessage.setText(body);
 
-        mailSender.send(mailMessage);
+        log.info(emailTo);
+
+        if (emailTo != null) {
+            mailSender.send(mailMessage);
+        } else {
+            throw new RuntimeException("Email Sender Failed");
+        }
     }
 }

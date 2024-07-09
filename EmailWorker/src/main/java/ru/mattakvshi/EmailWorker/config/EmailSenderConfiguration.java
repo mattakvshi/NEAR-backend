@@ -45,8 +45,9 @@ public class EmailSenderConfiguration {
         // Дополнительные свойства, если необходимо
         Properties props = mailSender.getJavaMailProperties();
         props.put("mail.transport.protocol", protocol);
-        //props.put("mail.smtp.auth", "true");
-        //props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.ssl.enable", "true");
         props.put("mail.debug", debug);
 
         return mailSender;

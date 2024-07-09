@@ -17,8 +17,12 @@ public class KafkaConsumer {
     @KafkaListener(topics = "Email", groupId = "email_consumer")
     public void listen(NotificationMessage message) {
         EmailMessage emailMessage = (EmailMessage) message;
-        log.info(emailMessage.toString());
-
-        mailSender.send(emailMessage.getEmail(), "ВНИМАНИЕ ОПОВЕЩЕНИЕ ОТ NEAR!!!", message.toString());
+        log.info(emailMessage.getEmail());
+        try {
+            mailSender.send(emailMessage.getEmail(), "ВНИМАНИЕ ОПОВЕЩЕНИЕ ОТ NEAR!!!", message.toString());
+        } catch (Exception e) {
+            log.info("Error sending email: " + e.getMessage());
+        }
     }
+
 }
