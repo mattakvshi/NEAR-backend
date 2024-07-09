@@ -10,8 +10,6 @@ public class NotificationTemplateRequest {
 
     private String templateName;
 
-    //private User owner;
-
     private String message;
 
     private EmergencyTypes emergencyType;

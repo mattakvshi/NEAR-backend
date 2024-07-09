@@ -23,20 +23,6 @@ public class User extends TemplateOwner {
 
     //Вынес id в супер класс, так как нужны уникальные на уровне двух сущностей, для работы с шаблонами
 
-//    @Id
-//    @GeneratedValue(generator = "UUID")
-//    @GenericGenerator(
-//            name = "UUID",
-//            strategy = "org.hibernate.id.UUIDGenerator"
-//    )
-//    @Column(
-//            name = "user_id",
-//            updatable = false,
-//            nullable = false
-//    )
-//    @JsonSerialize(using = ToStringSerializer.class)
-//    private UUID id;
-
     @Column(name = "first_name")
     private String firstName;
 

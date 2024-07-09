@@ -22,20 +22,6 @@ public class Community extends TemplateOwner {
 
     //Вынес id в супер класс, так как нужны уникальные на уровне двух сущностей, для работы с шаблонами
 
-//    @Id
-//    @GeneratedValue(generator = "UUID")
-//    @GenericGenerator(
-//            name = "UUID",
-//            strategy = "org.hibernate.id.UUIDGenerator"
-//    )
-//    @Column(
-//            name = "community_id",
-//            updatable = false,
-//            nullable = false
-//    )
-//    @JsonSerialize(using = ToStringSerializer.class)
-//    private UUID id;
-
     @Column(name = "community_name")
     private String communityName;
 
@@ -65,8 +51,4 @@ public class Community extends TemplateOwner {
             inverseJoinColumns = @JoinColumn(name = "type_id")
     )
     private List<EmergencyTypes> monitoredEmergencyTypes;
-
-//    @OneToMany(fetch = FetchType.EAGER, mappedBy = "owner")
-//    private List<NotificationTemplate> notificationTemplates;
-
 }

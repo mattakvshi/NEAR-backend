@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Data
-//@MappedSuperclass
+//@MappedSuperclass - Сначала планировал, что этот класс не будет сущьностью, а только обобщением двух других в рамках логики
 @Table(name = "Owners_data")
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
