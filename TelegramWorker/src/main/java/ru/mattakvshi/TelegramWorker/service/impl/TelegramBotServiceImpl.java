@@ -147,8 +147,6 @@ public class TelegramBotServiceImpl extends TelegramLongPollingBot implements Te
         }
     }
 
-
-
     private String getChatId(TelegramUserInfoId id){
         TelegramUserInfo telegramUserInfo = telegramInfoDAO.getUserInfoById(id);
         log.info(telegramUserInfo.toString());
