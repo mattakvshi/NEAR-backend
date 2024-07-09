@@ -11,6 +11,6 @@ public class EmailMessage extends NotificationMessage{
 
     @Override
     public String toString(){
-        return super.toString() + "\n EmailMessage [Email: " + email + "]\n";
+        return super.toString();
     }
 }

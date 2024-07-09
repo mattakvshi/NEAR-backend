@@ -23,6 +23,6 @@ public class NotificationMessage {
 
     @Override
     public String toString() {
-        return "NotificationMessage [templateName=" + templateName + ", owner=" + owner + ", message=" + message + ", emergencyType=" + emergencyType + "]";
+        return templateName + "\n  " +  message +  "\n Тип чрезвычайной ситуации: " + emergencyType + "\n От: " + owner + "\n";
     }
 }
