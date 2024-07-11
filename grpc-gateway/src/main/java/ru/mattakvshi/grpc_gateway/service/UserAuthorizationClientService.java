@@ -1,9 +1,9 @@
-package ru.mattakvshi.jrpc_gateway.service;
+package ru.mattakvshi.grpc_gateway.service;
 
 import reactor.core.publisher.Mono;
-import ru.mattakvshi.jrpc_gateway.dto.AuthRequests;
-import ru.mattakvshi.jrpc_gateway.dto.AuthResponse;
-import ru.mattakvshi.jrpc_gateway.dto.RefreshJwtRequest;
+import ru.mattakvshi.grpc_gateway.dto.AuthRequests;
+import ru.mattakvshi.grpc_gateway.dto.AuthResponse;
+import ru.mattakvshi.grpc_gateway.dto.RefreshJwtRequest;
 
 public interface UserAuthorizationClientService {
     Mono<AuthResponse> authUser(AuthRequests authRequest);

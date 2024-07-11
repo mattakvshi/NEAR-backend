@@ -1,4 +1,4 @@
-package ru.mattakvshi.jrpc_gateway.dto;
+package ru.mattakvshi.grpc_gateway.dto;
 
 import lombok.Data;
 

@@ -1,13 +1,13 @@
-package ru.mattakvshi.jrpc_gateway.service.impl;
+package ru.mattakvshi.grpc_gateway.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
-import ru.mattakvshi.jrpc_gateway.dto.AuthRequests;
-import ru.mattakvshi.jrpc_gateway.dto.AuthResponse;
-import ru.mattakvshi.jrpc_gateway.dto.RefreshJwtRequest;
-import ru.mattakvshi.jrpc_gateway.service.UserAuthorizationClientService;
+import ru.mattakvshi.grpc_gateway.dto.AuthRequests;
+import ru.mattakvshi.grpc_gateway.dto.AuthResponse;
+import ru.mattakvshi.grpc_gateway.dto.RefreshJwtRequest;
+import ru.mattakvshi.grpc_gateway.service.UserAuthorizationClientService;
 
 @Service
 public class UserAuthorizationClientServiceImpl implements UserAuthorizationClientService {
