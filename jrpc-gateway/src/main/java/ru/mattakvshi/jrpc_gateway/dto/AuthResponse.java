@@ -1,4 +1,4 @@
-package ru.mattakvshi.near.dto.auth;
+package ru.mattakvshi.jrpc_gateway.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
