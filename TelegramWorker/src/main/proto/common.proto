@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "ru.mattakvshi.grpccommon";
+option java_outer_classname = "GeneratorProto";
+option objc_class_prefix = "RTG";
+
+package service;
+
+import "google/protobuf/empty.proto";
+
+// Определение сервиса
+service UserAuthorizationService {
+  rpc authUser (AuthRequest) returns (AuthResponse);
+  rpc getNewAccessToken (RefreshJwtRequest) returns (AuthResponse);
+  rpc getNewRefreshToken (RefreshJwtRequest) returns (AuthResponse);
+  rpc getCurrentUser (Empty) returns (UserResponse);
+}
+
+message RegisterUserResponse {
+  string status = 1;
+}
+
+message AuthRequest {
+  string email = 1;
+  string password = 2;
+}
+
+message AuthResponse {
+  string type = 1;
+  string accessToken = 2;
+  string refreshToken = 3;
+  string uuid = 4;
+}
+
+message RefreshJwtRequest {
+  string refreshToken = 1;
+}
+
+message UserResponse {
+  string principal = 1;
+}
+
+message Empty {}

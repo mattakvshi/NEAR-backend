@@ -1,0 +1,12 @@
+spring:
+  config:
+    import: optional:file:.env[.properties]
+
+server:
+  port: 8081
+
+grpc:
+  server:
+    port: ${GRPC_PORT}
+
+
