@@ -41,4 +41,8 @@ message UserResponse {
   string principal = 1;
 }
 
+message UserRequest {
+  string accessToken = 1;
+}
+
 message Empty {}
