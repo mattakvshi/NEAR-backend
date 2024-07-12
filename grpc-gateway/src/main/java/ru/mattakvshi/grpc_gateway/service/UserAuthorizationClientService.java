@@ -12,5 +12,5 @@ public interface UserAuthorizationClientService {
 
     Mono<AuthResponse> getNewRefreshTokenForUser(RefreshJwtRequest refreshJwtRequest);
 
-    Mono<Object> getCurrentUser();
+    String getCurrentUser(String accessToken);
 }

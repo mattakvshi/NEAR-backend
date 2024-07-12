@@ -8,5 +8,5 @@ import ru.mattakvshi.grpc_gateway.dto.UserResponse;
 public interface UserResponseMapper {
     UserResponseMapper INSTANCE = Mappers.getMapper(UserResponseMapper.class);
 
-    ru.mattakvshi.grpccommon.UserResponse toGrpcUserResponse(String user);
+    ru.mattakvshi.grpccommon.UserResponse toGrpcUserResponse(UserResponse user);
 }

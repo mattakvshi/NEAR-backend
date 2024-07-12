@@ -1,12 +1,14 @@
 package ru.mattakvshi.grpc_gateway.service;
 
 import io.grpc.stub.StreamObserver;
+import lombok.extern.java.Log;
 import net.devh.boot.grpc.server.service.GrpcService;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.mattakvshi.grpc_gateway.dto.*;
 import ru.mattakvshi.grpccommon.UserAuthorizationServiceGrpc;
 import ru.mattakvshi.grpc_gateway.mapper.*;
 
+@Log
 @GrpcService // Аннотация, указывающая, что этот класс является gRPC сервисом
 public class GRPCService extends UserAuthorizationServiceGrpc.UserAuthorizationServiceImplBase {
 
@@ -77,15 +79,19 @@ public class GRPCService extends UserAuthorizationServiceGrpc.UserAuthorizationS
             // Подписка на результат вызова REST-сервиса
             ru.mattakvshi.grpccommon.AuthResponse response = AuthResponseMapper.INSTANCE.toGrpcAuthResponse(authResponse);
 
+            log.info(response + "");
+
             responseObserver.onNext(response); // Отправка ответа клиенту gRPC
             responseObserver.onCompleted(); // Завершение отправки ответа
         });
     }
 
     @Override
-    public void getCurrentUser(ru.mattakvshi.grpccommon.Empty request, StreamObserver<ru.mattakvshi.grpccommon.UserResponse> responseObserver) {
+    public void getCurrentUser(ru.mattakvshi.grpccommon.UserRequest request, StreamObserver<ru.mattakvshi.grpccommon.UserResponse> responseObserver) {
         // Вызов REST-сервиса и отправка ответа клиенту gRPC
-        userAuthorizationClientService.getCurrentUser().subscribe(user -> {
+        var user = userAuthorizationClientService.getCurrentUser(request.getAccessToken());
+        UserResponse userResponse = new UserResponse();
+        userResponse.setPrincipal(user);
 
             // Подписка на результат вызова REST-сервиса
 //            ru.mattakvshi.grpccommon.UserResponse response = ru.mattakvshi.grpccommon.UserResponse.newBuilder() // Создание нового объекта UserResponse с помощью билдера
@@ -93,11 +99,10 @@ public class GRPCService extends UserAuthorizationServiceGrpc.UserAuthorizationS
 //                    .build(); // Завершение создания объекта UserResponse
 
             // Подписка на результат вызова REST-сервиса
-            ru.mattakvshi.grpccommon.UserResponse response = UserResponseMapper.INSTANCE.toGrpcUserResponse(user.toString());
-
+            ru.mattakvshi.grpccommon.UserResponse response = UserResponseMapper.INSTANCE.toGrpcUserResponse(userResponse);
 
             responseObserver.onNext(response); // Отправка ответа клиенту gRPC
             responseObserver.onCompleted(); // Завершение отправки ответа
-        });
+
     }
 }

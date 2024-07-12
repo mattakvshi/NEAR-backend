@@ -47,10 +47,11 @@ public class UserAuthorizationClientServiceImpl implements UserAuthorizationClie
     }
 
     @Override
-    public Mono<Object> getCurrentUser() {
+    public String getCurrentUser(String accessToken) {
         return webClient.get()
                 .uri("/user/me")
+                .header("Authorization", "Bearer " + accessToken)
                 .retrieve()
-                .bodyToMono(Object.class);
+                .bodyToMono(Object.class).toString();
     }
 }

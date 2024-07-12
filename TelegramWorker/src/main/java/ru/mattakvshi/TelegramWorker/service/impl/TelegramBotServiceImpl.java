@@ -117,14 +117,21 @@ public class TelegramBotServiceImpl extends TelegramLongPollingBot implements Te
                         }
                     } else if (update.getMessage().getText().startsWith("Access: ")) {
                         // Вызвать метод getCurrentUser
+
+                        log.info(update.getMessage().getText());
                         var credentials = update.getMessage().getText().split(" ");
 
+                        log.info(credentials[1]);
                         var response = grpcClientService.getCurrentUser(credentials[1]);
                         sendMessage(response.toString(), chatId);
                     } else if (update.getMessage().getText().startsWith("Refresh: ")) {
                         // Обработка refreshToken
+                        var credentials = update.getMessage().getText().split(" ");
+
                         var response = grpcClientService.getNewAccessToken(update.getMessage().getText());
                         sendMessage(response.toString(), chatId);
+                    } else {
+                        sendMessage("Что-то пошло не так...", chatId);
                     }
                 }
             }
