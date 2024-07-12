@@ -27,7 +27,6 @@ public class JWTProvider {
     private final SecretKey jwtAccessSecret;
     private final SecretKey jwtRefreshSecret;
 
-
     //В конструктор мы передаем секретные ключи, для подписи и валидации токенов.
 
     //Почему два секретных ключа?
@@ -100,7 +99,6 @@ public class JWTProvider {
                 .signWith(jwtRefreshSecret)
                 .compact();
     }
-
 
     //Методы validateAccessToken и validateRefreshToken отвечают за проверку валидности токена.
     // Если токен протух, или подписан неправильно, то в лог запишется соотсветсвующее сообщение,

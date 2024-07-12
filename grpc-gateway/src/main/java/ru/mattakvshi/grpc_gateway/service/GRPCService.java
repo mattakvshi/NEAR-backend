@@ -3,80 +3,101 @@ package ru.mattakvshi.grpc_gateway.service;
 import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
 import org.springframework.beans.factory.annotation.Autowired;
-import ru.mattakvshi.grpc_gateway.dto.AuthRequests;
-import ru.mattakvshi.grpccommon.*;
+import ru.mattakvshi.grpc_gateway.dto.*;
 import ru.mattakvshi.grpccommon.UserAuthorizationServiceGrpc;
+import ru.mattakvshi.grpc_gateway.mapper.*;
 
-@GrpcService
-public class GRPCService extends UserAuthorizationServiceGrpc.UserAuthorizationServiceImplBase{
+@GrpcService // Аннотация, указывающая, что этот класс является gRPC сервисом
+public class GRPCService extends UserAuthorizationServiceGrpc.UserAuthorizationServiceImplBase {
 
     @Autowired
     private UserAuthorizationClientService userAuthorizationClientService;
 
     @Override
-    public void authUser(AuthRequest request, StreamObserver<ru.mattakvshi.grpccommon.AuthResponse> responseObserver) {
-        AuthRequests authRequests = new AuthRequests();
-        authRequests.setEmail(request.getEmail());
-        authRequests.setPassword(request.getPassword());
+    public void authUser(ru.mattakvshi.grpccommon.AuthRequest request, StreamObserver<ru.mattakvshi.grpccommon.AuthResponse> responseObserver) {
+        AuthRequests authRequests = new AuthRequests(); // Создание нового объекта AuthRequests
+        authRequests.setEmail(request.getEmail()); // Установка email из запроса
+        authRequests.setPassword(request.getPassword()); // Установка пароля из запроса
 
         // Вызов REST-сервиса и отправка ответа клиенту gRPC
         userAuthorizationClientService.authUser(authRequests).subscribe(authResponse -> {
-            AuthResponse response = AuthResponse.newBuilder()
-                    .setType("Bearer")
-                    .setAccessToken(authResponse.getAccessToken())
-                    .setRefreshToken(authResponse.getRefreshToken())
-                    .setUuid(authResponse.getUuid().toString())
-                    .build();
-            responseObserver.onNext(response);
-            responseObserver.onCompleted();
+            // Подписка на результат вызова REST-сервиса
+//            ru.mattakvshi.grpccommon.AuthResponse response = ru.mattakvshi.grpccommon.AuthResponse.newBuilder() // Создание нового объекта AuthResponse с помощью билдера
+//                    .setAccessToken(authResponse.getAccessToken()) // Установка accessToken из ответа REST-сервиса
+//                    .setRefreshToken(authResponse.getRefreshToken()) // Установка refreshToken из ответа REST-сервиса
+//                    .setUuid(authResponse.getUuid().toString()) // Установка uuid из ответа REST-сервиса
+//                    .build(); // Завершение создания объекта AuthResponse
+
+            // Подписка на результат вызова REST-сервиса
+            ru.mattakvshi.grpccommon.AuthResponse response = AuthResponseMapper.INSTANCE.toGrpcAuthResponse(authResponse);
+
+            responseObserver.onNext(response); // Отправка ответа клиенту gRPC
+            responseObserver.onCompleted(); // Завершение отправки ответа
         });
     }
 
     @Override
-    public void getNewAccessToken(RefreshJwtRequest request, StreamObserver<AuthResponse> responseObserver) {
-        RefreshJwtRequest refreshRequest = new RefreshJwtRequest();
-        refreshRequest.setRefreshToken(request.getRefreshToken());
+    public void getNewAccessToken(ru.mattakvshi.grpccommon.RefreshJwtRequest request, StreamObserver<ru.mattakvshi.grpccommon.AuthResponse> responseObserver) {
+        RefreshJwtRequest refreshRequest = new RefreshJwtRequest(); // Создание нового объекта RefreshJwtRequest
+        refreshRequest.setRefreshToken(request.getRefreshToken()); // Установка refreshToken из запроса
 
         // Вызов REST-сервиса и отправка ответа клиенту gRPC
         userAuthorizationClientService.getNewAccessTokenForUser(refreshRequest).subscribe(authResponse -> {
-            AuthResponse response = AuthResponse.newBuilder()
-                    .setType("Bearer")
-                    .setAccessToken(authResponse.getAccessToken())
-                    .setRefreshToken(authResponse.getRefreshToken())
-                    .setUuid(authResponse.getUuid().toString())
-                    .build();
-            responseObserver.onNext(response);
-            responseObserver.onCompleted();
+
+            // Подписка на результат вызова REST-сервиса
+//            ru.mattakvshi.grpccommon.AuthResponse response = ru.mattakvshi.grpccommon.AuthResponse.newBuilder() // Создание нового объекта AuthResponse с помощью билдера
+//                    .setAccessToken(authResponse.getAccessToken()) // Установка accessToken из ответа REST-сервиса
+//                    .setRefreshToken(authResponse.getRefreshToken()) // Установка refreshToken из ответа REST-сервиса
+//                    .setUuid(authResponse.getUuid().toString()) // Установка uuid из ответа REST-сервиса
+//                    .build(); // Завершение создания объекта AuthResponse
+
+            // Подписка на результат вызова REST-сервиса
+            ru.mattakvshi.grpccommon.AuthResponse response = AuthResponseMapper.INSTANCE.toGrpcAuthResponse(authResponse);
+
+            responseObserver.onNext(response); // Отправка ответа клиенту gRPC
+            responseObserver.onCompleted(); // Завершение отправки ответа
         });
     }
 
     @Override
-    public void getNewRefreshToken(RefreshJwtRequest request, StreamObserver<AuthResponse> responseObserver) {
-        RefreshJwtRequest refreshRequest = new RefreshJwtRequest();
-        refreshRequest.setRefreshToken(request.getRefreshToken());
+    public void getNewRefreshToken(ru.mattakvshi.grpccommon.RefreshJwtRequest request, StreamObserver<ru.mattakvshi.grpccommon.AuthResponse> responseObserver) {
+        RefreshJwtRequest refreshRequest = new RefreshJwtRequest(); // Создание нового объекта RefreshJwtRequest
+        refreshRequest.setRefreshToken(request.getRefreshToken()); // Установка refreshToken из запроса
 
         // Вызов REST-сервиса и отправка ответа клиенту gRPC
         userAuthorizationClientService.getNewRefreshTokenForUser(refreshRequest).subscribe(authResponse -> {
-            AuthResponse response = AuthResponse.newBuilder()
-                    .setType("Bearer")
-                    .setAccessToken(authResponse.getAccessToken())
-                    .setRefreshToken(authResponse.getRefreshToken())
-                    .setUuid(authResponse.getUuid().toString())
-                    .build();
-            responseObserver.onNext(response);
-            responseObserver.onCompleted();
+
+            // Подписка на результат вызова REST-сервиса
+//            ru.mattakvshi.grpccommon.AuthResponse response = ru.mattakvshi.grpccommon.AuthResponse.newBuilder() // Создание нового объекта AuthResponse с помощью билдера
+//                    .setAccessToken(authResponse.getAccessToken()) // Установка accessToken из ответа REST-сервиса
+//                    .setRefreshToken(authResponse.getRefreshToken()) // Установка refreshToken из ответа REST-сервиса
+//                    .setUuid(authResponse.getUuid().toString()) // Установка uuid из ответа REST-сервиса
+//                    .build(); // Завершение создания объекта AuthResponse
+
+            // Подписка на результат вызова REST-сервиса
+            ru.mattakvshi.grpccommon.AuthResponse response = AuthResponseMapper.INSTANCE.toGrpcAuthResponse(authResponse);
+
+            responseObserver.onNext(response); // Отправка ответа клиенту gRPC
+            responseObserver.onCompleted(); // Завершение отправки ответа
         });
     }
 
     @Override
-    public void getCurrentUser(google.protobuf.Empty request, StreamObserver<UserResponse> responseObserver) {
+    public void getCurrentUser(ru.mattakvshi.grpccommon.Empty request, StreamObserver<ru.mattakvshi.grpccommon.UserResponse> responseObserver) {
         // Вызов REST-сервиса и отправка ответа клиенту gRPC
         userAuthorizationClientService.getCurrentUser().subscribe(user -> {
-            UserResponse response = UserResponse.newBuilder()
-                    .setPrincipal(user.toString()) // Здесь предполагается, что REST-сервис возвращает principal в виде строки
-                    .build();
-            responseObserver.onNext(response);
-            responseObserver.onCompleted();
+
+            // Подписка на результат вызова REST-сервиса
+//            ru.mattakvshi.grpccommon.UserResponse response = ru.mattakvshi.grpccommon.UserResponse.newBuilder() // Создание нового объекта UserResponse с помощью билдера
+//                    .setPrincipal(user.toString()) // Установка principal из ответа REST-сервиса
+//                    .build(); // Завершение создания объекта UserResponse
+
+            // Подписка на результат вызова REST-сервиса
+            ru.mattakvshi.grpccommon.UserResponse response = UserResponseMapper.INSTANCE.toGrpcUserResponse(user.toString());
+
+
+            responseObserver.onNext(response); // Отправка ответа клиенту gRPC
+            responseObserver.onCompleted(); // Завершение отправки ответа
         });
     }
 }
