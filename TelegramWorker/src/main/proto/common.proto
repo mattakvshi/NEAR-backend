@@ -14,7 +14,7 @@ service UserAuthorizationService {
   rpc authUser (AuthRequest) returns (AuthResponse);
   rpc getNewAccessToken (RefreshJwtRequest) returns (AuthResponse);
   rpc getNewRefreshToken (RefreshJwtRequest) returns (AuthResponse);
-  rpc getCurrentUser (Empty) returns (UserResponse);
+  rpc getCurrentUser (UserRequest) returns (UserResponse);
 }
 
 message RegisterUserResponse {
@@ -44,5 +44,3 @@ message UserResponse {
 message UserRequest {
   string accessToken = 1;
 }
-
-message Empty {}

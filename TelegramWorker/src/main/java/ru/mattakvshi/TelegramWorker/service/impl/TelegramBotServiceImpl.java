@@ -94,16 +94,14 @@ public class TelegramBotServiceImpl extends TelegramLongPollingBot implements Te
                 }
                 case "Получить новый токен доступа" -> {
                     // Запросить refreshToken у пользователя
-                    sendMessage("Введите refreshToken:", chatId);
+                    sendMessage("Введите в формате (Refresh: <token>).", chatId);
                 }
                 case "Получить новый токен обновления" -> {
                     // Запросить refreshToken у пользователя
                     sendMessage("Введите refreshToken:", chatId);
                 }
                 case "Получить текущего пользователя" -> {
-                    // Вызвать метод getCurrentUser
-                    var response = grpcClientService.getCurrentUser();
-                    sendMessage(response.toString(), chatId);
+                    sendMessage("Введите access токен в формате (Access: <token>).", chatId);
                 }
                 default -> {
                     if (update.getMessage().getText().contains(",")) {
@@ -117,7 +115,13 @@ public class TelegramBotServiceImpl extends TelegramLongPollingBot implements Te
                         } else {
                             sendMessage("Неверный формат. Пожалуйста, введите email и пароль в формате: email,password", chatId);
                         }
-                    } else {
+                    } else if (update.getMessage().getText().startsWith("Access: ")) {
+                        // Вызвать метод getCurrentUser
+                        var credentials = update.getMessage().getText().split(" ");
+
+                        var response = grpcClientService.getCurrentUser(credentials[1]);
+                        sendMessage(response.toString(), chatId);
+                    } else if (update.getMessage().getText().startsWith("Refresh: ")) {
                         // Обработка refreshToken
                         var response = grpcClientService.getNewAccessToken(update.getMessage().getText());
                         sendMessage(response.toString(), chatId);

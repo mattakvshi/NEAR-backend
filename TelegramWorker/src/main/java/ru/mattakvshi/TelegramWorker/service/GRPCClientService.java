@@ -9,5 +9,5 @@ public interface GRPCClientService {
 
     ru.mattakvshi.grpccommon.AuthResponse getNewRefreshToken(String refreshToken);
 
-    ru.mattakvshi.grpccommon.UserResponse getCurrentUser();
+    ru.mattakvshi.grpccommon.UserResponse getCurrentUser(String accessToken);
 }

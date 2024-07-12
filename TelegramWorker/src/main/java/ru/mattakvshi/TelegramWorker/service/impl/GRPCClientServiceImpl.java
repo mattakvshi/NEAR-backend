@@ -38,8 +38,10 @@ public class GRPCClientServiceImpl implements GRPCClientService {
     }
 
     @Override
-    public ru.mattakvshi.grpccommon.UserResponse getCurrentUser() {
-        ru.mattakvshi.grpccommon.Empty request = ru.mattakvshi.grpccommon.Empty.newBuilder().build();
+    public ru.mattakvshi.grpccommon.UserResponse getCurrentUser(String accessToken) {
+        ru.mattakvshi.grpccommon.UserRequest request = ru.mattakvshi.grpccommon.UserRequest.newBuilder()
+                .setAccessToken(accessToken)
+                .build();
         return blockingStub.getCurrentUser(request);
     }
 
