@@ -2,6 +2,7 @@ package ru.mattakvshi.grpc_gateway.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 import ru.mattakvshi.grpc_gateway.dto.AuthResponse;
 
@@ -14,6 +15,7 @@ public interface AuthResponseMapper {
     @Mapping(source = "uuid", target = "uuid", qualifiedByName = "uuidToString")
     ru.mattakvshi.grpccommon.AuthResponse toGrpcAuthResponse(AuthResponse authResponse);
 
+    @Named("uuidToString")
     default String uuidToString(UUID uuid) {
         return uuid.toString();
     }

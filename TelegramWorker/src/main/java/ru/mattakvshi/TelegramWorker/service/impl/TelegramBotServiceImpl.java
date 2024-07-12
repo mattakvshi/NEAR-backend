@@ -19,6 +19,7 @@ import ru.mattakvshi.TelegramWorker.dao.TelegramInfoDAO;
 import ru.mattakvshi.TelegramWorker.dto.TelegramMessage;
 import ru.mattakvshi.TelegramWorker.entity.TelegramUserInfo;
 import ru.mattakvshi.TelegramWorker.entity.TelegramUserInfoId;
+import ru.mattakvshi.TelegramWorker.service.GRPCClientService;
 import ru.mattakvshi.TelegramWorker.service.TelegramBotService;
 
 import java.util.ArrayList;
@@ -37,6 +38,9 @@ public class TelegramBotServiceImpl extends TelegramLongPollingBot implements Te
 
     @Autowired
     private TelegramInfoDAO telegramInfoDAO;
+
+    @Autowired
+    private GRPCClientService grpcClientService;
 
     @PostConstruct
     private void init() throws TelegramApiException {
@@ -58,7 +62,7 @@ public class TelegramBotServiceImpl extends TelegramLongPollingBot implements Te
     @Override
     public void onUpdateReceived(Update update) {
 
-        if(update.hasMessage() && update.getMessage().hasContact()) {
+        if (update.hasMessage() && update.getMessage().hasContact()) {
             var chatId = update.getMessage().getChatId().toString();
             var userName = update.getMessage().getFrom().getUserName();
             var phoneNumber = update.getMessage().getContact().getPhoneNumber();
@@ -83,7 +87,42 @@ public class TelegramBotServiceImpl extends TelegramLongPollingBot implements Te
                 case "/start" -> {
                     getContactData(update); // Запросили разрешения на получение номера телефона
                 }
-                default -> sendMessage("Нет необходимости писать сюда что-то лишнее не в рамках команд, ведь это никем не будет прочтено, я просто бот.", chatId);
+                case "/auth" -> showAuthMenu(chatId); // Показать меню аутентификации
+                case "Войти" -> {
+                    // Запросить email и пароль у пользователя
+                    sendMessage("Введите email и пароль в формате: email,password", chatId);
+                }
+                case "Получить новый токен доступа" -> {
+                    // Запросить refreshToken у пользователя
+                    sendMessage("Введите refreshToken:", chatId);
+                }
+                case "Получить новый токен обновления" -> {
+                    // Запросить refreshToken у пользователя
+                    sendMessage("Введите refreshToken:", chatId);
+                }
+                case "Получить текущего пользователя" -> {
+                    // Вызвать метод getCurrentUser
+                    var response = grpcClientService.getCurrentUser();
+                    sendMessage(response.toString(), chatId);
+                }
+                default -> {
+                    if (update.getMessage().getText().contains(",")) {
+                        // Обработка email и пароля
+                        var credentials = update.getMessage().getText().split(",");
+                        if (credentials.length == 2) {
+                            var email = credentials[0];
+                            var password = credentials[1];
+                            var response = grpcClientService.authUser(email, password);
+                            sendMessage(response.toString(), chatId);
+                        } else {
+                            sendMessage("Неверный формат. Пожалуйста, введите email и пароль в формате: email,password", chatId);
+                        }
+                    } else {
+                        // Обработка refreshToken
+                        var response = grpcClientService.getNewAccessToken(update.getMessage().getText());
+                        sendMessage(response.toString(), chatId);
+                    }
+                }
             }
         }
     }
@@ -151,6 +190,36 @@ public class TelegramBotServiceImpl extends TelegramLongPollingBot implements Te
         TelegramUserInfo telegramUserInfo = telegramInfoDAO.getUserInfoById(id);
         log.info(telegramUserInfo.toString());
         return telegramUserInfo.getChatId();
+    }
+
+    private void showAuthMenu(String chatId) {
+        // Создаем клавиатуру
+        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
+        List<KeyboardRow> keyboard = new ArrayList<>();
+
+        // Создаем строку для кнопок аутентификации
+        KeyboardRow authRow = new KeyboardRow();
+        authRow.add(new KeyboardButton("Войти"));
+        authRow.add(new KeyboardButton("Получить новый токен доступа"));
+        authRow.add(new KeyboardButton("Получить новый токен обновления"));
+        authRow.add(new KeyboardButton("Получить текущего пользователя"));
+        keyboard.add(authRow);
+
+        // Устанавливаем свойства клавиатуры
+        replyKeyboardMarkup.setKeyboard(keyboard);
+        replyKeyboardMarkup.setOneTimeKeyboard(true);
+        replyKeyboardMarkup.setResizeKeyboard(true);
+
+        // Отправляем сообщение с клавиатурой
+        SendMessage message = new SendMessage();
+        message.setChatId(chatId);
+        message.setText("Выберите действие:");
+        message.setReplyMarkup(replyKeyboardMarkup);
+        try {
+            execute(message); // Отправка сообщения
+        } catch (TelegramApiException e) {
+            log.info("Error occurred: " + e.getMessage());
+        }
     }
 
 }
