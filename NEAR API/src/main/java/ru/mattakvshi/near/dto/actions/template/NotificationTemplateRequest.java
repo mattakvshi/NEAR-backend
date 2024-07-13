@@ -1,4 +1,4 @@
-package ru.mattakvshi.near.dto.actions;
+package ru.mattakvshi.near.dto.actions.template;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

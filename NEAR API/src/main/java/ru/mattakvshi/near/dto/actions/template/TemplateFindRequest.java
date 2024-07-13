@@ -1,4 +1,4 @@
-package ru.mattakvshi.near.dto.actions;
+package ru.mattakvshi.near.dto.actions.template;
 
 import lombok.Getter;
 import ru.mattakvshi.near.entity.EmergencyTypes;

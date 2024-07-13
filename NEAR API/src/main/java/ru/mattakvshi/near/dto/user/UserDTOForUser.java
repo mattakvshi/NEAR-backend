@@ -39,7 +39,7 @@ public class UserDTOForUser {
 
     private List<UserDTOForCommunity> friends;
 
-    private List<Group> groups;
+    private List<GroupDTOForUser> groups;
 
     private List<CommunityDTOForUser> subscriptions;
 
@@ -65,7 +65,12 @@ public class UserDTOForUser {
                 .collect(Collectors.toList())
         );
 
-        dto.setGroups(user.getGroups());
+        dto.setGroups(
+                user.getGroups()
+                        .stream()
+                        .map(GroupDTOForUser::from)
+                        .collect(Collectors.toList())
+        );
 
         dto.setSubscriptions(
                 user.getSubscriptions()

@@ -3,7 +3,7 @@ package ru.mattakvshi.near.service;
 
 import jakarta.transaction.Transactional;
 import org.springframework.security.core.Authentication;
-import ru.mattakvshi.near.dto.actions.SendTemplateRequest;
+import ru.mattakvshi.near.dto.actions.template.SendTemplateRequest;
 import ru.mattakvshi.near.entity.NotificationTemplate;
 
 import java.util.UUID;

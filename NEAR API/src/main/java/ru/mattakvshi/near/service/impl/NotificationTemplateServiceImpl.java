@@ -1,12 +1,11 @@
 package ru.mattakvshi.near.service.impl;
 
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import ru.mattakvshi.near.dao.NotificationTemplateDAO;
 import ru.mattakvshi.near.dao.UserDAO;
-import ru.mattakvshi.near.dto.actions.SendTemplateRequest;
+import ru.mattakvshi.near.dto.actions.template.SendTemplateRequest;
 import ru.mattakvshi.near.entity.NotificationTemplate;
 import ru.mattakvshi.near.entity.base.User;
 import ru.mattakvshi.near.service.NotificationDispatcher;

@@ -1,6 +1,6 @@
 package ru.mattakvshi.near.helpers;
 
-import ru.mattakvshi.near.dto.actions.NotificationTemplateRequest;
+import ru.mattakvshi.near.dto.actions.template.NotificationTemplateRequest;
 import ru.mattakvshi.near.entity.NotificationTemplate;
 import ru.mattakvshi.near.entity.base.TemplateOwner;
 
