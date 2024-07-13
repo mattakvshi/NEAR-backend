@@ -233,4 +233,9 @@ public class UserServiceImpl implements UserService {
         }
 
     }
+
+    @Override
+    public User getUser(UUID userId) {
+        return userDAO.findById(userId);
+    }
 }

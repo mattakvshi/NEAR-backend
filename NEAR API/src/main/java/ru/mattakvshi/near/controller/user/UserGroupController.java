@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import ru.mattakvshi.near.controller.BaseController;
 import ru.mattakvshi.near.dto.actions.group.GroupFindRequest;
 import ru.mattakvshi.near.dto.actions.group.GroupRequest;
 import ru.mattakvshi.near.entity.auth.UserAccount;
@@ -11,7 +12,7 @@ import ru.mattakvshi.near.service.UserGroupService;
 
 @Slf4j
 @RestController
-public class UserGroupController {
+public class UserGroupController extends BaseController {
 
     @Autowired
     private UserGroupService userGroupService;
@@ -23,7 +24,7 @@ public class UserGroupController {
             userGroupService.saveNewGroup(userAccount.getUser(), groupRequest);
             return "OK";
         } catch (Exception e) {
-            log.info("Exception: " + e);
+            log.error("Exception: " + e);
         }
         return "Not ok";
     }
@@ -35,7 +36,7 @@ public class UserGroupController {
             userGroupService.updateGroup(userAccount.getUser(), groupFindRequest);
             return "OK";
         } catch (Exception e) {
-            log.info("Exception: " + e);
+            log.error("Exception: " + e);
         }
         return "Not ok";
     }
@@ -47,7 +48,7 @@ public class UserGroupController {
             userGroupService.deleteGroup(userAccount.getUser(), groupFindRequest);
             return "OK";
         } catch (Exception e) {
-            log.info("Exception: " + e);
+            log.error("Exception: " + e);
         }
         return "Not ok";
     }

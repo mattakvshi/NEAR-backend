@@ -10,6 +10,7 @@ public interface UserService {
     @Transactional
     UUID saveUserForFirstTime(User user);
 
+    @Transactional
     UUID saveUser(User user);
 
     @Transactional
@@ -29,4 +30,6 @@ public interface UserService {
 
     @Transactional
     void deleteFriend(UUID userId, UUID friendId);
+
+    User getUser(UUID userId);
 }

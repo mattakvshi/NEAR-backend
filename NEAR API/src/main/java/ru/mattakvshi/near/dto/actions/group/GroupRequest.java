@@ -13,6 +13,6 @@ public class GroupRequest {
 
     private String groupName;
 
-    private List<User> members;
+    private List<UUID> members;
 
 }

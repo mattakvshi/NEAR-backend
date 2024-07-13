@@ -16,5 +16,5 @@ public class GroupFindRequest {
 
     private String groupName;
 
-    private List<User> members;
+    private List<UUID> members;
 }
