@@ -24,7 +24,7 @@ import static io.jsonwebtoken.lang.Strings.hasText;
 
 @Log
 @Component
-public class JWTFilter extends GenericFilterBean {
+public class  JWTFilter extends GenericFilterBean {
 
     public static final String AUTHORIZATION_HEADER = "Authorization";
 
