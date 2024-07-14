@@ -123,7 +123,7 @@ public class TelegramBotServiceImpl extends TelegramLongPollingBot implements Te
 
                         log.info(credentials[1]);
                         var response = grpcClientService.getCurrentUser(credentials[1]);
-                        sendMessage(response.toString(), chatId);
+                        sendMessage(response.getPrincipal(), chatId);
                     } else if (update.getMessage().getText().startsWith("Refresh: ")) {
                         // Обработка refreshToken
                         var credentials = update.getMessage().getText().split(" ");

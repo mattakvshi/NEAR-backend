@@ -1,5 +1,6 @@
 package ru.mattakvshi.grpc_gateway.service.impl;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -7,8 +8,13 @@ import reactor.core.publisher.Mono;
 import ru.mattakvshi.grpc_gateway.dto.AuthRequests;
 import ru.mattakvshi.grpc_gateway.dto.AuthResponse;
 import ru.mattakvshi.grpc_gateway.dto.RefreshJwtRequest;
+import ru.mattakvshi.grpc_gateway.dto.user.UserDTO;
 import ru.mattakvshi.grpc_gateway.service.UserAuthorizationClientService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
+
+@Slf4j
 @Service
 public class UserAuthorizationClientServiceImpl implements UserAuthorizationClientService {
 
@@ -47,11 +53,21 @@ public class UserAuthorizationClientServiceImpl implements UserAuthorizationClie
     }
 
     @Override
-    public String getCurrentUser(String accessToken) {
+    public Mono<UserDTO> getCurrentUser(String accessToken) {
         return webClient.get()
                 .uri("/user/me")
                 .header("Authorization", "Bearer " + accessToken)
                 .retrieve()
-                .bodyToMono(Object.class).toString();
+                .bodyToMono(String.class)
+                .flatMap(response -> {
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.registerModule(new JavaTimeModule());
+            try {
+                UserDTO userDTO = objectMapper.readValue(response, UserDTO.class);
+                return Mono.just(userDTO);
+            } catch (Exception e) {
+                return Mono.error(e);
+            }
+        });
     }
 }

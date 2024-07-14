@@ -89,20 +89,20 @@ public class GRPCService extends UserAuthorizationServiceGrpc.UserAuthorizationS
     @Override
     public void getCurrentUser(ru.mattakvshi.grpccommon.UserRequest request, StreamObserver<ru.mattakvshi.grpccommon.UserResponse> responseObserver) {
         // Вызов REST-сервиса и отправка ответа клиенту gRPC
-        var user = userAuthorizationClientService.getCurrentUser(request.getAccessToken());
-        UserResponse userResponse = new UserResponse();
-        userResponse.setPrincipal(user);
+       userAuthorizationClientService.getCurrentUser(request.getAccessToken()).subscribe(userDTO -> {
+           UserResponse userResponse = new UserResponse();
+           userResponse.setPrincipal(userDTO.toString());
 
-            // Подписка на результат вызова REST-сервиса
+           // Подписка на результат вызова REST-сервиса
 //            ru.mattakvshi.grpccommon.UserResponse response = ru.mattakvshi.grpccommon.UserResponse.newBuilder() // Создание нового объекта UserResponse с помощью билдера
 //                    .setPrincipal(user.toString()) // Установка principal из ответа REST-сервиса
 //                    .build(); // Завершение создания объекта UserResponse
 
-            // Подписка на результат вызова REST-сервиса
-            ru.mattakvshi.grpccommon.UserResponse response = UserResponseMapper.INSTANCE.toGrpcUserResponse(userResponse);
+           // Подписка на результат вызова REST-сервиса
+           ru.mattakvshi.grpccommon.UserResponse response = UserResponseMapper.INSTANCE.toGrpcUserResponse(userResponse);
 
-            responseObserver.onNext(response); // Отправка ответа клиенту gRPC
-            responseObserver.onCompleted(); // Завершение отправки ответа
-
+           responseObserver.onNext(response); // Отправка ответа клиенту gRPC
+           responseObserver.onCompleted(); // Завершение отправки ответа
+       });
     }
 }
