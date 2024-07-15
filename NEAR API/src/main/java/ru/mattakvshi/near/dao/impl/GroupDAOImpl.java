@@ -27,7 +27,6 @@ public class GroupDAOImpl implements GroupDAO {
     }
 
     @Override
-    @Cacheable(value = "findByIdGroup",key = "#id")
     public Group findById(UUID id) {
         return groupRepository.findById(id).orElse(null);
     }

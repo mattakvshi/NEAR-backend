@@ -44,7 +44,6 @@ public class NotificationTemplateDAOImpl implements NotificationTemplateDAO {
     }
 
     @Override
-    @Cacheable(value = "findByIdNotificationTemplate",key = "#templateId")
     public NotificationTemplate findById(UUID templateId) {
         return notificationTemplateRepository.findById(templateId)
                 .orElseThrow(() -> new EntityNotFoundException("Template with ID " + templateId + " not found."));

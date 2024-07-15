@@ -26,13 +26,11 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    @Cacheable(value = "findByIdUser",key = "#id")
     public User findById(UUID id) {
         return userRepository.findById(id).orElse(null);
     }
 
     @Override
-    @Cacheable(value = "findAllByIdUser",key = "#ids")
     public List<User> findAllById(List<UUID> ids) {
         return (List<User>) userRepository.findAllById(ids);
     }
