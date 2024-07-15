@@ -1,6 +1,7 @@
 package ru.mattakvshi.near.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import org.springframework.cache.CacheManager;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
@@ -11,6 +12,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+import ru.mattakvshi.near.dto.user.UserDTOForUser;
+import ru.mattakvshi.near.dto.user.UserDTOForUserDeserializer;
+import ru.mattakvshi.near.dto.user.UserDTOForUserSerializer;
 
 @Configuration
 @EnableCaching
@@ -18,6 +22,12 @@ public class RedisConfiguration {
 
     @Bean
     public CacheManager cacheManager(RedisConnectionFactory redisConnectionFactory, ObjectMapper objectMapper) {
+
+        SimpleModule module = new SimpleModule();
+        module.addSerializer(UserDTOForUser.class, new UserDTOForUserSerializer());
+        module.addDeserializer(UserDTOForUser.class, new UserDTOForUserDeserializer());
+        objectMapper.registerModule(module);
+
         RedisCacheConfiguration config = RedisCacheConfiguration
                 .defaultCacheConfig()
                 .serializeKeysWith(
