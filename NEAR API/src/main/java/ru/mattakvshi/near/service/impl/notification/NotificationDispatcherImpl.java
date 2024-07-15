@@ -1,4 +1,4 @@
-package ru.mattakvshi.near.service.impl;
+package ru.mattakvshi.near.service.impl.notification;
 
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;

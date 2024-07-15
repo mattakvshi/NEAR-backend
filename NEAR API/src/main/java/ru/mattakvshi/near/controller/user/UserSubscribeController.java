@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.mattakvshi.near.controller.BaseController;
 import ru.mattakvshi.near.dto.actions.SubscribeRequest;
 import ru.mattakvshi.near.entity.auth.UserAccount;
+import ru.mattakvshi.near.service.SubsService;
 import ru.mattakvshi.near.service.UserService;
 
 @Log
@@ -16,14 +17,14 @@ import ru.mattakvshi.near.service.UserService;
 public class UserSubscribeController extends BaseController {
 
     @Autowired
-    private UserService userService;
+    private SubsService subsService;
 
     @PostMapping("/user/subscribe")
     public String subscribeUserToCommunity(@RequestBody SubscribeRequest subscribeRequest) {
         try {
 
             UserAccount userAccount = (UserAccount) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            userService.subscribeUserToCommunity(
+            subsService.subscribeUserToCommunity(
                     userAccount.getUser().getId(),
                     subscribeRequest.getCommunityId()
             );
@@ -39,7 +40,7 @@ public class UserSubscribeController extends BaseController {
         try {
 
             UserAccount userAccount = (UserAccount) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            userService.cancelSubscriptionUserToCommunity(
+            subsService.cancelSubscriptionUserToCommunity(
                     userAccount.getUser().getId(),
                     subscribeRequest.getCommunityId()
             );

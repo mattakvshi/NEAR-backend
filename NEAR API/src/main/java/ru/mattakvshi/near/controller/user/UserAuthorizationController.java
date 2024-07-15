@@ -70,8 +70,7 @@ public class UserAuthorizationController extends BaseController {
     @GetMapping("/user/me")
     @Transactional
     public ResponseEntity<Object> getCurrentUser() {
-        UserAccount userAccount = (UserAccount) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return ResponseEntity.ok(userAccount.getPrincipal());
+        return ResponseEntity.ok(userAccountService.getUserByContext(SecurityContextHolder.getContext()));
     }
 
 }

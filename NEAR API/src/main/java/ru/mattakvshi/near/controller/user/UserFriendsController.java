@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.mattakvshi.near.controller.BaseController;
 import ru.mattakvshi.near.dto.actions.AddFriendsRequest;
 import ru.mattakvshi.near.entity.auth.UserAccount;
+import ru.mattakvshi.near.service.FriendsService;
 import ru.mattakvshi.near.service.UserService;
 
 @Log
@@ -17,13 +18,13 @@ import ru.mattakvshi.near.service.UserService;
 public class UserFriendsController extends BaseController {
 
     @Autowired
-    private UserService userService;
+    private FriendsService friendsService;
 
     @PostMapping("/user/request/friend")
     public String friendRequest(@RequestBody AddFriendsRequest addFriendsRequest) {
         try{
             UserAccount userAccount = (UserAccount) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            userService.friendRequest(
+            friendsService.friendRequest(
                     userAccount.getUser().getId(),
                     addFriendsRequest.getFriendId()
             );
@@ -38,7 +39,7 @@ public class UserFriendsController extends BaseController {
     public String addNewFriend(@RequestBody AddFriendsRequest addFriendsRequest) {
         try{
             UserAccount userAccount = (UserAccount) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            userService.addNewFriend(
+            friendsService.addNewFriend(
                     userAccount.getUser().getId(),
                     addFriendsRequest.getFriendId()
             );
@@ -53,7 +54,7 @@ public class UserFriendsController extends BaseController {
     public String rejectFriendsRequest(@RequestBody AddFriendsRequest addFriendsRequest) {
         try{
             UserAccount userAccount = (UserAccount) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            userService.rejectFriendsRequest(
+            friendsService.rejectFriendsRequest(
                     userAccount.getUser().getId(),
                     addFriendsRequest.getFriendId()
             );
@@ -68,7 +69,7 @@ public class UserFriendsController extends BaseController {
     public String deleteFriend(@RequestBody AddFriendsRequest addFriendsRequest) {
         try{
             UserAccount userAccount = (UserAccount) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            userService.deleteFriend(
+            friendsService.deleteFriend(
                     userAccount.getUser().getId(),
                     addFriendsRequest.getFriendId()
             );

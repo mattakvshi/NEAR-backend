@@ -1,4 +1,4 @@
-package ru.mattakvshi.near.service.impl;
+package ru.mattakvshi.near.service.impl.auth;
 
 import jakarta.security.auth.message.AuthException;
 import jakarta.transaction.Transactional;
@@ -6,6 +6,7 @@ import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.mattakvshi.near.config.security.JWTProvider;
@@ -13,6 +14,7 @@ import ru.mattakvshi.near.dao.repository.auth.CommunityAccountRepository;
 import ru.mattakvshi.near.dao.repository.auth.CommunityRefreshRepository;
 import ru.mattakvshi.near.dto.auth.AuthRequests;
 import ru.mattakvshi.near.dto.auth.AuthResponse;
+import ru.mattakvshi.near.dto.community.CommunityDTOForCommunity;
 import ru.mattakvshi.near.entity.auth.CommunityAccount;
 import ru.mattakvshi.near.entity.auth.CommunityRefreshStorage;
 import ru.mattakvshi.near.service.CommunityAccountService;
@@ -92,12 +94,12 @@ public class CommunityAccountServiceImpl implements CommunityAccountService {
         return communityAccountRepository.save(communityAccount);
     }
 
-    @Cacheable(value = "findByEmailCommunityAccount",key = "#email")
+
     public CommunityAccount findByEmail(String email) {
         return communityAccountRepository.findByEmail(email);
     }
 
-    @Cacheable(value = "findByEmailAndPasswordCommunityAccount", key = "#email + ',' + #password")
+
     public CommunityAccount findByEmailAndPassword(String email, String password) {
         CommunityAccount communityAccount = findByEmail(email);
         if (communityAccount != null) {
@@ -106,5 +108,12 @@ public class CommunityAccountServiceImpl implements CommunityAccountService {
             }
         }
         return null;
+    }
+
+    @Override
+    //@Cacheable(value = "getCommunityByContext", key = "#context")
+    public CommunityDTOForCommunity getCommunityByContext(SecurityContext context){
+        CommunityAccount communityAccount = (CommunityAccount) context.getAuthentication().getPrincipal();
+        return (CommunityDTOForCommunity) communityAccount.getPrincipal();
     }
 }

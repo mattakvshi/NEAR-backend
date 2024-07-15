@@ -1,4 +1,4 @@
-package ru.mattakvshi.near.service.impl;
+package ru.mattakvshi.near.service.impl.actions;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -6,7 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.mattakvshi.near.dao.GroupDAO;
-import ru.mattakvshi.near.dao.UserDAO;
 import ru.mattakvshi.near.dto.actions.group.GroupFindRequest;
 import ru.mattakvshi.near.dto.actions.group.GroupRequest;
 import ru.mattakvshi.near.entity.Group;

@@ -7,6 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 
 import jakarta.persistence.*;
+import ru.mattakvshi.near.dto.user.UserDTOForUser;
 import ru.mattakvshi.near.entity.Group;
 import ru.mattakvshi.near.entity.NotificationOptions;
 import ru.mattakvshi.near.entity.NotificationTemplate;
@@ -122,6 +123,11 @@ public class User extends TemplateOwner {
         } else {
             this.age = null;
         }
+    }
+
+    @Override
+    public String toString() {
+        return UserDTOForUser.from(this).toString();
     }
 
 

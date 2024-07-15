@@ -31,4 +31,16 @@ public class NotificationOptions {
 
     @Column(name = "bg_color_dark")
     private String bgColorDark;
+
+    @Override
+    public String toString() {
+        return "NotificationOptions{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", color='" + color + '\'' +
+                ", bgColor='" + bgColor + '\'' +
+                ", colorDark='" + colorDark + '\'' +
+                ", bgColorDark='" + bgColorDark + '\'' +
+                '}';
+    }
 }

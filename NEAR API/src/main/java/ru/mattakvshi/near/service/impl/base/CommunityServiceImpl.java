@@ -1,4 +1,4 @@
-package ru.mattakvshi.near.service.impl;
+package ru.mattakvshi.near.service.impl.base;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
