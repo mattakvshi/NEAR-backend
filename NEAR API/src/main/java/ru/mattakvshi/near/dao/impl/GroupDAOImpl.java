@@ -1,6 +1,7 @@
 package ru.mattakvshi.near.dao.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import ru.mattakvshi.near.dao.GroupDAO;
@@ -26,6 +27,7 @@ public class GroupDAOImpl implements GroupDAO {
     }
 
     @Override
+    @Cacheable(value = "findByIdGroup",key = "#id")
     public Group findById(UUID id) {
         return groupRepository.findById(id).orElse(null);
     }

@@ -4,6 +4,7 @@ import jakarta.security.auth.message.AuthException;
 import jakarta.transaction.Transactional;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -97,10 +98,12 @@ public class UserAccountServiceImpl implements UserAccountService {
         return userAccountRepository.save(userAccount);
     }
 
+    @Cacheable(value = "findByEmailAndPasswordUserAccount",key = "#email")
     public UserAccount findByEmail(String email) {
         return userAccountRepository.findByEmail(email);
     }
 
+    @Cacheable(value = "findByEmailAndPasswordUserAccount",key = "#email + ',' + #password")
     public UserAccount findByEmailAndPassword(String email, String password) throws AuthException {
         UserAccount userAccount = findByEmail(email);
         if (userAccount != null) {
@@ -114,6 +117,7 @@ public class UserAccountServiceImpl implements UserAccountService {
     }
 
     @Override
+    @Cacheable(value = "findByIdUserAccount", key = "#id")
     public UserAccount findById(UUID id) {
         return userAccountRepository.findById(id).orElse(null);
     }

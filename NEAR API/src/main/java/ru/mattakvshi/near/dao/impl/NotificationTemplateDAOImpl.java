@@ -4,12 +4,12 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 import ru.mattakvshi.near.dao.NotificationTemplateDAO;
 import ru.mattakvshi.near.dao.repository.NotificationTemplateRepository;
 import ru.mattakvshi.near.entity.NotificationTemplate;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @Log
@@ -27,8 +27,7 @@ public class NotificationTemplateDAOImpl implements NotificationTemplateDAO {
     }
 
     @Override
-    public UUID updateTemplate(NotificationTemplate template, UUID templateId) {
-        NotificationTemplate existingTemplate = findById(templateId);
+    public UUID updateTemplate(NotificationTemplate template, NotificationTemplate existingTemplate) {
         existingTemplate.setTemplateName(template.getTemplateName());
         existingTemplate.setMessage(template.getMessage());
         existingTemplate.setEmergencyType(template.getEmergencyType());
@@ -36,8 +35,7 @@ public class NotificationTemplateDAOImpl implements NotificationTemplateDAO {
     }
 
     @Override
-    public void deleteTemplate(NotificationTemplate template, UUID templateId) {
-        NotificationTemplate existingTemplate = findById(templateId);
+    public void deleteTemplate(NotificationTemplate template, NotificationTemplate existingTemplate) {
         existingTemplate.setTemplateName(template.getTemplateName());
         existingTemplate.setMessage(template.getMessage());
         existingTemplate.setOwner(template.getOwner());
@@ -46,6 +44,7 @@ public class NotificationTemplateDAOImpl implements NotificationTemplateDAO {
     }
 
     @Override
+    @Cacheable(value = "findByIdNotificationTemplate",key = "#templateId")
     public NotificationTemplate findById(UUID templateId) {
         return notificationTemplateRepository.findById(templateId)
                 .orElseThrow(() -> new EntityNotFoundException("Template with ID " + templateId + " not found."));

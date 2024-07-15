@@ -4,6 +4,7 @@ import jakarta.security.auth.message.AuthException;
 import jakarta.transaction.Transactional;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -91,10 +92,12 @@ public class CommunityAccountServiceImpl implements CommunityAccountService {
         return communityAccountRepository.save(communityAccount);
     }
 
+    @Cacheable(value = "findByEmailCommunityAccount",key = "#email")
     public CommunityAccount findByEmail(String email) {
         return communityAccountRepository.findByEmail(email);
     }
 
+    @Cacheable(value = "findByEmailAndPasswordCommunityAccount", key = "#email + ',' + #password")
     public CommunityAccount findByEmailAndPassword(String email, String password) {
         CommunityAccount communityAccount = findByEmail(email);
         if (communityAccount != null) {

@@ -33,12 +33,14 @@ public class NotificationTemplateServiceImpl implements NotificationTemplateServ
 
     @Override
     public UUID updateTemplate(NotificationTemplate notificationTemplate, UUID templateId) {
-        return notificationTemplateDAO.updateTemplate(notificationTemplate, templateId);
+        NotificationTemplate existingTemplate = notificationTemplateDAO.findById(templateId);
+        return notificationTemplateDAO.updateTemplate(notificationTemplate, existingTemplate);
     }
 
     @Override
     public void deleteTemplate(NotificationTemplate notificationTemplate, UUID templateId) {
-        notificationTemplateDAO.deleteTemplate(notificationTemplate, templateId);
+        NotificationTemplate existingTemplate = notificationTemplateDAO.findById(templateId);
+        notificationTemplateDAO.deleteTemplate(notificationTemplate, existingTemplate);
     }
 
     @Override

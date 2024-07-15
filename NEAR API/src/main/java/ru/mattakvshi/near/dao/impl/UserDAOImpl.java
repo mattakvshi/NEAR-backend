@@ -2,6 +2,7 @@ package ru.mattakvshi.near.dao.impl;
 
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 import ru.mattakvshi.near.dao.UserDAO;
 import ru.mattakvshi.near.dao.repository.UserRepository;
@@ -25,11 +26,13 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
+    @Cacheable(value = "findByIdUser",key = "#id")
     public User findById(UUID id) {
         return userRepository.findById(id).orElse(null);
     }
 
     @Override
+    @Cacheable(value = "findAllByIdUser",key = "#ids")
     public List<User> findAllById(List<UUID> ids) {
         return (List<User>) userRepository.findAllById(ids);
     }

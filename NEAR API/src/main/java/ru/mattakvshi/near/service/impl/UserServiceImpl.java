@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import lombok.extern.java.Log;
 import org.quartz.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import ru.mattakvshi.near.dao.CommunityDAO;
 import ru.mattakvshi.near.dao.UserDAO;
