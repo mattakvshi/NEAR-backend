@@ -123,7 +123,7 @@ public class UserAccountServiceImpl implements UserAccountService {
 
 
     @Override
-    @Cacheable(value = "getUserByContext", key = "#context")
+    //@Cacheable(value = "getUserByContext", key = "#context")
     public UserDTOForUser getUserByContext(SecurityContext context){
         UserAccount userAccount = (UserAccount) context.getAuthentication().getPrincipal();
         return (UserDTOForUser) userAccount.getPrincipal();
