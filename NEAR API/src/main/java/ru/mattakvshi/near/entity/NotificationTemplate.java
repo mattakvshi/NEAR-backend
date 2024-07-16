@@ -1,5 +1,6 @@
 package ru.mattakvshi.near.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.AllArgsConstructor;
@@ -38,6 +39,7 @@ public class NotificationTemplate {
     private String templateName;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "owner_id")
     private TemplateOwner owner;
 

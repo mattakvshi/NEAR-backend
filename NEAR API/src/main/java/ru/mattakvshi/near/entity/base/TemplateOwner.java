@@ -1,5 +1,6 @@
 package ru.mattakvshi.near.entity.base;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import jakarta.persistence.*;
@@ -31,6 +32,7 @@ public class TemplateOwner {
     @JsonSerialize(using = ToStringSerializer.class)
     private UUID id;
 
+    @JsonManagedReference
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "owner")
     private List<NotificationTemplate> notificationTemplates;
 
