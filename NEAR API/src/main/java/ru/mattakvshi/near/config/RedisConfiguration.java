@@ -1,6 +1,9 @@
 package ru.mattakvshi.near.config;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping;
+import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import org.springframework.cache.CacheManager;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
@@ -23,14 +26,13 @@ public class RedisConfiguration {
     //ObjectMapper - для адекватной работы с localedate
 
     @Bean
-    public CacheManager cacheManager(RedisConnectionFactory redisConnectionFactory, ObjectMapper objectMapper
-    ) {
-
-
-//        SimpleModule module = new SimpleModule();
-//        module.addSerializer(UserDTOForUser.class, new UserDTOForUserSerializer());
-//        module.addDeserializer(UserDTOForUser.class, new UserDTOForUserDeserializer());
-//        objectMapper.registerModule(module);
+    public CacheManager cacheManager(RedisConnectionFactory redisConnectionFactory) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.activateDefaultTyping(
+                LaissezFaireSubTypeValidator.instance,
+                DefaultTyping.NON_FINAL,
+                JsonTypeInfo.As.PROPERTY
+        );
 
         RedisCacheConfiguration config = RedisCacheConfiguration
                 .defaultCacheConfig()
