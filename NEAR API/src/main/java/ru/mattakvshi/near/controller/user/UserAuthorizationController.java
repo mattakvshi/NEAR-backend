@@ -10,6 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import ru.mattakvshi.near.controller.BaseController;
 import ru.mattakvshi.near.dto.auth.*;
+import ru.mattakvshi.near.dto.user.UserDTOForUser;
 import ru.mattakvshi.near.entity.auth.UserAccount;
 import ru.mattakvshi.near.service.UserAccountService;
 import ru.mattakvshi.near.service.UserService;
@@ -70,7 +71,8 @@ public class UserAuthorizationController extends BaseController {
     @GetMapping("/user/me")
     @Transactional
     public ResponseEntity<Object> getCurrentUser() {
-        return ResponseEntity.ok(userAccountService.getUserByContext(SecurityContextHolder.getContext()));
+        UserAccount userAccount = (UserAccount) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return ResponseEntity.ok(userAccount.getPrincipal());
     }
 
 }

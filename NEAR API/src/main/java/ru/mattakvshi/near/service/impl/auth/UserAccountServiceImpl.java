@@ -120,12 +120,4 @@ public class UserAccountServiceImpl implements UserAccountService {
     public UserAccount findById(UUID id) {
         return userAccountRepository.findById(id).orElse(null);
     }
-
-
-    @Override
-    //@Cacheable(value = "getUserByContext", key = "#context")
-    public UserDTOForUser getUserByContext(SecurityContext context){
-        UserAccount userAccount = (UserAccount) context.getAuthentication().getPrincipal();
-        return (UserDTOForUser) userAccount.getPrincipal();
-    }
 }

@@ -24,6 +24,4 @@ public interface CommunityAccountService {
 
     CommunityAccount findByEmailAndPassword(String email, String password);
 
-    @Cacheable(value = "getCommunityByContext", key = "#context")
-    CommunityDTOForCommunity getCommunityByContext(SecurityContext context);
 }

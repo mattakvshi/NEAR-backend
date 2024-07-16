@@ -20,9 +20,10 @@ import ru.mattakvshi.near.dto.user.UserDTOForUser;
 @EnableCaching
 public class RedisConfiguration {
 
+    //ObjectMapper - для адекватной работы с localedate
+
     @Bean
-    public CacheManager cacheManager(RedisConnectionFactory redisConnectionFactory
-            //, ObjectMapper objectMapper
+    public CacheManager cacheManager(RedisConnectionFactory redisConnectionFactory, ObjectMapper objectMapper
     ) {
 
 
@@ -41,9 +42,7 @@ public class RedisConfiguration {
                 .serializeValuesWith(
                         RedisSerializationContext
                                 .SerializationPair
-                                .fromSerializer(new GenericJackson2JsonRedisSerializer(
-                                        //objectMapper
-                                ))
+                                .fromSerializer(new GenericJackson2JsonRedisSerializer(objectMapper))
                 );
 
         return RedisCacheManager.builder(redisConnectionFactory)

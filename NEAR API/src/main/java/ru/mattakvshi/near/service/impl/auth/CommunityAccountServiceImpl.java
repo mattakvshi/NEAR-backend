@@ -110,10 +110,10 @@ public class CommunityAccountServiceImpl implements CommunityAccountService {
         return null;
     }
 
-    @Override
-    //@Cacheable(value = "getCommunityByContext", key = "#context")
-    public CommunityDTOForCommunity getCommunityByContext(SecurityContext context){
-        CommunityAccount communityAccount = (CommunityAccount) context.getAuthentication().getPrincipal();
-        return (CommunityDTOForCommunity) communityAccount.getPrincipal();
-    }
+//    @Override
+//    //@Cacheable(value = "getCommunityByContext", key = "#context")
+//    public CommunityDTOForCommunity getCommunityByContext(SecurityContext context){
+//        CommunityAccount communityAccount = (CommunityAccount) context.getAuthentication().getPrincipal();
+//        return (CommunityDTOForCommunity) communityAccount.getPrincipal();
+//    }
 }

@@ -27,6 +27,4 @@ public interface UserAccountService {
     UserAccount findByEmailAndPassword(String email, String password) throws AuthException;
 
     UserAccount findById(UUID id);
-
-    UserDTOForUser getUserByContext(SecurityContext context);
 }

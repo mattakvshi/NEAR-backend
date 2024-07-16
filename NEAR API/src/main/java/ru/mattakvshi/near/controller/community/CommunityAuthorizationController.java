@@ -76,7 +76,8 @@ public class CommunityAuthorizationController extends BaseController {
     @GetMapping("/community/me")
     @Transactional
     public ResponseEntity<Object> getCurrentCommunity() {
-        return ResponseEntity.ok(communityAccountService.getCommunityByContext(SecurityContextHolder.getContext()));
+        CommunityAccount communityAccount = (CommunityAccount) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return ResponseEntity.ok(communityAccount.getPrincipal());
     }
 
 }

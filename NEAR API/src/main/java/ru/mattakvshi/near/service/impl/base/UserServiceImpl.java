@@ -4,8 +4,7 @@ import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import ru.mattakvshi.near.dao.CommunityDAO;
 import ru.mattakvshi.near.dao.UserDAO;
@@ -79,4 +78,10 @@ public class UserServiceImpl implements UserService {
     public User getUser(UUID userId) {
         return userDAO.findById(userId);
     }
+
+//    @Override
+//    @Cacheable(value = "getUserByContext", key = "#userAccount")
+//    public UserDTOForUser getUserDTO(UserAccount userAccount){
+//        return UserDTOForUser.from(userAccount.getUser());
+//    }
 }

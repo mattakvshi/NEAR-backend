@@ -1,8 +1,10 @@
 package ru.mattakvshi.near.service;
 
 import jakarta.transaction.Transactional;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.context.SecurityContext;
 import ru.mattakvshi.near.dto.user.UserDTOForUser;
+import ru.mattakvshi.near.entity.auth.UserAccount;
 import ru.mattakvshi.near.entity.base.User;
 
 import java.util.UUID;
