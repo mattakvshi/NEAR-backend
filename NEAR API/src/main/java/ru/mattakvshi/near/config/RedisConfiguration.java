@@ -13,20 +13,23 @@ import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSeriali
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import ru.mattakvshi.near.dto.user.UserDTOForUser;
-import ru.mattakvshi.near.dto.user.UserDTOForUserDeserializer;
-import ru.mattakvshi.near.dto.user.UserDTOForUserSerializer;
+//import ru.mattakvshi.near.dto.user.UserDTOForUserDeserializer;
+//import ru.mattakvshi.near.dto.user.UserDTOForUserSerializer;
 
 @Configuration
 @EnableCaching
 public class RedisConfiguration {
 
     @Bean
-    public CacheManager cacheManager(RedisConnectionFactory redisConnectionFactory, ObjectMapper objectMapper) {
+    public CacheManager cacheManager(RedisConnectionFactory redisConnectionFactory
+            //, ObjectMapper objectMapper
+    ) {
 
-        SimpleModule module = new SimpleModule();
-        module.addSerializer(UserDTOForUser.class, new UserDTOForUserSerializer());
-        module.addDeserializer(UserDTOForUser.class, new UserDTOForUserDeserializer());
-        objectMapper.registerModule(module);
+
+//        SimpleModule module = new SimpleModule();
+//        module.addSerializer(UserDTOForUser.class, new UserDTOForUserSerializer());
+//        module.addDeserializer(UserDTOForUser.class, new UserDTOForUserDeserializer());
+//        objectMapper.registerModule(module);
 
         RedisCacheConfiguration config = RedisCacheConfiguration
                 .defaultCacheConfig()
@@ -38,7 +41,9 @@ public class RedisConfiguration {
                 .serializeValuesWith(
                         RedisSerializationContext
                                 .SerializationPair
-                                .fromSerializer(new GenericJackson2JsonRedisSerializer(objectMapper))
+                                .fromSerializer(new GenericJackson2JsonRedisSerializer(
+                                        //objectMapper
+                                ))
                 );
 
         return RedisCacheManager.builder(redisConnectionFactory)
