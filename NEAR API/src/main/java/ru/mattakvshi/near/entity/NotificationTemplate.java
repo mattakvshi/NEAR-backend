@@ -11,8 +11,10 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import jakarta.persistence.*;
+import org.springframework.data.redis.core.RedisHash;
 import ru.mattakvshi.near.entity.base.TemplateOwner;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 @Data
@@ -20,7 +22,12 @@ import java.util.UUID;
 @Table(name ="Notification_templates")
 @AllArgsConstructor
 @NoArgsConstructor
-public class NotificationTemplate {
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.CLASS,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "@class"
+)
+public class NotificationTemplate implements Serializable {
 
     @Id
     @GeneratedValue(generator = "UUID")
