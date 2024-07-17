@@ -30,7 +30,7 @@ import java.time.Duration;
 @EnableCaching
 public class RedisConfiguration {
 
-    //ObjectMapper - для адекватной работы с localedate
+    //ObjectMapper - для адекватной работы с localedate // https://nuancesprog.ru/p/14313/
 
 //    @Bean
 //    public RedisCacheConfiguration cacheConfiguration() {
