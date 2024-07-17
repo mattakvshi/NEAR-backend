@@ -1,6 +1,8 @@
 package ru.mattakvshi.near.controller.user;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,7 +14,8 @@ import ru.mattakvshi.near.entity.auth.UserAccount;
 import ru.mattakvshi.near.service.SubsService;
 import ru.mattakvshi.near.service.UserService;
 
-@Log
+@Slf4j
+@Tag(name = "SubscribeController")
 @RestController
 public class UserSubscribeController extends BaseController {
 

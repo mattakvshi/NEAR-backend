@@ -1,8 +1,11 @@
 package ru.mattakvshi.near.controller.user;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +18,8 @@ import ru.mattakvshi.near.entity.auth.UserAccount;
 import ru.mattakvshi.near.service.UserAccountService;
 import ru.mattakvshi.near.service.UserService;
 
-@Log
+@Slf4j
+@Tag(name = "UserAuthController")
 @RestController
 public class UserAuthorizationController extends BaseController {
 
@@ -27,7 +31,13 @@ public class UserAuthorizationController extends BaseController {
     @Lazy
     private UserService userService;
 
-
+    @Operation(
+            summary = "Эндпоинт для регистрации пользовательского аккаунта, после отправки всех данных создаётся UserAccount, TemplateOwner, User и записываются в базу. ",
+            description = " На вход подаётся DTO UserRegistrationRequest, по информации из него создаются три сущности для работы с пользователем: \n " +
+                    "UserAccount - основная информация об аккаунте, пароль, email, и т.д. сущность в рамках SpringSecurity, так же для формирования JWT.\n" +
+                    "TemplateOwner - родительский класс для User и Community обеспечивает обобщённое взаимодействие пользователя и сообщества с шаблонами уведомлений (NotificationTemplate).\n" +
+                    "User - вся личная информация пользователя имя, возраст, страна, город, район, друзья, группы, подписки и т.д.\n"
+    )
     @PostMapping("/signup/account")
     public String registerUser(@RequestBody @Valid UserRegistrationRequest userRegistrationRequest) {
         UserAccount userAccount = userRegistrationRequest.toAccount();

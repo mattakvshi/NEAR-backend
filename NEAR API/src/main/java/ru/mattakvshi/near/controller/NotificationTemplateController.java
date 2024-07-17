@@ -1,7 +1,9 @@
 package ru.mattakvshi.near.controller;
 
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
@@ -16,7 +18,8 @@ import ru.mattakvshi.near.entity.base.TemplateOwner;
 import ru.mattakvshi.near.service.NotificationTemplateService;
 import ru.mattakvshi.near.helpers.NotificationTemplateBuilder;
 
-@Log
+@Slf4j
+@Tag(name = "NotificationTemplateController")
 @RestController
 public class NotificationTemplateController extends BaseController {
 

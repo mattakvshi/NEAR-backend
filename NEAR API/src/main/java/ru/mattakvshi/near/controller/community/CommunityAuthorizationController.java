@@ -1,8 +1,10 @@
 package ru.mattakvshi.near.controller.community;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +22,8 @@ import ru.mattakvshi.near.entity.auth.CommunityAccount;
 import ru.mattakvshi.near.service.CommunityAccountService;
 import ru.mattakvshi.near.service.CommunityService;
 
-@Log
+@Slf4j
+@Tag(name = "CommunityAuthController")
 @RestController
 public class CommunityAuthorizationController extends BaseController {
 
