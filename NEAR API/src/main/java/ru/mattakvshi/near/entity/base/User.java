@@ -112,9 +112,6 @@ public class User extends TemplateOwner {
     )
     private List<Community> subscriptions;
 
-//    @OneToMany(fetch = FetchType.EAGER, mappedBy = "owner")
-//    private List<NotificationTemplate> notificationTemplates;
-
     @PrePersist //Вызываем метод перед сохранением сущности в базу
     @PreUpdate //Вызываем метод перед обновлением сущности
     public void calculateAge() {
