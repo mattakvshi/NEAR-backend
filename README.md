@@ -12,6 +12,14 @@
 - Kubernetes
 - Nginx
 
+# Implemented services:
+
+- [NEAR API](https://github.com/mattakvshi/NEAR-backend/tree/main/NEAR%20API)
+- [TelegeramWorker](https://github.com/mattakvshi/NEAR-backend/tree/main/TelegramWorker)
+- [EmailWorker](https://github.com/mattakvshi/NEAR-backend/tree/main/EmailWorker)
+- [MobilePushWorker](https://github.com/mattakvshi/NEAR-backend/tree/main/MobilePushWorker)
+- [gRPC-gateway](https://github.com/mattakvshi/NEAR-backend/tree/main/grpc-gateway)
+
 # Getting Started
 
 ### Reference Documentation
