@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.OneToMany;
 import lombok.Data;
 import ru.mattakvshi.near.dto.notice.NoticeTemplDTOForOwner;
 import ru.mattakvshi.near.dto.community.UserDTOForCommunity;
@@ -37,6 +39,7 @@ public class UserDTOForUser {
 
     private LocalDate registrationDate;
 
+    @OneToMany(fetch = FetchType.EAGER)
     private List<NotificationOptions> selectedOptions;
 
     private List<UserDTOForCommunity> friends;

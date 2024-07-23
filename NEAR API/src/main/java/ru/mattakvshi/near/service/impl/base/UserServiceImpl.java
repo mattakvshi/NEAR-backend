@@ -79,9 +79,9 @@ public class UserServiceImpl implements UserService {
         return userDAO.findById(userId);
     }
 
-//    @Override
-//    @Cacheable(value = "getUserByContext", key = "#userAccount")
-//    public UserDTOForUser getUserDTO(UserAccount userAccount){
-//        return UserDTOForUser.from(userAccount.getUser());
-//    }
+    @Override
+    @Cacheable(value = "getUserByContext", key = "#userAccount")
+    public UserDTOForUser getUserDTO(UserAccount userAccount){
+        return (UserDTOForUser) userAccount.getPrincipal();
+    }
 }
