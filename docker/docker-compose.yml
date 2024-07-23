@@ -27,6 +27,10 @@ services:
   redis:
     image: redis:latest
     container_name: redis_container
+    environment:
+      REDIS_PASSWORD: yourpassword
+      REDIS_USER: youruser
+      REDIS_USER_PASSWORD: youruserpassword
     ports:
       - "6380:6379"
     volumes:
