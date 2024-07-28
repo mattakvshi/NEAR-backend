@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>ru.mattakvshi</groupId>
-	<artifactId>NEA R_API</artifactId>
+	<artifactId>NEAR_API</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>NEAR API</name>
 	<description>NEAR</description>
