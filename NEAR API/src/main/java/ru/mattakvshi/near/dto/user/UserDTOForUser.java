@@ -2,8 +2,10 @@ package ru.mattakvshi.near.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
 import lombok.Data;
@@ -12,13 +14,14 @@ import ru.mattakvshi.near.dto.community.UserDTOForCommunity;
 import ru.mattakvshi.near.entity.*;
 import ru.mattakvshi.near.entity.base.User;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Data
-public class UserDTOForUser {
+public class UserDTOForUser implements Serializable {
 
     @JsonSerialize(using = ToStringSerializer.class)
     private UUID id;
@@ -27,6 +30,8 @@ public class UserDTOForUser {
 
     private String lastName;
 
+    @JsonSerialize(using = ToStringSerializer.class)
+    @JsonDeserialize(using = LocalDateDeserializer.class)
     private LocalDate birthday;
 
     private Integer age;
@@ -37,10 +42,12 @@ public class UserDTOForUser {
 
     private String district;
 
+    @JsonSerialize(using = ToStringSerializer.class)
+    @JsonDeserialize(using = LocalDateDeserializer.class)
     private LocalDate registrationDate;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    private List<NotificationOptions> selectedOptions;
+    //@OneToMany(fetch = FetchType.EAGER)
+    //private List<NotificationOptions> selectedOptions;
 
     private List<UserDTOForCommunity> friends;
 
@@ -61,7 +68,7 @@ public class UserDTOForUser {
         dto.setCity(user.getCity());
         dto.setDistrict(user.getDistrict());
         dto.setRegistrationDate(user.getRegistrationDate());
-        dto.setSelectedOptions(user.getSelectedOptions());
+        //dto.setSelectedOptions(user.getSelectedOptions());
 
         dto.setFriends(
                 user.getFriends()

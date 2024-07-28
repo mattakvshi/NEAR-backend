@@ -6,10 +6,11 @@ import lombok.Data;
 import ru.mattakvshi.near.entity.EmergencyTypes;
 import ru.mattakvshi.near.entity.NotificationTemplate;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 @Data
-public class NoticeTemplDTOForOwner {
+public class NoticeTemplDTOForOwner implements Serializable {
 
     @JsonSerialize(using = ToStringSerializer.class)
     private UUID id;

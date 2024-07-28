@@ -9,12 +9,13 @@ import ru.mattakvshi.near.dto.community.UserDTOForCommunity;
 import ru.mattakvshi.near.entity.Group;
 import ru.mattakvshi.near.entity.base.User;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Data
-public class GroupDTOForUser {
+public class GroupDTOForUser implements Serializable {
 
     @JsonSerialize(using = ToStringSerializer.class)
     private UUID id;

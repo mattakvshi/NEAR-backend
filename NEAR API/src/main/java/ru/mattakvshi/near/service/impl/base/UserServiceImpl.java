@@ -80,7 +80,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Cacheable(value = "getUserByContext", key = "#userAccount")
+    @Cacheable(value = "getUserByContext", key = "#userAccount.id")
     public UserDTOForUser getUserDTO(UserAccount userAccount){
         return (UserDTOForUser) userAccount.getPrincipal();
     }

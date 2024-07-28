@@ -1,7 +1,9 @@
 package ru.mattakvshi.near.dto.community;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import lombok.Data;
 import ru.mattakvshi.near.dto.notice.NoticeTemplDTOForOwner;
 import ru.mattakvshi.near.entity.base.Community;
@@ -28,11 +30,13 @@ public class CommunityDTOForCommunity {
 
     private String district;
 
+    @JsonSerialize(using = ToStringSerializer.class)
+    @JsonDeserialize(using = LocalDateDeserializer.class)
     private LocalDate registrationDate;
 
     private List<UserDTOForCommunity> subscribers;
 
-    private List<EmergencyTypes> monitoredEmergencyTypesCount;
+    //private List<EmergencyTypes> monitoredEmergencyTypesCount;
 
     private List<NoticeTemplDTOForOwner> notificationTemplates;
 
@@ -53,7 +57,7 @@ public class CommunityDTOForCommunity {
                         .collect(Collectors.toList())
         );
 
-        dto.setMonitoredEmergencyTypesCount(community.getMonitoredEmergencyTypes());
+        //dto.setMonitoredEmergencyTypesCount(community.getMonitoredEmergencyTypes());
 
         dto.setNotificationTemplates(
                 community.getNotificationTemplates()
