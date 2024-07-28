@@ -11,6 +11,7 @@ import jakarta.persistence.*;
 import ru.mattakvshi.near.entity.EmergencyTypes;
 import ru.mattakvshi.near.entity.NotificationTemplate;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
@@ -18,7 +19,7 @@ import java.util.UUID;
 @Data
 @Entity
 @Table(name = "Communities")
-public class Community extends TemplateOwner {
+public class Community extends TemplateOwner implements Serializable {
 
     //Вынес id в супер класс, так как нужны уникальные на уровне двух сущностей, для работы с шаблонами
 

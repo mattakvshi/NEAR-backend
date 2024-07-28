@@ -4,11 +4,13 @@ package ru.mattakvshi.near.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.io.Serializable;
+
 
 @Data
 @Entity
 @Table(name = "Notification_options")
-public class NotificationOptions {
+public class NotificationOptions implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

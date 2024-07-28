@@ -22,11 +22,11 @@ import java.util.UUID;
 @Table(name ="Notification_templates")
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.CLASS,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "@class"
-)
+//@JsonTypeInfo(
+//        use = JsonTypeInfo.Id.CLASS,
+//        include = JsonTypeInfo.As.PROPERTY,
+//        property = "@class"
+//)
 public class NotificationTemplate implements Serializable {
 
     @Id

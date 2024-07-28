@@ -8,6 +8,7 @@ import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 import ru.mattakvshi.near.entity.NotificationTemplate;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,7 +17,7 @@ import java.util.UUID;
 @Table(name = "Owners_data")
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public class TemplateOwner {
+public class TemplateOwner implements Serializable {
 
     @Id
     @GeneratedValue(generator = "UUID")

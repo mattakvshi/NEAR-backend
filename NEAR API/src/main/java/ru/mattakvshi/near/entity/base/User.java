@@ -12,6 +12,7 @@ import ru.mattakvshi.near.entity.Group;
 import ru.mattakvshi.near.entity.NotificationOptions;
 import ru.mattakvshi.near.entity.NotificationTemplate;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
@@ -20,7 +21,7 @@ import java.util.UUID;
 @Data
 @Entity
 @Table(name ="Users")
-public class User extends TemplateOwner {
+public class User extends TemplateOwner implements Serializable {
 
     //Вынес id в супер класс, так как нужны уникальные на уровне двух сущностей, для работы с шаблонами
 

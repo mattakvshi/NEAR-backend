@@ -8,13 +8,14 @@ import org.hibernate.annotations.GenericGenerator;
 import jakarta.persistence.*;
 import ru.mattakvshi.near.entity.base.User;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
 
 @Data
 @Entity
 @Table(name ="Groups")
-public class Group {
+public class Group implements Serializable {
 
     @Id
     @GeneratedValue(generator = "UUID")
