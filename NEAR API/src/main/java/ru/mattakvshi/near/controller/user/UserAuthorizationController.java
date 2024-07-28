@@ -2,12 +2,14 @@ package ru.mattakvshi.near.controller.user;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.security.auth.message.AuthException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -39,10 +41,10 @@ public class UserAuthorizationController extends BaseController {
                     "User - вся личная информация пользователя имя, возраст, страна, город, район, друзья, группы, подписки и т.д.\n"
     )
     @PostMapping("/signup/account")
-    public String registerUser(@RequestBody @Valid UserRegistrationRequest userRegistrationRequest) {
+    public ResponseEntity registerUser(@RequestBody @Valid UserRegistrationRequest userRegistrationRequest) {
         UserAccount userAccount = userRegistrationRequest.toAccount();
         userAccountService.saveUser(userAccount);
-        return "OK" + userService.saveUserForFirstTime(userAccount.getUser());
+        return new ResponseEntity<>(HttpStatusCode.valueOf(200));
     }
 
     @PostMapping("/login/account")
@@ -81,9 +83,12 @@ public class UserAuthorizationController extends BaseController {
     @GetMapping("/user/me")
     @Transactional
     public ResponseEntity<Object> getCurrentUser() {
-        //UserAccount userAccount = (UserAccount) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        //return ResponseEntity.ok(userAccount.getPrincipal());
-        return ResponseEntity.ok(userService.getUserDTO((UserAccount) SecurityContextHolder.getContext().getAuthentication().getPrincipal()));
+        try{
+            return ResponseEntity.ok(userService.getUserDTO(userAccountService.getCurrentUserUUID()));
+        } catch (AuthException ae) {
+            return new ResponseEntity<>(HttpStatusCode.valueOf(401));
+        }
     }
+
 
 }

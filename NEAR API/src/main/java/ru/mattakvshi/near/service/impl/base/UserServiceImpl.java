@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import ru.mattakvshi.near.dao.CommunityDAO;
 import ru.mattakvshi.near.dao.UserDAO;
 import ru.mattakvshi.near.dto.user.UserDTOForUser;
-import ru.mattakvshi.near.entity.auth.UserAccount;
 import ru.mattakvshi.near.entity.base.User;
 import ru.mattakvshi.near.jobs.BirthdayJob;
 import ru.mattakvshi.near.service.UserService;
@@ -24,9 +23,6 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserDAO userDAO;
-
-    @Autowired
-    private CommunityDAO communityDAO;
 
     @Autowired
     Scheduler scheduler;
@@ -80,8 +76,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Cacheable(value = "getUserByContext", key = "#userAccount.id")
-    public UserDTOForUser getUserDTO(UserAccount userAccount){
-        return (UserDTOForUser) userAccount.getPrincipal();
+    @Cacheable(value = "getUserByContext", key = "#id")
+    public UserDTOForUser getUserDTO(UUID id){
+        var user = userDAO.findById(id);
+        if (user == null) {
+            return null;
+        }
+        return UserDTOForUser.from(user);
     }
 }

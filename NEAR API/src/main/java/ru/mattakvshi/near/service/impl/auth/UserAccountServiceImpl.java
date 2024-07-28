@@ -4,9 +4,8 @@ import jakarta.security.auth.message.AuthException;
 import jakarta.transaction.Transactional;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,7 +13,6 @@ import ru.mattakvshi.near.dao.repository.auth.UserRefreshRepository;
 import ru.mattakvshi.near.dao.repository.auth.UserAccountRepository;
 import ru.mattakvshi.near.dto.auth.AuthRequests;
 import ru.mattakvshi.near.dto.auth.AuthResponse;
-import ru.mattakvshi.near.dto.user.UserDTOForUser;
 import ru.mattakvshi.near.entity.auth.UserRefreshStorage;
 import ru.mattakvshi.near.entity.auth.UserAccount;
 import ru.mattakvshi.near.service.UserAccountService;
@@ -91,6 +89,15 @@ public class UserAccountServiceImpl implements UserAccountService {
             }
         }
         throw new AuthException("Невалидный JWT токен");
+    }
+
+    @Override
+    public UUID getCurrentUserUUID() throws AuthException {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getPrincipal() instanceof UserAccount) {
+            return ((UserAccount) authentication.getPrincipal()).getUser().getId();
+        }
+        return null;
     }
 
     @Transactional

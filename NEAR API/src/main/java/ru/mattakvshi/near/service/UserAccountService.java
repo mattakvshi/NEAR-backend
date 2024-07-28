@@ -19,6 +19,8 @@ public interface UserAccountService {
 
     AuthResponse refresh(String refreshToken) throws AuthException;
 
+    UUID getCurrentUserUUID() throws AuthException;
+
     @Transactional
     UserAccount saveUser(UserAccount userAccount);
 
