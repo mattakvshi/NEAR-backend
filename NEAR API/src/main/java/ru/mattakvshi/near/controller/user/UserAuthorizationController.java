@@ -47,6 +47,12 @@ public class UserAuthorizationController extends BaseController {
         return new ResponseEntity<>(HttpStatusCode.valueOf(200));
     }
 
+    @Operation(
+            summary = "Эндпоинт для авторизации пользовательского аккаунта, после отправки пороля и логина возвращается либо ошибка авториации либо токены. ",
+            description = " На вход подаётся DTO AuthRequests, оно содержит два поля email и password, пароль прогоняется через кодировщик, " +
+                    "и по почте и паролю находится соответсвующая сущность, если она есть то так же по почте и паролю создаём access и refresh токены, и возвращаем в ответ " +
+                    "в формате DTO AuthResponse"
+    )
     @PostMapping("/login/account")
     public ResponseEntity<AuthResponse> authUser(@RequestBody AuthRequests authRequest){
         try {
@@ -58,6 +64,10 @@ public class UserAuthorizationController extends BaseController {
         }
     }
 
+    @Operation(
+            summary = "Эндпоинт для получения актуального access токена по refresh",
+            description = ""
+    )
     @PostMapping("/token/account")
     public ResponseEntity<AuthResponse> getNewAccessTokenForUser(@RequestBody RefreshJwtRequest refreshJwtRequest){
         try {
@@ -69,6 +79,10 @@ public class UserAuthorizationController extends BaseController {
         }
     }
 
+    @Operation(
+            summary = "Эндпоинт для получения новой пары access/refresh токенов.",
+            description = ""
+    )
     @PostMapping("/user/refresh")
     public ResponseEntity<AuthResponse> getNewRefreshTokenUser(@RequestBody RefreshJwtRequest refreshJwtRequest) {
         try {
@@ -80,6 +94,10 @@ public class UserAuthorizationController extends BaseController {
         }
     }
 
+    @Operation(
+            summary = "Эндпоинт для получения информации о авторизованном пользователе. ",
+            description = "В Authorization: Bearer <token> передаём токен и из SecurityContextHolder получаем пользователя."
+    )
     @GetMapping("/user/me")
     @Transactional
     public ResponseEntity<Object> getCurrentUser() {
