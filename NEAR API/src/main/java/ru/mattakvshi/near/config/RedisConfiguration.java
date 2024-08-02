@@ -73,6 +73,8 @@ public class RedisConfiguration {
                 .build();
     }
 
+    
+    // Оставлю на всякий случай мало ли пригодится
 
 //    @Bean
 //    public RedisCacheConfiguration cacheConfiguration() {
