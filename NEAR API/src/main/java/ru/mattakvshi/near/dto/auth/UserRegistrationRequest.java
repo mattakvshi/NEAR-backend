@@ -1,7 +1,12 @@
 package ru.mattakvshi.near.dto.auth;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.*;
+import lombok.Builder;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.NumberFormat;
@@ -13,6 +18,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Data
+@Builder
 public class UserRegistrationRequest {
 
     //@NotEmpty - @NotBlank знал что эта аннотация строже
