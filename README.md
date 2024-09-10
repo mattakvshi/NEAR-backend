@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/c98bb622-4baa-4a31-a599-aac7eb4c7bc4)# NEAR-backend
+# NEAR-backend
 
 ## Used stack
 
