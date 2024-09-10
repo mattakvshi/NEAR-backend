@@ -14,7 +14,9 @@
 
 # Implemented services:
 
-- [NEAR API](https://github.com/mattakvshi/NEAR-backend/tree/main/NEAR%20API)
+The architecture is built according to the Citadel pattern:
+
+- [NEAR API](https://github.com/mattakvshi/NEAR-backend/tree/main/NEAR%20API)  - The main service that contains all the endpoints and is responsible for interacting with the client software. This service processes all user information, works with the main database and transmits the necessary data to Kafka when sending notifications. 
 - [TelegeramWorker](https://github.com/mattakvshi/NEAR-backend/tree/main/TelegramWorker)
 - [EmailWorker](https://github.com/mattakvshi/NEAR-backend/tree/main/EmailWorker)
 - [MobilePushWorker](https://github.com/mattakvshi/NEAR-backend/tree/main/MobilePushWorker)
