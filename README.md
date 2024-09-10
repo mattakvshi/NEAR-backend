@@ -22,6 +22,12 @@ The architecture is built according to the Citadel pattern:
 - [MobilePushWorker](https://github.com/mattakvshi/NEAR-backend/tree/main/MobilePushWorker) - The worker service for sending notifications via push notification. 
 - [gRPC-gateway](https://github.com/mattakvshi/NEAR-backend/tree/main/grpc-gateway) - A service for connecting the tg bot and the main API.
 
+# More info
+
+More information can be found in README.md a repository with a [frontend](https://github.com/mattakvshi/NEAR-frontend).
+
+![2](https://github.com/mattakvshi/NEAR-frontend/blob/master/Макеты%20frontend/Log%20in%20group/NEAR-landing.png?raw=true)
+
 # Getting Started
 
 ### Reference Documentation
