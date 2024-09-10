@@ -17,10 +17,10 @@
 The architecture is built according to the Citadel pattern:
 
 - [NEAR API](https://github.com/mattakvshi/NEAR-backend/tree/main/NEAR%20API)  - The main service that contains all the endpoints and is responsible for interacting with the client software. This service processes all user information, works with the main database and transmits the necessary data to Kafka when sending notifications. 
-- [TelegeramWorker](https://github.com/mattakvshi/NEAR-backend/tree/main/TelegramWorker)
-- [EmailWorker](https://github.com/mattakvshi/NEAR-backend/tree/main/EmailWorker)
-- [MobilePushWorker](https://github.com/mattakvshi/NEAR-backend/tree/main/MobilePushWorker)
-- [gRPC-gateway](https://github.com/mattakvshi/NEAR-backend/tree/main/grpc-gateway)
+- [TelegeramWorker](https://github.com/mattakvshi/NEAR-backend/tree/main/TelegramWorker) - The worker service for sending notifications via telegram.
+- [EmailWorker](https://github.com/mattakvshi/NEAR-backend/tree/main/EmailWorker) - The worker service for sending notifications via mail. 
+- [MobilePushWorker](https://github.com/mattakvshi/NEAR-backend/tree/main/MobilePushWorker) - The worker service for sending notifications via push notification. 
+- [gRPC-gateway](https://github.com/mattakvshi/NEAR-backend/tree/main/grpc-gateway) - A service for connecting the tg bot and the main API.
 
 # Getting Started
 
