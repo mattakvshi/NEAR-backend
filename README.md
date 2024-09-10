@@ -1,4 +1,4 @@
-# NEAR-backend
+![image](https://github.com/user-attachments/assets/c98bb622-4baa-4a31-a599-aac7eb4c7bc4)# NEAR-backend
 
 ## Used stack
 
@@ -22,11 +22,17 @@ The architecture is built according to the Citadel pattern:
 - [MobilePushWorker](https://github.com/mattakvshi/NEAR-backend/tree/main/MobilePushWorker) - The worker service for sending notifications via push notification. 
 - [gRPC-gateway](https://github.com/mattakvshi/NEAR-backend/tree/main/grpc-gateway) - A service for connecting the tg bot and the main API.
 
+![1](https://github.com/mattakvshi/NEAR-frontend/blob/master/Макеты%20frontend/Презентация%20продукта/71c5bd96130e7b6d96c14cdbc53d7383-9.png?raw=true)
+![2](https://github.com/mattakvshi/NEAR-frontend/blob/master/Макеты%20frontend/Презентация%20продукта/71c5bd96130e7b6d96c14cdbc53d7383-10.png?raw=true)
+
 # More info
 
 More information can be found in README.md a repository with a [frontend](https://github.com/mattakvshi/NEAR-frontend).
 
-![2](https://github.com/mattakvshi/NEAR-frontend/blob/master/Макеты%20frontend/Log%20in%20group/NEAR-landing.png?raw=true)
+![3](https://github.com/mattakvshi/NEAR-frontend/blob/master/Макеты%20frontend/Log%20in%20group/NEAR-landing.png?raw=true)
+![4](https://github.com/mattakvshi/NEAR-frontend/blob/master/Макеты%20frontend/Презентация%20продукта/71c5bd96130e7b6d96c14cdbc53d7383-11.png?raw=true)
+![5](https://github.com/mattakvshi/NEAR-frontend/blob/master/Макеты%20frontend/Log%20in%20group/NEAR-LogInCommunity.png)
+![6](https://github.com/mattakvshi/NEAR-frontend/blob/master/Макеты%20frontend/Презентация%20продукта/71c5bd96130e7b6d96c14cdbc53d7383-15.png?raw=true)
 
 # Getting Started
 
