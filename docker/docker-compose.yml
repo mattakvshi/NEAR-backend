@@ -1,6 +1,7 @@
 version: "3.9"
 
 services:
+
   zookeeper:
     image: confluentinc/cp-zookeeper:6.2.0
     container_name: zookeeper
@@ -19,7 +20,8 @@ services:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://broker:29092
+      KAFKA_ADVERTISED_LISTENERS: INSIDE://broker:9092,OUTSIDE://localhost:9092
+      KAFKA_LISTENERS: INSIDE://0.0.0.0:9092,OUTSIDE://0.0.0.0:9092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
@@ -28,7 +30,7 @@ services:
     image: redis:latest
     container_name: redis_container
     ports:
-      - "6380:6379"
+      - "6379:6379"
     volumes:
       - ./redisdata:/data
     deploy:
@@ -55,3 +57,34 @@ services:
     restart: unless-stopped
     tty: true
     stdin_open: true
+
+  near_db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: vvsimax2003
+      POSTGRES_DB: FirstDB4NEAR
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  app:
+    restart: always
+    build: ../NEAR_API/
+    ports:
+      - "8080:8080"
+    depends_on:
+      - near_db
+      - broker
+      - redis
+    environment:
+      SPRING_DATASOURCE_URL: 'jdbc:postgresql://near_db:5432/FirstDB4NEAR' # Указываем адрес базы
+      KAFKA_BOOTSTRAP_SERVERS: 'broker:9092'  # Указываем адрес Kafka брокера
+      REDIS_HOST: 'redis_container'  # Указываем адрес Redis
+      REDIS_PORT: '6379'   
+
+volumes:
+  postgres-data:
+    driver: local
