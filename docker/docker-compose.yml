@@ -14,14 +14,16 @@ services:
     container_name: broker
     ports:
       - "9092:9092"
+      - "9093:9093"  # Добавляем порт для OUTSIDE
     depends_on:
       - zookeeper
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: INSIDE://broker:9092,OUTSIDE://localhost:9092
-      KAFKA_LISTENERS: INSIDE://0.0.0.0:9092,OUTSIDE://0.0.0.0:9092
+      KAFKA_ADVERTISED_LISTENERS: INSIDE://broker:9092,OUTSIDE://localhost:9093  # Указываем оба слушателя
+      KAFKA_LISTENERS: INSIDE://broker:9092,OUTSIDE://localhost:9093  # Указываем оба слушателя
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT  # Указываем протоколы безопасности
+      KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE  # Указываем, какой слушатель использовать для межброкерного общения
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
