@@ -15,33 +15,36 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 
+
 @Slf4j
 @Service
 public class UserAuthorizationClientServiceImpl implements UserAuthorizationClientService {
 
-    @Value("${gateway.grpc.url}") String mainUrl;
-
     private final WebClient webClient;
 
+    @Value("${gateway.grpc.url}")
+    private String baseUrl;
 
     @Autowired
-    public UserAuthorizationClientServiceImpl(WebClient.Builder webClientBuilder) {
-        this.webClient = webClientBuilder.baseUrl(mainUrl).build();
+    public UserAuthorizationClientServiceImpl(WebClient webClient) {
+        this.webClient = webClient;
     }
 
     @Override
     public Mono<AuthResponse> authUser(AuthRequests authRequest) {
         return webClient.post()
-                .uri("/login/account")
+                .uri("/NEAR/login/account")  // Добавляем /NEAR в путь
                 .bodyValue(authRequest)
                 .retrieve()
-                .bodyToMono(AuthResponse.class);
+                .bodyToMono(AuthResponse.class)
+                .doOnError(error -> log.error("Error during auth request: {}", error.getMessage()));
     }
 
+    // Остальные методы аналогично - добавьте /NEAR в начало пути
     @Override
     public Mono<AuthResponse> getNewAccessTokenForUser(RefreshJwtRequest refreshJwtRequest) {
         return webClient.post()
-                .uri("/token/account")
+                .uri("/NEAR/token/account")
                 .bodyValue(refreshJwtRequest)
                 .retrieve()
                 .bodyToMono(AuthResponse.class);
@@ -50,7 +53,7 @@ public class UserAuthorizationClientServiceImpl implements UserAuthorizationClie
     @Override
     public Mono<AuthResponse> getNewRefreshTokenForUser(RefreshJwtRequest refreshJwtRequest) {
         return webClient.post()
-                .uri("/user/refresh")
+                .uri("/NEAR/user/refresh")
                 .bodyValue(refreshJwtRequest)
                 .retrieve()
                 .bodyToMono(AuthResponse.class);
@@ -59,19 +62,19 @@ public class UserAuthorizationClientServiceImpl implements UserAuthorizationClie
     @Override
     public Mono<UserDTO> getCurrentUser(String accessToken) {
         return webClient.get()
-                .uri("/user/me")
+                .uri("/NEAR/user/me")
                 .header("Authorization", "Bearer " + accessToken)
                 .retrieve()
                 .bodyToMono(String.class)
                 .flatMap(response -> {
-            ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.registerModule(new JavaTimeModule());
-            try {
-                UserDTO userDTO = objectMapper.readValue(response, UserDTO.class);
-                return Mono.just(userDTO);
-            } catch (Exception e) {
-                return Mono.error(e);
-            }
-        });
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    objectMapper.registerModule(new JavaTimeModule());
+                    try {
+                        UserDTO userDTO = objectMapper.readValue(response, UserDTO.class);
+                        return Mono.just(userDTO);
+                    } catch (Exception e) {
+                        return Mono.error(e);
+                    }
+                });
     }
 }

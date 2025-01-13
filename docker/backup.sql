@@ -7,6 +7,25 @@
 
 -- Started on 2024-12-22 14:51:14
 
+DROP TABLE IF EXISTS public.user_friends CASCADE;
+DROP TABLE IF EXISTS public.user_refresh_storage CASCADE;
+DROP TABLE IF EXISTS public.user_account_data CASCADE;
+DROP TABLE IF EXISTS public.subscribers_subscriptions CASCADE;
+DROP TABLE IF EXISTS public.selected_options CASCADE;
+DROP TABLE IF EXISTS public.notification_templates CASCADE;
+DROP TABLE IF EXISTS public.notification_options CASCADE;
+DROP TABLE IF EXISTS public.monitored_emergency CASCADE;
+DROP TABLE IF EXISTS public.groups_members CASCADE;
+DROP TABLE IF EXISTS public.groups CASCADE;
+DROP TABLE IF EXISTS public.friend_requests_sent CASCADE;
+DROP TABLE IF EXISTS public.friend_requests_received CASCADE;
+DROP TABLE IF EXISTS public.emergency_type CASCADE;
+DROP TABLE IF EXISTS public.community_refresh_storage CASCADE;
+DROP TABLE IF EXISTS public.community_account_data CASCADE;
+DROP TABLE IF EXISTS public.communities CASCADE;
+DROP TABLE IF EXISTS public.users CASCADE;
+DROP TABLE IF EXISTS public.owners_data CASCADE;
+
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET idle_in_transaction_session_timeout = 0;
@@ -323,7 +342,7 @@ ALTER TABLE public.users OWNER TO postgres;
 -- Data for Name: communities; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.communities (city, community_name, country, description, district, registration_date, id) VALUES (NULL, 'OOO Где-то ебануло', 'Россия', NULL, NULL, '2024-07-05', '69ac213b-99a1-42d0-96fa-999c7cc69fa0');
+INSERT INTO public.communities (city, community_name, country, description, district, registration_date, id) VALUES (NULL, 'OOO Где-то долбануло', 'Россия', NULL, NULL, '2024-07-05', '69ac213b-99a1-42d0-96fa-999c7cc69fa0');
 
 
 --
@@ -332,7 +351,7 @@ INSERT INTO public.communities (city, community_name, country, description, dist
 -- Data for Name: community_account_data; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.community_account_data (community_account_id, authenticated, email, password, community_id) VALUES ('f37a23e7-5f0b-4ade-9dcd-e57ac2c0b58e', false, 'gdetoebanulo@example.com', '$2a$10$Oj/LTp78EjBXjQGTYy9RtuWcNlQbwDBuDOCWwwEduPCxoKinZzmQ6', '69ac213b-99a1-42d0-96fa-999c7cc69fa0');
+INSERT INTO public.community_account_data (community_account_id, authenticated, email, password, community_id) VALUES ('f37a23e7-5f0b-4ade-9dcd-e57ac2c0b58e', false, 'gdetodolbanulo@example.com', '$2a$10$Oj/LTp78EjBXjQGTYy9RtuWcNlQbwDBuDOCWwwEduPCxoKinZzmQ6', '69ac213b-99a1-42d0-96fa-999c7cc69fa0');
 
 
 --
@@ -341,7 +360,7 @@ INSERT INTO public.community_account_data (community_account_id, authenticated, 
 -- Data for Name: community_refresh_storage; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.community_refresh_storage (email, refresh_token) VALUES ('gdetoebanulo@example.com', 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnZGV0b2ViYW51bG9AZXhhbXBsZS5jb20iLCJleHAiOjE3MjQ3NjczODN9.8bQko36h7diM1Y6lZUrg6TcjWWxwZWtn3K_PrvGAFg9HCc7sF3rKFNDyfSVGoGcoNz7cpgnDQPfz9LgfaXUGTg');
+INSERT INTO public.community_refresh_storage (email, refresh_token) VALUES ('gdetodolbanulo@example.com', 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnZGV0b2ViYW51bG9AZXhhbXBsZS5jb20iLCJleHAiOjE3MjQ3NjczODN9.8bQko36h7diM1Y6lZUrg6TcjWWxwZWtn3K_PrvGAFg9HCc7sF3rKFNDyfSVGoGcoNz7cpgnDQPfz9LgfaXUGTg');
 
 
 --
@@ -504,8 +523,8 @@ INSERT INTO public.user_refresh_storage (email, refresh_token) VALUES ('ytube950
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.users (age, birthday, city, country, district, first_name, last_name, registration_date, id, email, phone_number, telegram_short_name, device_token) VALUES (21, '2003-02-08', 'Краснодар', 'Россия', 'Карасунский', 'Дмитрий', 'Владарчук', '2024-07-05', '0113b52c-39bd-4b6a-822f-f5e5ad458b74', 'dima.lox@example.com', NULL, NULL, NULL);
-INSERT INTO public.users (age, birthday, city, country, district, first_name, last_name, registration_date, id, email, phone_number, telegram_short_name, device_token) VALUES (21, '2003-01-17', 'Краснодар', 'Россия', 'Камсомольский', 'Александр', 'Емельяненко', '2024-07-05', '823576a0-0336-4354-9292-63850ed99937', 'alex.lox@example.com', NULL, NULL, NULL);
+INSERT INTO public.users (age, birthday, city, country, district, first_name, last_name, registration_date, id, email, phone_number, telegram_short_name, device_token) VALUES (21, '2003-02-08', 'Краснодар', 'Россия', 'Карасунский', 'Дмитрий', 'Владарчук', '2024-07-05', '0113b52c-39bd-4b6a-822f-f5e5ad458b74', 'dima@example.com', NULL, NULL, NULL);
+INSERT INTO public.users (age, birthday, city, country, district, first_name, last_name, registration_date, id, email, phone_number, telegram_short_name, device_token) VALUES (21, '2003-01-17', 'Краснодар', 'Россия', 'Камсомольский', 'Александр', 'Емельяненко', '2024-07-05', '823576a0-0336-4354-9292-63850ed99937', 'alex@example.com', NULL, NULL, NULL);
 INSERT INTO public.users (age, birthday, city, country, district, first_name, last_name, registration_date, id, email, phone_number, telegram_short_name, device_token) VALUES (21, '2003-04-26', 'Краснодар', 'Россия', 'Северный', 'Максим', 'Сидоренко', '2024-07-09', '91511352-c656-4b2f-b5be-f79d34a0fedd', 'ytube9504@gmail.com', '79182842848', 'mattakvshi', NULL);
 
 

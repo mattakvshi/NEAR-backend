@@ -17,6 +17,6 @@ public interface AuthResponseMapper {
 
     @Named("uuidToString")
     default String uuidToString(UUID uuid) {
-        return uuid.toString();
+        return uuid != null ? uuid.toString() : null;
     }
 }

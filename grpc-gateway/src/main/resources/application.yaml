@@ -11,5 +11,10 @@ grpc:
 
 gateway:
   grpc:
-    url: 'http://localhost:8080/NEAR'
+    url: 'http://localhost:8080' # Уберем /NEAR из базового URL
+#'http://localhost:8080/NEAR'
+
+logging:
+  level:
+    org.springframework.web.reactive.function.client.ExchangeFunctions: DEBUG
 

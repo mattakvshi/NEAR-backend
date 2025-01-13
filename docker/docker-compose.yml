@@ -1,9 +1,15 @@
-version: "3.9"
+version: '3.9'
+
+networks:
+  app-network:
+    driver: bridge
 
 services:
   zookeeper:
     image: confluentinc/cp-zookeeper:6.2.0
     container_name: zookeeper
+    networks:
+      - app-network
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
@@ -11,26 +17,32 @@ services:
   broker:
     image: confluentinc/cp-kafka:7.0.0
     container_name: broker
+    networks:
+      - app-network
     ports:
-      - "9092:9092"
+      - '9092:9092'
     depends_on:
       - zookeeper
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
-      KAFKA_ADVERTISED_LISTENERS: INTERNAL://broker:29092,EXTERNAL://localhost:9092  # Указываем оба слушателя
-      KAFKA_LISTENERS: "INTERNAL://:29092,EXTERNAL://:9092"  # Указываем оба слушателя
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT  # Указываем протоколы безопасности
-      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL  # Указываем, какой слушатель использовать для межброкерного общения
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://broker:29092,EXTERNAL://localhost:9092
+      KAFKA_LISTENERS: INTERNAL://:29092,EXTERNAL://:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_LOG_DIRS: '/var/lib/kafka/data'
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
 
   redis:
     image: redis:latest
     container_name: redis_container
+    networks:
+      - app-network
     ports:
-      - "6379:6379"
+      - '6379:6379'
     volumes:
       - ./redisdata:/data
     deploy:
@@ -50,7 +62,7 @@ services:
         redis-server /usr/local/etc/redis/redis.conf
       '
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: ['CMD', 'redis-cli', 'ping']
       interval: 30s
       timeout: 10s
       retries: 5
@@ -61,67 +73,80 @@ services:
   near_db:
     image: postgres
     container_name: near_db
+    networks:
+      - app-network
     restart: always
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: vvsimax2003
       POSTGRES_DB: FirstDB4NEAR
     ports:
-      - "5432:5432"
+      - '5432:5432'
     volumes:
       - postgres-data:/var/lib/postgresql/data
 
   telegram_db:
     image: postgres
     container_name: telegram_db
+    networks:
+      - app-network
     restart: always
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: vvsimax2003
       POSTGRES_DB: TelegramInfoDB
     ports:
-      - "5433:5432"
+      - '5433:5432'
     volumes:
       - telegram-data:/var/lib/postgresql/data
 
   near_api:
     container_name: near_api
+    networks:
+      - app-network
     restart: always
     build: ../NEAR_API/
     ports:
-      - "8080:8080"
+      - '8080:8080'
     depends_on:
       - near_db
       - broker
       - redis
     environment:
-      SPRING_DATASOURCE_URL: 'jdbc:postgresql://near_db:5432/FirstDB4NEAR' # Указываем адрес базы
-      KAFKA_BOOTSTRAP-SERVERS: 'broker:29092'  # Указываем адрес Kafka брокера
-      SPRING_DATA_REDIS_HOST: 'redis_container'  # Указываем адрес Redis
+      SPRING_DATASOURCE_URL: 'jdbc:postgresql://near_db:5432/FirstDB4NEAR'
+      SPRING_KAFKA_BOOTSTRAP-SERVERS: 'broker:29092'
+      KAFKA_BOOTSTRAP-SERVERS: 'broker:29092'
+      SPRING_KAFKA_PRODUCER_BOOTSTRAP-SERVERS: 'broker:29092'
+      SPRING_KAFKA_ADMIN_BOOTSTRAP-SERVERS: 'broker:29092'
+      SPRING_DATA_REDIS_HOST: 'redis_container'
       SPRING_DATA_REDIS_PORT: '6379'
 
   grpc-gateway:
     container_name: grpc-gateway
+    networks:
+      - app-network
     restart: always
     build:
       context: ../grpc-gateway/
       dockerfile: Dockerfile
     ports:
-      - "8081:8081"
+      - '8081:8081'
     depends_on:
       - near_api
     environment:
       GRPC_SERVER_PORT: 8082
-      GATEWAY_GRPC_URL: 'http://near_api:8080/NEAR'
-      
+      GATEWAY_GRPC_URL: 'http://172.17.0.1:8080'
+
   telegram_worker:
     container_name: telegram_worker
+    networks:
+      - app-network
     restart: always
     build:
       context: ../TelegramWorker/
       dockerfile: Dockerfile
     ports:
-      - "8001:8001"
+      - '8001:8001'
     depends_on:
       - telegram_db
       - grpc-gateway
@@ -134,12 +159,14 @@ services:
 
   email_worker:
     container_name: email_worker
+    networks:
+      - app-network
     restart: always
     build:
       context: ../EmailWorker/
       dockerfile: Dockerfile
     ports:
-      - "8002:8002"
+      - '8002:8002'
     depends_on:
       - near_api
       - broker
@@ -149,19 +176,21 @@ services:
 
   mobile_push_worker:
     container_name: mobile_push_worker
+    networks:
+      - app-network
     restart: always
     build:
       context: ../MobilePushWorker/
       dockerfile: Dockerfile
     ports:
-      - "8003:8003"
+      - '8003:8003'
     depends_on:
       - near_api
       - broker
       - redis
     environment:
       KAFKA_BOOTSTRAP-SERVERS: 'broker:29092'
-      
+
 volumes:
   postgres-data:
     driver: local

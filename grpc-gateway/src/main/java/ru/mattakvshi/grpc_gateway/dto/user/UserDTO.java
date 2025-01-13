@@ -6,6 +6,7 @@ import lombok.Data;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -82,43 +83,76 @@ public class UserDTO {
         StringBuilder sb = new StringBuilder();
         sb.append("Информация о пользователе:\n")
                 .append("__________________________\n")
-                .append("Имя: ").append(firstName).append("\n")
-                .append("Фамилия: ").append(lastName).append("\n")
-                .append("Дата рождения: ").append(birthday).append("\n")
-                .append("Возраст: ").append(age).append("\n")
-                .append("Страна: ").append(country).append("\n")
-                .append("Город: ").append(city).append("\n")
-                .append("Район: ").append(district).append("\n")
-                .append("Дата регистрации: ").append(registrationDate).append("\n")
-                .append("__________________________\n")
-                .append("Выбранные опции уведомлений:\n")
-                .append(selectedOptions.stream()
-                        .map(NotificationOptions::getTitle)
-                        .collect(Collectors.joining(",\n")))
-                .append("\n")
-                .append("__________________________\n")
-                .append("Друзья:\n")
-                .append(friends.stream()
-                        .map(friend -> friend.getFirstName() + " " + friend.getLastName())
-                        .collect(Collectors.joining(",\n")))
-                .append("\n")
-                .append("__________________________\n")
-                .append("Группы:\n")
-                .append(groups.stream()
-                        .map(GroupDTOSmall::getGroupName)
-                        .collect(Collectors.joining(",\n")))
-                .append("\n")
-                .append("__________________________\n")
-                .append("Подписки:\n")
-                .append(subscriptions.stream()
-                        .map(CommunityDTOSmall::getCommunityName)
-                        .collect(Collectors.joining(",\n")))
-                .append("\n")
-                .append("__________________________\n")
-                .append("Шаблоны уведомлений:\n")
-                .append(notificationTemplates.stream()
-                        .map(NotificationTemplateDTO::getTemplateName)
-                        .collect(Collectors.joining(",\n")));
+                .append("Имя: ").append(firstName != null ? firstName : "не указано").append("\n")
+                .append("Фамилия: ").append(lastName != null ? lastName : "не указано").append("\n")
+                .append("Дата рождения: ").append(birthday != null ? birthday : "не указано").append("\n")
+                .append("Возраст: ").append(age != null ? age : "не указано").append("\n")
+                .append("Страна: ").append(country != null ? country : "не указано").append("\n")
+                .append("Город: ").append(city != null ? city : "не указано").append("\n")
+                .append("Район: ").append(district != null ? district : "не указано").append("\n")
+                .append("Дата регистрации: ").append(registrationDate != null ? registrationDate : "не указано").append("\n")
+                .append("__________________________\n");
+
+        sb.append("Выбранные опции уведомлений:\n");
+        if (selectedOptions != null && !selectedOptions.isEmpty()) {
+            sb.append(selectedOptions.stream()
+                    .filter(Objects::nonNull)
+                    .map(NotificationOptions::getTitle)
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.joining(",\n")));
+        } else {
+            sb.append("не выбраны");
+        }
+        sb.append("\n").append("__________________________\n");
+
+        sb.append("Друзья:\n");
+        if (friends != null && !friends.isEmpty()) {
+            sb.append(friends.stream()
+                    .filter(Objects::nonNull)
+                    .map(friend -> (friend.getFirstName() != null ? friend.getFirstName() : "") + " "
+                            + (friend.getLastName() != null ? friend.getLastName() : ""))
+                    .filter(name -> !name.trim().isEmpty())
+                    .collect(Collectors.joining(",\n")));
+        } else {
+            sb.append("отсутствуют");
+        }
+        sb.append("\n").append("__________________________\n");
+
+        sb.append("Группы:\n");
+        if (groups != null && !groups.isEmpty()) {
+            sb.append(groups.stream()
+                    .filter(Objects::nonNull)
+                    .map(GroupDTOSmall::getGroupName)
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.joining(",\n")));
+        } else {
+            sb.append("отсутствуют");
+        }
+        sb.append("\n").append("__________________________\n");
+
+        sb.append("Подписки:\n");
+        if (subscriptions != null && !subscriptions.isEmpty()) {
+            sb.append(subscriptions.stream()
+                    .filter(Objects::nonNull)
+                    .map(CommunityDTOSmall::getCommunityName)
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.joining(",\n")));
+        } else {
+            sb.append("отсутствуют");
+        }
+        sb.append("\n").append("__________________________\n");
+
+        sb.append("Шаблоны уведомлений:\n");
+        if (notificationTemplates != null && !notificationTemplates.isEmpty()) {
+            sb.append(notificationTemplates.stream()
+                    .filter(Objects::nonNull)
+                    .map(NotificationTemplateDTO::getTemplateName)
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.joining(",\n")));
+        } else {
+            sb.append("отсутствуют");
+        }
+
         return sb.toString();
     }
 

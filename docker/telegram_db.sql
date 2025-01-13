@@ -7,6 +7,8 @@
 
 -- Started on 2024-12-23 20:39:51
 
+DROP TABLE IF EXISTS public.user_info CASCADE;
+
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET idle_in_transaction_session_timeout = 0;
