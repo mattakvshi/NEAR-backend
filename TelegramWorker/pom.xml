@@ -34,7 +34,7 @@
 
 	<properties>
 
-		<java.version>22</java.version>
+		<java.version>17</java.version>
 
 		<protobuf.version>3.25.1</protobuf.version>
 		<protobuf-plugin.version>0.6.1</protobuf-plugin.version>

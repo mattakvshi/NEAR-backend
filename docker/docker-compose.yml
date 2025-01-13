@@ -1,7 +1,6 @@
 version: "3.9"
 
 services:
-
   zookeeper:
     image: confluentinc/cp-zookeeper:6.2.0
     container_name: zookeeper
@@ -14,16 +13,15 @@ services:
     container_name: broker
     ports:
       - "9092:9092"
-      - "9093:9093"  # Добавляем порт для OUTSIDE
     depends_on:
       - zookeeper
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
-      KAFKA_ADVERTISED_LISTENERS: INSIDE://broker:9092,OUTSIDE://localhost:9093  # Указываем оба слушателя
-      KAFKA_LISTENERS: INSIDE://broker:9092,OUTSIDE://localhost:9093  # Указываем оба слушателя
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT  # Указываем протоколы безопасности
-      KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE  # Указываем, какой слушатель использовать для межброкерного общения
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://broker:29092,EXTERNAL://localhost:9092  # Указываем оба слушателя
+      KAFKA_LISTENERS: "INTERNAL://:29092,EXTERNAL://:9092"  # Указываем оба слушателя
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT  # Указываем протоколы безопасности
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL  # Указываем, какой слушатель использовать для межброкерного общения
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
@@ -62,6 +60,7 @@ services:
 
   near_db:
     image: postgres
+    container_name: near_db
     restart: always
     environment:
       POSTGRES_USER: postgres
@@ -72,7 +71,21 @@ services:
     volumes:
       - postgres-data:/var/lib/postgresql/data
 
-  app:
+  telegram_db:
+    image: postgres
+    container_name: telegram_db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: vvsimax2003
+      POSTGRES_DB: TelegramInfoDB
+    ports:
+      - "5433:5432"
+    volumes:
+      - telegram-data:/var/lib/postgresql/data
+
+  near_api:
+    container_name: near_api
     restart: always
     build: ../NEAR_API/
     ports:
@@ -83,10 +96,74 @@ services:
       - redis
     environment:
       SPRING_DATASOURCE_URL: 'jdbc:postgresql://near_db:5432/FirstDB4NEAR' # Указываем адрес базы
-      KAFKA_BOOTSTRAP_SERVERS: 'broker:9092'  # Указываем адрес Kafka брокера
-      REDIS_HOST: 'redis_container'  # Указываем адрес Redis
-      REDIS_PORT: '6379'   
+      KAFKA_BOOTSTRAP-SERVERS: 'broker:29092'  # Указываем адрес Kafka брокера
+      SPRING_DATA_REDIS_HOST: 'redis_container'  # Указываем адрес Redis
+      SPRING_DATA_REDIS_PORT: '6379'
 
+  grpc-gateway:
+    container_name: grpc-gateway
+    restart: always
+    build:
+      context: ../grpc-gateway/
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+    depends_on:
+      - near_api
+    environment:
+      GRPC_SERVER_PORT: 8082
+      GATEWAY_GRPC_URL: 'http://near_api:8080/NEAR'
+      
+  telegram_worker:
+    container_name: telegram_worker
+    restart: always
+    build:
+      context: ../TelegramWorker/
+      dockerfile: Dockerfile
+    ports:
+      - "8001:8001"
+    depends_on:
+      - telegram_db
+      - grpc-gateway
+      - broker
+      - redis
+    environment:
+      SPRING_DATASOURCE_URL: 'jdbc:postgresql://telegram_db:5432/TelegramInfoDB'
+      KAFKA_BOOTSTRAP-SERVERS: 'broker:29092'
+      GRPC_CLIENT_GLOBAL_ADDRESS: 'grpc-gateway:8082'
+
+  email_worker:
+    container_name: email_worker
+    restart: always
+    build:
+      context: ../EmailWorker/
+      dockerfile: Dockerfile
+    ports:
+      - "8002:8002"
+    depends_on:
+      - near_api
+      - broker
+      - redis
+    environment:
+      KAFKA_BOOTSTRAP-SERVERS: 'broker:29092'
+
+  mobile_push_worker:
+    container_name: mobile_push_worker
+    restart: always
+    build:
+      context: ../MobilePushWorker/
+      dockerfile: Dockerfile
+    ports:
+      - "8003:8003"
+    depends_on:
+      - near_api
+      - broker
+      - redis
+    environment:
+      KAFKA_BOOTSTRAP-SERVERS: 'broker:29092'
+      
 volumes:
   postgres-data:
+    driver: local
+  telegram-data:
     driver: local

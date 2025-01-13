@@ -2,6 +2,7 @@ package ru.mattakvshi.grpc_gateway.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
@@ -18,11 +19,14 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 @Service
 public class UserAuthorizationClientServiceImpl implements UserAuthorizationClientService {
 
+    @Value("${gateway.grpc.url}") String mainUrl;
+
     private final WebClient webClient;
+
 
     @Autowired
     public UserAuthorizationClientServiceImpl(WebClient.Builder webClientBuilder) {
-        this.webClient = webClientBuilder.baseUrl("http://localhost:8080/NEAR").build();
+        this.webClient = webClientBuilder.baseUrl(mainUrl).build();
     }
 
     @Override

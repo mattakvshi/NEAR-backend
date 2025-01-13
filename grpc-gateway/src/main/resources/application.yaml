@@ -9,4 +9,7 @@ grpc:
   server:
     port: ${GRPC_PORT}
 
+gateway:
+  grpc:
+    url: 'http://localhost:8080/NEAR'
 

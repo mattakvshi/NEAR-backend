@@ -4,6 +4,7 @@ import io.grpc.stub.StreamObserver;
 import lombok.extern.java.Log;
 import net.devh.boot.grpc.server.service.GrpcService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import ru.mattakvshi.grpc_gateway.dto.*;
 import ru.mattakvshi.grpccommon.UserAuthorizationServiceGrpc;
 import ru.mattakvshi.grpc_gateway.mapper.*;
