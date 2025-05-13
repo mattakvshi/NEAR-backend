@@ -16,8 +16,11 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
+import lombok.EqualsAndHashCode;
+
 @Data
 @Entity
+@EqualsAndHashCode(callSuper = false)
 @Table(name = "Communities")
 public class Community extends TemplateOwner implements Serializable {
 

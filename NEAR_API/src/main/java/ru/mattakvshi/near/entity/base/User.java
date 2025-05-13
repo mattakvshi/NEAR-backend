@@ -11,6 +11,7 @@ import ru.mattakvshi.near.dto.user.UserDTOForUser;
 import ru.mattakvshi.near.entity.Group;
 import ru.mattakvshi.near.entity.NotificationOptions;
 import ru.mattakvshi.near.entity.NotificationTemplate;
+import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -20,6 +21,7 @@ import java.util.UUID;
 
 @Data
 @Entity
+@EqualsAndHashCode(callSuper = false)
 @Table(name ="Users")
 public class User extends TemplateOwner implements Serializable {
 

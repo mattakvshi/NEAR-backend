@@ -22,4 +22,6 @@ public interface UserService {
 
     @Cacheable(value = "getUserByContext", key = "#id")
     UserDTOForUser getUserDTO(UUID id);
+
+    void updateDeviceToken(UUID userId, String deviceToken);
 }

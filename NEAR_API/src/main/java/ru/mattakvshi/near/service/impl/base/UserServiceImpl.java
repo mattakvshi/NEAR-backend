@@ -84,4 +84,15 @@ public class UserServiceImpl implements UserService {
         }
         return UserDTOForUser.from(user);
     }
+
+    @Override
+    @Transactional
+    public void updateDeviceToken(UUID userId, String deviceToken) {
+        User user = userDAO.findById(userId);
+        if (user == null) {
+            throw new RuntimeException("Пользователь не найден");
+        }
+        user.setDeviceToken(deviceToken);
+        userDAO.saveUser(user);
+    }
 }

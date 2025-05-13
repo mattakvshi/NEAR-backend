@@ -46,6 +46,8 @@ public class UserDTOForUser implements Serializable {
     @JsonDeserialize(using = LocalDateDeserializer.class)
     private LocalDate registrationDate;
 
+    private String deviceToken;
+
     //@OneToMany(fetch = FetchType.EAGER)
     //private List<NotificationOptions> selectedOptions;
 
@@ -68,6 +70,8 @@ public class UserDTOForUser implements Serializable {
         dto.setCity(user.getCity());
         dto.setDistrict(user.getDistrict());
         dto.setRegistrationDate(user.getRegistrationDate());
+        dto.setDeviceToken(user.getDeviceToken());
+
         //dto.setSelectedOptions(user.getSelectedOptions());
 
         dto.setFriends(
