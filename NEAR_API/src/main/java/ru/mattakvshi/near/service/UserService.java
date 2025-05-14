@@ -20,7 +20,7 @@ public interface UserService {
     @Transactional
     User getUser(UUID userId);
 
-    @Cacheable(value = "getUserByContext", key = "#id")
+    //@Cacheable(value = "getUserByContext", key = "#id")
     UserDTOForUser getUserDTO(UUID id);
 
     void updateDeviceToken(UUID userId, String deviceToken);

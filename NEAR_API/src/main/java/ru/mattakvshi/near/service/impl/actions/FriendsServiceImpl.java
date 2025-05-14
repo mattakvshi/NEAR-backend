@@ -3,6 +3,8 @@ package ru.mattakvshi.near.service.impl.actions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.mattakvshi.near.dao.UserDAO;
+import ru.mattakvshi.near.dto.user.FriendsForUserDTO;
+import ru.mattakvshi.near.dto.user.UserDTOForUser;
 import ru.mattakvshi.near.entity.base.User;
 import ru.mattakvshi.near.service.FriendsService;
 
@@ -13,6 +15,20 @@ public class FriendsServiceImpl implements FriendsService {
 
     @Autowired
     private UserDAO userDAO;
+
+    @Override
+    public FriendsForUserDTO getFriendsData(UUID userId) {
+        User user = userDAO.findById(userId);
+        if (user == null) {
+            throw new RuntimeException("Пользователь не найден");
+        }
+
+        return FriendsForUserDTO.builder()
+                .friends(UserDTOForUser.fromList(user.getFriends()))
+                .sentRequests(UserDTOForUser.fromList(user.getSentRequests()))
+                .receivedRequests(UserDTOForUser.fromList(user.getReceivedRequests()))
+                .build();
+    }
 
     @Override
     public void friendRequest(UUID userId, UUID friendId) {

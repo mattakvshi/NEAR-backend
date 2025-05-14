@@ -104,4 +104,10 @@ public class UserDTOForUser implements Serializable {
 
         return dto;
     }
+
+    public static List<UserDTOForUser> fromList(List<User> users) {
+        return users.stream()
+                .map(UserDTOForUser::from)
+                .collect(Collectors.toList());
+    }
 }

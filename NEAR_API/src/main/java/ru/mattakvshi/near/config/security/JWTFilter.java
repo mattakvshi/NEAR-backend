@@ -1,11 +1,13 @@
 package ru.mattakvshi.near.config.security;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -50,6 +52,9 @@ public class  JWTFilter extends GenericFilterBean {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+
+        try {
+
         var token = getTokenFromRequests((HttpServletRequest) servletRequest);
         var requestURI = ((HttpServletRequest) servletRequest).getRequestURI();
 
@@ -71,7 +76,11 @@ public class  JWTFilter extends GenericFilterBean {
             }
         }
 
-        filterChain.doFilter(servletRequest, servletResponse);
+            filterChain.doFilter(servletRequest, servletResponse);
+        } catch (JwtException e) { // Ловим ошибки валидации токена
+            SecurityContextHolder.clearContext();
+            ((HttpServletResponse) servletResponse).sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid token");
+        }
     }
 
     private String getTokenFromRequests(HttpServletRequest servletRequest) {

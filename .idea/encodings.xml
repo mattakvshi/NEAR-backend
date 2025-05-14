@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/EmailWorker/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/MobilePushWorker/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/NEAR_API/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/TelegramWorker/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/TelegramWorker/target/generated-sources/protobuf/grpc-java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/TelegramWorker/target/generated-sources/protobuf/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/grpc-gateway/src/main/java" charset="UTF-8" />
+  </component>
+</project>

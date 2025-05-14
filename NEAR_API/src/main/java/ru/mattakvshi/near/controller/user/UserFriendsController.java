@@ -4,13 +4,12 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.mattakvshi.near.controller.BaseController;
 import ru.mattakvshi.near.dto.actions.AddFriendsRequest;
+import ru.mattakvshi.near.dto.user.FriendsForUserDTO;
 import ru.mattakvshi.near.entity.auth.UserAccount;
 import ru.mattakvshi.near.service.FriendsService;
 import ru.mattakvshi.near.service.UserService;
@@ -22,6 +21,22 @@ public class UserFriendsController extends BaseController {
 
     @Autowired
     private FriendsService friendsService;
+
+    @GetMapping("/user/all-friends-info")
+    public ResponseEntity<FriendsForUserDTO> getFriendsData() {
+        try {
+            UserAccount userAccount = (UserAccount) SecurityContextHolder
+                    .getContext()
+                    .getAuthentication()
+                    .getPrincipal();
+
+            FriendsForUserDTO response = friendsService.getFriendsData(userAccount.getUser().getId());
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            log.error("Ошибка получения данных друзей", e);
+            return ResponseEntity.status(500).build();
+        }
+    }
 
     @PostMapping("/user/request/friend")
     public String friendRequest(@RequestBody AddFriendsRequest addFriendsRequest) {

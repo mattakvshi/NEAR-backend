@@ -74,7 +74,7 @@ public class JWTProvider {
         // В данном случае это пять минут. Библиотека, которая генерирует токены,
         // не работает с LocalDateTime, поэтому приходится конвертировать все в старый формат Date.
         final LocalDateTime now = LocalDateTime.now();
-        final Instant accessExpirationInstant = now.plusMinutes(5).atZone(ZoneId.systemDefault()).toInstant();
+        final Instant accessExpirationInstant = now.plusMinutes(10).atZone(ZoneId.systemDefault()).toInstant();
         final Date accessExpiration = Date.from(accessExpirationInstant);
         //Строки ниже отвечают за непосредственное создание access токена.
         // В токен мы указываем логин пользователя, дату до которой токен валиден, алгоритм шифрования и наши произвольные claims:

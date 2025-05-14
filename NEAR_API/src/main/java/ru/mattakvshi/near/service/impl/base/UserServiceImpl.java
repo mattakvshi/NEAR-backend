@@ -76,7 +76,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Cacheable(value = "getUserByContext", key = "#id")
+    //@Cacheable(value = "getUserByContext", key = "#id")
     public UserDTOForUser getUserDTO(UUID id){
         var user = userDAO.findById(id);
         if (user == null) {
