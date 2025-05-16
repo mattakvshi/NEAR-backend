@@ -84,6 +84,7 @@ services:
       - '5432:5432'
     volumes:
       - postgres-data:/var/lib/postgresql/data
+      - backups:/backups
 
   telegram_db:
     image: postgres
@@ -99,6 +100,7 @@ services:
       - '5433:5432'
     volumes:
       - telegram-data:/var/lib/postgresql/data
+      - backups:/backups
 
   near_api:
     container_name: near_api
@@ -195,4 +197,6 @@ volumes:
   postgres-data:
     driver: local
   telegram-data:
+    driver: local
+  backups: # <-- Новый volume для бэкапов
     driver: local
