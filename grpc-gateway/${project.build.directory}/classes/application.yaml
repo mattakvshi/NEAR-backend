@@ -1,0 +1,20 @@
+spring:
+  config:
+    import: optional:file:.env[.properties]
+
+server:
+  port: 8081
+
+grpc:
+  server:
+    port: ${GRPC_PORT}
+
+gateway:
+  grpc:
+    url: 'http://localhost:8080' # Уберем /NEAR из базового URL
+#'http://localhost:8080/NEAR'
+
+logging:
+  level:
+    org.springframework.web.reactive.function.client.ExchangeFunctions: DEBUG
+
