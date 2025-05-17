@@ -104,7 +104,7 @@ public class UserAuthorizationController extends BaseController {
         try{
             return ResponseEntity.ok(userService.getUserDTO(userAccountService.getCurrentUserUUID()));
         } catch (AuthException ae) {
-            return new ResponseEntity<>(HttpStatusCode.valueOf(401));
+            return new ResponseEntity<>(HttpStatusCode.valueOf(400));
         }
     }
 

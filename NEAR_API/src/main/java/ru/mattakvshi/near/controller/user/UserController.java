@@ -1,7 +1,9 @@
 package ru.mattakvshi.near.controller.user;
 
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.security.auth.message.AuthException;
 import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,7 @@ import ru.mattakvshi.near.service.UserAccountService;
 import ru.mattakvshi.near.dto.user.DeviceTokenRequest;
 
 import java.util.UUID;
+
 
 @Slf4j
 @Tag(name = "UserBaseController")
@@ -43,6 +46,12 @@ public class UserController extends BaseController {
         return new ResponseEntity<>(userDTO, HttpStatusCode.valueOf(200));
     }
 
+
+    @Operation(
+            summary = "Эндпоинт для обновления Device Token",
+            description = "Данный эндпоинт необходим исключительно для мобильного клиента. Он необходим в целях смены Device Token " +
+                    "и привязки конкретного устройства к пользователю в системе."
+    )
      @PostMapping("/user/update-device-token")
     public ResponseEntity<?> updateDeviceToken(@RequestBody DeviceTokenRequest request) {
         try {
@@ -53,6 +62,19 @@ public class UserController extends BaseController {
         } catch (Exception e) {
             log.error("Ошибка обновления токена", e);
             return ResponseEntity.status(500).body("Internal Server Error");
+        }
+    }
+
+
+    @Operation(
+            summary = "Эндпоинт для обновления Device Token"
+    )
+    @GetMapping("/user/get-notification-options")
+    public ResponseEntity<?> getNotificationOptionsForUser() {
+        try{
+            return ResponseEntity.ok(userService.getUser(userAccountService.getCurrentUserUUID()).getSelectedOptions());
+        } catch (AuthException ae) {
+            return new ResponseEntity<>(HttpStatusCode.valueOf(400));
         }
     }
 
