@@ -23,7 +23,7 @@ public class KafkaConsumer {
         notificationSender.sendNotification(
                 message.getDeviceToken(),
                 message.getTemplateName(),
-                message.getMessage()
+                message.getMessage() + ", " + message.getOwner() + ", " + message.getEmergencyType()
         );
     }
 }
