@@ -1,11 +1,9 @@
 package ru.mattakvshi.near.dao.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
 import ru.mattakvshi.near.dao.GroupDAO;
-import ru.mattakvshi.near.dao.repository.auth.GroupRepository;
+import ru.mattakvshi.near.dao.repository.GroupRepository;
 import ru.mattakvshi.near.entity.Group;
 
 import java.util.UUID;

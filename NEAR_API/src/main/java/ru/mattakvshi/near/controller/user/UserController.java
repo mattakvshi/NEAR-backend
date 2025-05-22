@@ -17,6 +17,7 @@ import ru.mattakvshi.near.dto.actions.AddFriendsRequest;
 import ru.mattakvshi.near.dto.actions.SubscribeRequest;
 import ru.mattakvshi.near.dto.community.UserDTOForCommunity;
 import ru.mattakvshi.near.dto.user.UserDTOForUser;
+import ru.mattakvshi.near.dto.user.UserUpdateRequest;
 import ru.mattakvshi.near.entity.auth.UserAccount;
 import ru.mattakvshi.near.service.UserService;
 import ru.mattakvshi.near.service.UserAccountService;
@@ -44,6 +45,19 @@ public class UserController extends BaseController {
             return new ResponseEntity<>(HttpStatusCode.valueOf(400));
         }
         return new ResponseEntity<>(userDTO, HttpStatusCode.valueOf(200));
+    }
+
+    @Operation(summary = "Эндпоинт для обновления данных пользователя")
+    @PatchMapping("/user/update")
+    public ResponseEntity<?> updateUser(@RequestBody UserUpdateRequest request) {
+        try {
+            UUID userId = userAccountService.getCurrentUserUUID();
+            userService.updateUser(userId, request);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            log.error("Ошибка обновления данных пользователя", e);
+            return ResponseEntity.status(500).body("Internal Server Error");
+        }
     }
 
 

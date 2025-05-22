@@ -1,4 +1,4 @@
-package ru.mattakvshi.near.dao.repository.auth;
+package ru.mattakvshi.near.dao.repository;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;

@@ -7,15 +7,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import ru.mattakvshi.near.dao.CommunityDAO;
+import ru.mattakvshi.near.dao.NotificationOptionsDAO;
 import ru.mattakvshi.near.dao.UserDAO;
 import ru.mattakvshi.near.dto.user.UserDTOForUser;
+import ru.mattakvshi.near.dto.user.UserUpdateRequest;
+import ru.mattakvshi.near.entity.NotificationOptions;
 import ru.mattakvshi.near.entity.base.User;
 import ru.mattakvshi.near.jobs.BirthdayJob;
 import ru.mattakvshi.near.service.UserService;
 
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -23,6 +29,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserDAO userDAO;
+
+    @Autowired
+    private NotificationOptionsDAO notificationOptionsDAO;
 
     @Autowired
     Scheduler scheduler;
@@ -95,4 +104,45 @@ public class UserServiceImpl implements UserService {
         user.setDeviceToken(deviceToken);
         userDAO.saveUser(user);
     }
+
+    @Override
+    @Transactional
+    public void updateUser(UUID userId, UserUpdateRequest request) {
+        User user = userDAO.findById(userId);
+        if (user == null) {
+            throw new RuntimeException("Пользователь не найден");
+        }
+
+        // Обновляем поля, если они указаны в запросе
+        if (request.getFirstName() != null) user.setFirstName(request.getFirstName());
+        if (request.getLastName() != null) user.setLastName(request.getLastName());
+        if (request.getBirthday() != null) {
+            user.setBirthday(request.getBirthday());
+            user.calculateAge();
+        }
+        if (request.getCountry() != null) user.setCountry(request.getCountry());
+        if (request.getCity() != null) user.setCity(request.getCity());
+        if (request.getDistrict() != null) user.setDistrict(request.getDistrict());
+        if (request.getEmail() != null) user.setEmail(request.getEmail());
+        if (request.getPhoneNumber() != null) user.setPhoneNumber(request.getPhoneNumber());
+        if (request.getTelegramShortName() != null) user.setTelegramShortName(request.getTelegramShortName());
+
+        // Обновляем опции уведомлений
+        if (request.getSelectedOptions() != null) {
+            List<Integer> optionIds = request.getSelectedOptions();
+            List<NotificationOptions> options = notificationOptionsDAO.findAllById(optionIds);
+
+            // Проверка существования всех ID
+            if (options.size() != optionIds.size()) {
+                Set<Integer> foundIds = options.stream().map(NotificationOptions::getId).collect(Collectors.toSet());
+                List<Integer> missingIds = optionIds.stream().filter(id -> !foundIds.contains(id)).toList();
+                throw new RuntimeException("Не найдены опции уведомлений с ID: " + missingIds);
+            }
+
+            user.setSelectedOptions(options);
+        }
+
+        userDAO.saveUser(user);
+    }
+
 }
