@@ -47,7 +47,10 @@ public class UserController extends BaseController {
         return new ResponseEntity<>(userDTO, HttpStatusCode.valueOf(200));
     }
 
-    @Operation(summary = "Эндпоинт для обновления данных пользователя")
+    @Operation(
+            summary = "Эндпоинт для обновления данных пользователя",
+            description = "Можно хоть один элемент передавать в JSON хоть все, передавай только то, что поменялось, такой вот вари оптимизации."
+    )
     @PatchMapping("/user/update")
     public ResponseEntity<?> updateUser(@RequestBody UserUpdateRequest request) {
         try {

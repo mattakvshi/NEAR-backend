@@ -9,6 +9,8 @@ import ru.mattakvshi.near.dto.auth.AuthResponse;
 import ru.mattakvshi.near.dto.community.CommunityDTOForCommunity;
 import ru.mattakvshi.near.entity.auth.CommunityAccount;
 
+import java.util.UUID;
+
 public interface CommunityAccountService {
     @Transactional
     AuthResponse login(AuthRequests authRequests) throws AuthException;
@@ -16,6 +18,8 @@ public interface CommunityAccountService {
     AuthResponse getAccessToken(String refreshToken) throws AuthException;
 
     AuthResponse refresh(String refreshToken) throws AuthException;
+
+    UUID getCurrentCommunityUUID() throws AuthException;
 
     @Transactional
     CommunityAccount saveCommunity(CommunityAccount communityAccount);

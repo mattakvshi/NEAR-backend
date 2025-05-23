@@ -12,13 +12,10 @@ import java.util.UUID;
 
 public interface UserService {
 
-    @Transactional
     UUID saveUserForFirstTime(User user);
 
-    @Transactional
     UUID saveUser(User user);
 
-    @Transactional
     User getUser(UUID userId);
 
     //@Cacheable(value = "getUserByContext", key = "#id")

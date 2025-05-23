@@ -127,19 +127,25 @@ public class UserServiceImpl implements UserService {
         if (request.getPhoneNumber() != null) user.setPhoneNumber(request.getPhoneNumber());
         if (request.getTelegramShortName() != null) user.setTelegramShortName(request.getTelegramShortName());
 
-        // Обновляем опции уведомлений
+        // Обновление Many-to-Many связи с проверкой
         if (request.getSelectedOptions() != null) {
             List<Integer> optionIds = request.getSelectedOptions();
             List<NotificationOptions> options = notificationOptionsDAO.findAllById(optionIds);
 
             // Проверка существования всех ID
             if (options.size() != optionIds.size()) {
-                Set<Integer> foundIds = options.stream().map(NotificationOptions::getId).collect(Collectors.toSet());
-                List<Integer> missingIds = optionIds.stream().filter(id -> !foundIds.contains(id)).toList();
+                Set<Integer> foundIds = options.stream()
+                        .map(NotificationOptions::getId)
+                        .collect(Collectors.toSet());
+                List<Integer> missingIds = optionIds.stream()
+                        .filter(id -> !foundIds.contains(id))
+                        .toList();
                 throw new RuntimeException("Не найдены опции уведомлений с ID: " + missingIds);
             }
 
-            user.setSelectedOptions(options);
+            // Корректное обновление коллекции для Hibernate
+            user.getSelectedOptions().clear();
+            user.getSelectedOptions().addAll(options);
         }
 
         userDAO.saveUser(user);

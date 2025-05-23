@@ -6,7 +6,9 @@ import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.mattakvshi.near.config.security.JWTProvider;
@@ -17,7 +19,10 @@ import ru.mattakvshi.near.dto.auth.AuthResponse;
 import ru.mattakvshi.near.dto.community.CommunityDTOForCommunity;
 import ru.mattakvshi.near.entity.auth.CommunityAccount;
 import ru.mattakvshi.near.entity.auth.CommunityRefreshStorage;
+import ru.mattakvshi.near.entity.auth.UserAccount;
 import ru.mattakvshi.near.service.CommunityAccountService;
+
+import java.util.UUID;
 
 @Service
 public class CommunityAccountServiceImpl implements CommunityAccountService {
@@ -87,6 +92,15 @@ public class CommunityAccountServiceImpl implements CommunityAccountService {
             }
         }
         throw new AuthException("Невалидный JWT токен");
+    }
+
+    @Override
+    public UUID getCurrentCommunityUUID() throws AuthException {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getPrincipal() instanceof CommunityAccount) {
+            return ((CommunityAccount) authentication.getPrincipal()).getCommunity().getId();
+        }
+        return null;
     }
 
     public CommunityAccount saveCommunity(CommunityAccount communityAccount) {;

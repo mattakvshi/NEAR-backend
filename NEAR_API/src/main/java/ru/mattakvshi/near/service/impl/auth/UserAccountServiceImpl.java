@@ -102,7 +102,6 @@ public class UserAccountServiceImpl implements UserAccountService {
 
     @Transactional
     public UserAccount saveUser(UserAccount userAccount) {
-
         userAccount.setPassword(passwordEncoder.encode(userAccount.getPassword()));
         return userAccountRepository.save(userAccount);
     }
