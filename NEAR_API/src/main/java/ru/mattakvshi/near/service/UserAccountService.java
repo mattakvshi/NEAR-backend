@@ -15,13 +15,24 @@ public interface UserAccountService {
     @Transactional
     AuthResponse login(AuthRequests authRequests) throws AuthException;
 
+    void sendVerificationEmail(UserAccount userAccount);
+
+    boolean verifyEmail(UUID token);
+
+    void requestEmailChange(UUID userId, String newEmail);
+
+    void createEmailChangeRequest(UserAccount userAccount, String newEmail);
+
+    boolean verifyEmailChange(UUID token);
+
     AuthResponse getAccessToken(String refreshToken) throws AuthException;
 
     AuthResponse refresh(String refreshToken) throws AuthException;
 
+    UUID getCurrentUserAccountUUID() throws AuthException;
+
     UUID getCurrentUserUUID() throws AuthException;
 
-    @Transactional
     UserAccount saveUser(UserAccount userAccount);
 
     UserAccount findByEmail(String email);

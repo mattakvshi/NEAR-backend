@@ -66,6 +66,35 @@ CREATE TABLE public.community_refresh_storage (
 ALTER TABLE public.community_refresh_storage OWNER TO postgres;
 
 --
+-- Name: email_change_storage; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.email_change_storage (
+    token uuid NOT NULL,
+    expiry_date timestamp(6) without time zone NOT NULL,
+    new_email character varying(255) NOT NULL,
+    user_account_user_account_id uuid,
+    user_account_id uuid
+);
+
+
+ALTER TABLE public.email_change_storage OWNER TO postgres;
+
+--
+-- Name: email_verification_token; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.email_verification_token (
+    token uuid NOT NULL,
+    expiry_date timestamp(6) without time zone,
+    user_account_user_account_id uuid,
+    user_account_id uuid NOT NULL
+);
+
+
+ALTER TABLE public.email_verification_token OWNER TO postgres;
+
+--
 -- Name: emergency_type; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -243,7 +272,8 @@ CREATE TABLE public.user_account_data (
     authenticated boolean NOT NULL,
     email character varying(255) NOT NULL,
     password character varying(255),
-    user_id uuid
+    user_id uuid,
+    email_verified boolean DEFAULT false NOT NULL
 );
 
 
@@ -301,7 +331,7 @@ ALTER TABLE public.users OWNER TO postgres;
 --
 
 COPY public.communities (city, community_name, country, description, district, registration_date, id) FROM stdin;
-\N	OOO Где-то долбануло	Россия	\N	\N	2024-07-05	69ac213b-99a1-42d0-96fa-999c7cc69fa0
+Краснодар	OOO Где-то долбануло	Россия	Когда в Красе снова что-то БУМКНУЛО...	Северный	2024-07-05	69ac213b-99a1-42d0-96fa-999c7cc69fa0
 \.
 
 
@@ -319,7 +349,23 @@ f37a23e7-5f0b-4ade-9dcd-e57ac2c0b58e	f	gdetodolbanulo@example.com	$2a$10$Oj/LTp7
 --
 
 COPY public.community_refresh_storage (email, refresh_token) FROM stdin;
-gdetodolbanulo@example.com	eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnZGV0b2RvbGJhbnVsb0BleGFtcGxlLmNvbSIsImV4cCI6MTc0MzM0NjQzM30.fy_XFDW2R4TKo0DYYmJZZ4esBNVAQ4w9GT8lGCSTKl2OBa7ezEtiyZLutTddtkGIkr7oB2sY9hpDwbru_vuF6A
+gdetodolbanulo@example.com	eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnZGV0b2RvbGJhbnVsb0BleGFtcGxlLmNvbSIsImV4cCI6MTc1MDU5MTY4Mn0.zB275M2IP6AvASPQJBzhOnjpO4uRydqE0hbJaSmmseTggZHZpyS6jRJ5T1KVnDwqGOfKkBCgcqbMTkhCuQ44kw
+\.
+
+
+--
+-- Data for Name: email_change_storage; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.email_change_storage (token, expiry_date, new_email, user_account_user_account_id, user_account_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: email_verification_token; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.email_verification_token (token, expiry_date, user_account_user_account_id, user_account_id) FROM stdin;
 \.
 
 
@@ -387,6 +433,8 @@ c045cd9c-0488-4689-b389-a8fb8e95dc48	0113b52c-39bd-4b6a-822f-f5e5ad458b74
 
 COPY public.monitored_emergency (community_id, type_id) FROM stdin;
 69ac213b-99a1-42d0-96fa-999c7cc69fa0	1
+69ac213b-99a1-42d0-96fa-999c7cc69fa0	2
+69ac213b-99a1-42d0-96fa-999c7cc69fa0	3
 \.
 
 
@@ -408,6 +456,7 @@ COPY public.notification_options (options_id, bg_color, bg_color_dark, color, co
 COPY public.notification_templates (template_id, notification_message, template_name, emergency_type_id, owner_id) FROM stdin;
 7629440c-a90c-4d55-ab7e-d9ab36a0bd94	Attention, in 1 there will be a tectonic impact of 9 points.	Earthquake in Turkish.	1	0113b52c-39bd-4b6a-822f-f5e5ad458b74
 d8cca1c9-74a8-441c-ac00-3eab0ba96809	Attention, in 1 there will be a tectonic impact of 10 points.	Earthquake in USA.	1	69ac213b-99a1-42d0-96fa-999c7cc69fa0
+b92f44f5-c553-493b-97e7-1373418cd9e3	Йоу, пацаны, чё-там?	Чё-то стало на районе.	1	91511352-c656-4b2f-b5be-f79d34a0fedd
 \.
 
 
@@ -435,15 +484,15 @@ COPY public.selected_options (user_id, options_id) FROM stdin;
 823576a0-0336-4354-9292-63850ed99937	3
 0113b52c-39bd-4b6a-822f-f5e5ad458b74	2
 0113b52c-39bd-4b6a-822f-f5e5ad458b74	3
-91511352-c656-4b2f-b5be-f79d34a0fedd	1
-91511352-c656-4b2f-b5be-f79d34a0fedd	2
-91511352-c656-4b2f-b5be-f79d34a0fedd	3
 9bdb7e5c-2c43-4ad9-a5d6-178e52ca99a3	1
 9bdb7e5c-2c43-4ad9-a5d6-178e52ca99a3	2
 9bdb7e5c-2c43-4ad9-a5d6-178e52ca99a3	3
 521fcb68-52cf-4b79-ae20-aac0402383bc	1
 521fcb68-52cf-4b79-ae20-aac0402383bc	2
 521fcb68-52cf-4b79-ae20-aac0402383bc	3
+91511352-c656-4b2f-b5be-f79d34a0fedd	1
+91511352-c656-4b2f-b5be-f79d34a0fedd	2
+91511352-c656-4b2f-b5be-f79d34a0fedd	3
 \.
 
 
@@ -462,12 +511,12 @@ COPY public.subscribers_subscriptions (user_id, community_id) FROM stdin;
 -- Data for Name: user_account_data; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.user_account_data (user_account_id, authenticated, email, password, user_id) FROM stdin;
-e45bb9dd-ddb8-4d8a-877e-1cd4379271ce	f	alex.lox@example.com	$2a$10$WQxky1ZK92Shff3h86FUqeUrwDS2qv/TWSqJwy9hT/gYzNxgWjmaG	823576a0-0336-4354-9292-63850ed99937
-5c35a63e-3952-47a8-84c4-142d49400362	f	dima.lox@example.com	$2a$10$s3mXDLeIH67FIV6BSbXTdetXT1QmSHtkJwD/0QYbfw4RtwgNSUSLK	0113b52c-39bd-4b6a-822f-f5e5ad458b74
-7a908548-9b74-4f95-9a44-c971b07dfb19	f	ytube9504@gmail.com	$2a$10$l4/WaomI9t8wUT47qYqzKOalX0qG1OISyd.1YiapGhtRPd8mJsPHe	91511352-c656-4b2f-b5be-f79d34a0fedd
-4f5f121d-518f-4271-9764-4d84d7523cd3	f	erushevivan@mail.ru	$2a$10$o2BMnKcKY6u3uLjmCqzC2O0tXJqt9qTO8sWcm5F2JpVN0z4MVkTr6	9bdb7e5c-2c43-4ad9-a5d6-178e52ca99a3
-1d0190a9-3cde-4ada-a493-a0b09683a9f8	f	you.chetam@example.com	$2a$10$ZceJG3ocSa.eIlg.QRPnw..Yuoe.PhE5fzBJtbBbz/9FxW88mEeA2	521fcb68-52cf-4b79-ae20-aac0402383bc
+COPY public.user_account_data (user_account_id, authenticated, email, password, user_id, email_verified) FROM stdin;
+e45bb9dd-ddb8-4d8a-877e-1cd4379271ce	f	alex.lox@example.com	$2a$10$WQxky1ZK92Shff3h86FUqeUrwDS2qv/TWSqJwy9hT/gYzNxgWjmaG	823576a0-0336-4354-9292-63850ed99937	f
+5c35a63e-3952-47a8-84c4-142d49400362	f	dima.lox@example.com	$2a$10$s3mXDLeIH67FIV6BSbXTdetXT1QmSHtkJwD/0QYbfw4RtwgNSUSLK	0113b52c-39bd-4b6a-822f-f5e5ad458b74	f
+7a908548-9b74-4f95-9a44-c971b07dfb19	f	ytube9504@gmail.com	$2a$10$l4/WaomI9t8wUT47qYqzKOalX0qG1OISyd.1YiapGhtRPd8mJsPHe	91511352-c656-4b2f-b5be-f79d34a0fedd	f
+4f5f121d-518f-4271-9764-4d84d7523cd3	f	erushevivan@mail.ru	$2a$10$o2BMnKcKY6u3uLjmCqzC2O0tXJqt9qTO8sWcm5F2JpVN0z4MVkTr6	9bdb7e5c-2c43-4ad9-a5d6-178e52ca99a3	f
+1d0190a9-3cde-4ada-a493-a0b09683a9f8	f	you.chetam@example.com	$2a$10$ZceJG3ocSa.eIlg.QRPnw..Yuoe.PhE5fzBJtbBbz/9FxW88mEeA2	521fcb68-52cf-4b79-ae20-aac0402383bc	f
 \.
 
 
@@ -492,11 +541,11 @@ COPY public.user_friends (user_id, friend_id) FROM stdin;
 --
 
 COPY public.user_refresh_storage (email, refresh_token) FROM stdin;
-dima.lox@example.com	eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkaW1hLmxveEBleGFtcGxlLmNvbSIsImV4cCI6MTcyMzQ3NjQxOH0.cHjWuBNnlcmLrnqlvdpd2PGYHU-LadYCtbjb20E5svPbuxDwBeieV3h4CCxUSTNAQ-3TAhQ1QA7jKphJjiDXYw
 alex.lox@example.com	eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbGV4LmxveEBleGFtcGxlLmNvbSIsImV4cCI6MTcyMzQ3NjQ0NH0.c3aPkkwDcWGyu0zeweKpZWU8Pl3pC34L3eV3XE6c-YkAk8JklZ-beaewTerJx9WbNKQZyeovxaVdiCir3q8S8g
 you.chetam@example.com	eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ5b3UuY2hldGFtQGV4YW1wbGUuY29tIiwiZXhwIjoxNzQ5ODEzMjA0fQ.TQhj9cUFD5jsYft_Yl0mI-sGu0nYVZo31QowkK5pDqr2IC5LSNA98HFcRLt8HQy7uMqgXgUt0utkCqRouhmQnA
 erushevivan@mail.ru	eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJlcnVzaGV2aXZhbkBtYWlsLnJ1IiwiZXhwIjoxNzQ5ODE1NjA3fQ.7kXyOYyp_3QLK-dgpbd-hoYDuPXYwTLrMy3pVCa4hpUNu8Zf6pG803vJSJLtXmvoWBQZ4x0IPs8Ctf8K5qBZOg
-ytube9504@gmail.com	eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ5dHViZTk1MDRAZ21haWwuY29tIiwiZXhwIjoxNzQ5ODE2MDkyfQ.1vSmY2dEY_0_tABW5uAt6INWN8cf23X856yCxJhZshuJPPG8kN-3KswTd78lYQoHXXSgQ5n2RSNuUtCPNmEx0w
+dima.lox@example.com	eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkaW1hLmxveEBleGFtcGxlLmNvbSIsImV4cCI6MTc1MDI1Njg1Mn0.-BbF8onDPpTeXlED9Uk0igeCEye-nVpVDvHuUpGkBIMtfpgKZW8v6UrLSfE1wFjau1Jg5-W9rkCrr4v2cCrgXA
+ytube9504@gmail.com	eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ5dHViZTk1MDRAZ21haWwuY29tIiwiZXhwIjoxNzUwNTkxNzI2fQ.v6TtEiUauivuSE8sPXA6eQUMQwX9ocTWq8TLFVlRHjtDI51yXdBbPjG64PCDqYGcQnE3rc293AROm-T16lZ6Jg
 \.
 
 
@@ -505,11 +554,11 @@ ytube9504@gmail.com	eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ5dHViZTk1MDRAZ21haWwuY29tIiw
 --
 
 COPY public.users (age, birthday, city, country, district, first_name, last_name, registration_date, id, email, phone_number, telegram_short_name, device_token) FROM stdin;
-21	2003-02-08	Краснодар	Россия	Карасунский	Дмитрий	Владарчук	2024-07-05	0113b52c-39bd-4b6a-822f-f5e5ad458b74	dima@example.com	\N	\N	\N
 21	2003-01-17	Краснодар	Россия	Камсомольский	Александр	Емельяненко	2024-07-05	823576a0-0336-4354-9292-63850ed99937	alex@example.com	\N	\N	\N
 22	2002-10-21	Краснодар	Россия	Северный	Иван	Ерюшев	2025-04-19	9bdb7e5c-2c43-4ad9-a5d6-178e52ca99a3	erushevivan@mail.ru	+7 (918) 265-55-48	Joja2FloppaLover	\N
-22	2003-04-26	Краснодар	Россия	Северный	Максим	Сидоренко	2024-07-09	91511352-c656-4b2f-b5be-f79d34a0fedd	ytube9504@gmail.com	79182842848	mattakvshi	jm1l2k45j4l;3214k32
 25	2000-04-30	Краснодар	Россия	Да	Рыркырсыр	ЙоуЙоуЙоу	2025-05-14	521fcb68-52cf-4b79-ae20-aac0402383bc	you.chetam@example.com	\N	\N	\N
+22	2003-02-08	Краснодар	Россия	Карасунский	Дмитрий	Владарчук	2024-07-05	0113b52c-39bd-4b6a-822f-f5e5ad458b74	dima@example.com	\N	\N	f0mq0A6ZTaO6cx0q5IXQSH:APA91bH3sjZgwbE0-v3SzAQ6BiFVoZZWmVUscDqldxLfDR6iqlBID9OgOtFh6Epcjl0FDZcjgMTR3YbOGEvC5SG2_8DVeBOTSqdjMxtBRPzYG8jGiAY5v2s
+22	2003-04-26	Краснодар	Россия	Северный	Максим	Сидоренко	2024-07-09	91511352-c656-4b2f-b5be-f79d34a0fedd	ytube9504@gmail.com	79182842848	mattakvshi	jm1l2k45j4l;3214k32
 \.
 
 
@@ -549,6 +598,22 @@ ALTER TABLE ONLY public.community_account_data
 
 ALTER TABLE ONLY public.community_refresh_storage
     ADD CONSTRAINT community_refresh_storage_pkey PRIMARY KEY (email);
+
+
+--
+-- Name: email_change_storage email_change_storage_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.email_change_storage
+    ADD CONSTRAINT email_change_storage_pkey PRIMARY KEY (token);
+
+
+--
+-- Name: email_verification_token email_verification_token_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.email_verification_token
+    ADD CONSTRAINT email_verification_token_pkey PRIMARY KEY (token);
 
 
 --
@@ -608,6 +673,14 @@ ALTER TABLE ONLY public.user_account_data
 
 
 --
+-- Name: email_verification_token uka6t2q6homdhaqoqymn7cs1wrb; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.email_verification_token
+    ADD CONSTRAINT uka6t2q6homdhaqoqymn7cs1wrb UNIQUE (user_account_id);
+
+
+--
 -- Name: user_account_data ukblgvy3nhr7573sifltqmhfi3n; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -616,11 +689,35 @@ ALTER TABLE ONLY public.user_account_data
 
 
 --
+-- Name: email_change_storage ukeye0o729o0dmqgwl745e6ee3c; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.email_change_storage
+    ADD CONSTRAINT ukeye0o729o0dmqgwl745e6ee3c UNIQUE (user_account_user_account_id);
+
+
+--
 -- Name: community_account_data ukjj224m5pkhnmf5jvr1mu4v2rh; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.community_account_data
     ADD CONSTRAINT ukjj224m5pkhnmf5jvr1mu4v2rh UNIQUE (email);
+
+
+--
+-- Name: email_verification_token ukm8jt6ra49hi88sn7cy1gha69r; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.email_verification_token
+    ADD CONSTRAINT ukm8jt6ra49hi88sn7cy1gha69r UNIQUE (user_account_user_account_id);
+
+
+--
+-- Name: email_change_storage ukpnf17932e4crhy6owm9e9sx0t; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.email_change_storage
+    ADD CONSTRAINT ukpnf17932e4crhy6owm9e9sx0t UNIQUE (user_account_id);
 
 
 --
@@ -744,6 +841,14 @@ ALTER TABLE ONLY public.selected_options
 
 
 --
+-- Name: email_verification_token fkfljs2p5shdrkhgylkmp4r7afq; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.email_verification_token
+    ADD CONSTRAINT fkfljs2p5shdrkhgylkmp4r7afq FOREIGN KEY (user_account_id) REFERENCES public.user_account_data(user_account_id);
+
+
+--
 -- Name: notification_templates fkj04gqk2pai297kkxc7g8daecq; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -757,6 +862,14 @@ ALTER TABLE ONLY public.notification_templates
 
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT fkj1s0uxf4pym5k6sqf58a7acdg FOREIGN KEY (id) REFERENCES public.owners_data(id);
+
+
+--
+-- Name: email_change_storage fkjmj9430jaygjoa8aoauq6et7u; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.email_change_storage
+    ADD CONSTRAINT fkjmj9430jaygjoa8aoauq6et7u FOREIGN KEY (user_account_id) REFERENCES public.user_account_data(user_account_id);
 
 
 --
@@ -800,11 +913,27 @@ ALTER TABLE ONLY public.notification_templates
 
 
 --
+-- Name: email_change_storage fkphy94g1anudjbht3mq4c92suy; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.email_change_storage
+    ADD CONSTRAINT fkphy94g1anudjbht3mq4c92suy FOREIGN KEY (user_account_user_account_id) REFERENCES public.user_account_data(user_account_id);
+
+
+--
 -- Name: friend_requests_received fkqhdqm9wyucshb4okj01qp50kg; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.friend_requests_received
     ADD CONSTRAINT fkqhdqm9wyucshb4okj01qp50kg FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
+-- Name: email_verification_token fkqib0ltxwpd0miwgaa140tlyrt; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.email_verification_token
+    ADD CONSTRAINT fkqib0ltxwpd0miwgaa140tlyrt FOREIGN KEY (user_account_user_account_id) REFERENCES public.user_account_data(user_account_id);
 
 
 --

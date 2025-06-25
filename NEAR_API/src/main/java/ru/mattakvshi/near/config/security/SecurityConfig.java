@@ -54,7 +54,9 @@ public class SecurityConfig {
                                         "*/login/community",
                                         "*/token/community",
                                         "/v3/**",
-                                        "/swagger-ui/**"
+                                        "/swagger-ui/**",
+                                        "*/verify-email",
+                                        "*/confirm-email-change"
                                 ).permitAll()
                                 .anyRequest().authenticated()
                 )
