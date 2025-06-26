@@ -18,7 +18,7 @@ import ru.mattakvshi.near.entity.base.User;
 import ru.mattakvshi.near.jobs.BirthdayJob;
 import ru.mattakvshi.near.service.UserService;
 
-import java.awt.print.Pageable;
+import org.springframework.data.domain.Pageable;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
@@ -164,8 +164,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Page<UserDTOForUser> searchUsers(String query, int page, int size) {
-        Pageable pageable = (Pageable) PageRequest.of(page, size, Sort.by("firstName").ascending().and(Sort.by("lastName").ascending()));
-        Page<User> users = userDAO.findAllByUserNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(
+        Pageable pageable = PageRequest.of(page, size, Sort.by("firstName").ascending().and(Sort.by("lastName").ascending()));
+        Page<User> users = userDAO.findAllByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(
                 query == null ? "" : query,
                 query == null ? "" : query,
                 pageable

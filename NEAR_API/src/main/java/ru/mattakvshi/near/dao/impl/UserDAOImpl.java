@@ -7,7 +7,7 @@ import ru.mattakvshi.near.dao.UserDAO;
 import ru.mattakvshi.near.dao.repository.UserRepository;
 import ru.mattakvshi.near.entity.base.User;
 
-import java.awt.print.Pageable;
+import org.springframework.data.domain.Pageable;
 import java.util.List;
 import java.util.UUID;
 
@@ -35,9 +35,9 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public Page<User> findAllByUserNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(
-            String nameQuery, String descriptionQuery, Pageable pageable
+    public Page<User> findAllByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(
+            String firstNameQuery, String lastNameQuery, Pageable pageable
     ){
-        return userRepository.findAllByUserNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(nameQuery,descriptionQuery, pageable);
+        return userRepository.findAllByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(firstNameQuery,lastNameQuery, pageable);
     };
 }

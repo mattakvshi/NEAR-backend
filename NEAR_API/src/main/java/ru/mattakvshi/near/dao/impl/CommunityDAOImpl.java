@@ -8,7 +8,7 @@ import ru.mattakvshi.near.dao.CommunityDAO;
 import ru.mattakvshi.near.dao.repository.CommunityRepository;
 import ru.mattakvshi.near.entity.base.Community;
 
-import java.awt.print.Pageable;
+import org.springframework.data.domain.Pageable;
 import java.util.UUID;
 
 

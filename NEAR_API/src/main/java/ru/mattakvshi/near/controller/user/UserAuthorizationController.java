@@ -80,7 +80,7 @@ public class UserAuthorizationController extends BaseController {
     }
 
     //Проверка имейла и токена
-    @GetMapping("/verify-email")
+    @GetMapping("/verify-email-user")
     public ResponseEntity<?> verifyEmail(@RequestParam String token) {
         try {
             UUID uuidToken = UUID.fromString(token.trim()); // Удаляем лишние пробелы
@@ -109,7 +109,7 @@ public class UserAuthorizationController extends BaseController {
         }
     }
 
-    @GetMapping("/confirm-email-change")
+    @GetMapping("/confirm-email-change-user")
     public ResponseEntity<?> confirmEmailChange(@RequestParam UUID token) {
         if (userAccountService.verifyEmailChange(token)) {
             return ResponseEntity.ok("Почта успешно изменена");

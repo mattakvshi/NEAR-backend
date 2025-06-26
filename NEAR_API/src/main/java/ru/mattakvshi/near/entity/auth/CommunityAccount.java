@@ -48,6 +48,9 @@ public class CommunityAccount implements UserDetails, Authentication {
 
     private boolean authenticated;
 
+    @Column(name = "email_verified", nullable = false, columnDefinition = "boolean default false")
+    private boolean emailVerified = false; // По умолчанию email не подтвержден
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singletonList(new SimpleGrantedAuthority(SystemRole.Community.toString()));
@@ -105,7 +108,7 @@ public class CommunityAccount implements UserDetails, Authentication {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return emailVerified;
     }
 
     @Override

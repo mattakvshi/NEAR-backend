@@ -96,7 +96,7 @@ public class UserController extends BaseController {
         }
     }
 
-    @GetMapping("/community/all")
+    @GetMapping("/user/all")
     @Operation(
             summary = "Получить список пользователей с пагинацией и поиском.",
             description = "На данный момент эндпоинт принимает 3 параметра: " +

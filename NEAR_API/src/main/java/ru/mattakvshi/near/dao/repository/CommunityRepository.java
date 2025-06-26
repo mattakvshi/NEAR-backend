@@ -5,7 +5,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import ru.mattakvshi.near.entity.base.Community;
 
-import java.awt.print.Pageable;
+import org.springframework.data.domain.Pageable;
 import java.util.UUID;
 
 @Repository

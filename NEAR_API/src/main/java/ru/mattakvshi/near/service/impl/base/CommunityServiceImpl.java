@@ -15,7 +15,7 @@ import ru.mattakvshi.near.entity.EmergencyTypes;
 import ru.mattakvshi.near.entity.base.Community;
 import ru.mattakvshi.near.service.CommunityService;
 
-import java.awt.print.Pageable;
+import org.springframework.data.domain.Pageable;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -102,7 +102,7 @@ public class CommunityServiceImpl  implements CommunityService {
 
     @Override
     public Page<CommunityDTOForUser> searchCommunities(String query, int page, int size) {
-        Pageable pageable = (Pageable) PageRequest.of(page, size, Sort.by("communityName").ascending());
+        Pageable pageable = PageRequest.of(page, size, Sort.by("communityName").ascending());
         Page<Community> communities = communityDAO.findAllByCommunityNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(
                 query == null ? "" : query,
                 query == null ? "" : query,

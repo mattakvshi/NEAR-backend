@@ -15,17 +15,37 @@ public interface CommunityAccountService {
     @Transactional
     AuthResponse login(AuthRequests authRequests) throws AuthException;
 
+    //Отправляем ссылку подтверждения на почту пользователю (формируем токен)
+    @Transactional
+    void sendVerificationEmail(CommunityAccount communityAccount);
+
+    @Transactional
+    boolean verifyEmail(UUID token);
+
+    void requestEmailChange(UUID communityId, String newEmail);
+
+    @Transactional
+    void createEmailChangeRequest(CommunityAccount communityAccount, String newEmail);
+
+    @Transactional
+    boolean verifyEmailChange(UUID token);
+
     AuthResponse getAccessToken(String refreshToken) throws AuthException;
 
     AuthResponse refresh(String refreshToken) throws AuthException;
+
+    UUID getCurrentCommunityAccountUUID() throws AuthException;
 
     UUID getCurrentCommunityUUID() throws AuthException;
 
     @Transactional
     CommunityAccount saveCommunity(CommunityAccount communityAccount);
 
+    CommunityAccount saveCommunityWithoutEncrypting(CommunityAccount communityAccount);
+
     CommunityAccount findByEmail(String email);
 
     CommunityAccount findByEmailAndPassword(String email, String password);
 
+    CommunityAccount findById(UUID id);
 }
