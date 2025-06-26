@@ -36,10 +36,15 @@ public class CommunityAuthorizationController extends BaseController {
     private CommunityService communityService;
 
     @PostMapping("/signup/community")
-    public String registerCommunity(@RequestBody @Valid CommunityRegistrationRequest communityRegistrationRequest) {
+    public ResponseEntity<?> registerCommunity(@RequestBody @Valid CommunityRegistrationRequest communityRegistrationRequest) {
         CommunityAccount communityAccount = communityRegistrationRequest.toAccount();
         communityAccountService.saveCommunity(communityAccount);
-        return "OK" + communityService.saveCommunity(communityAccount.getCommunity());
+
+        //Отправляем ссылку подтверждения на почту пользователю
+        communityAccountService.sendVerificationEmail(communityAccount);
+        return ResponseEntity.ok("Регистрация прошла успешно! "
+                + "Письмо с подтверждением отправлено на "
+                + communityAccount.getEmail());
     }
 
     @PostMapping("/login/community")

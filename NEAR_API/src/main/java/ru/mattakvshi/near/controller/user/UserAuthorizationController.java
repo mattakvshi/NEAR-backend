@@ -47,13 +47,15 @@ public class UserAuthorizationController extends BaseController {
                     "User - вся личная информация пользователя имя, возраст, страна, город, район, друзья, группы, подписки и т.д.\n"
     )
     @PostMapping("/signup/account")
-    public ResponseEntity registerUser(@RequestBody @Valid UserRegistrationRequest userRegistrationRequest) {
+    public ResponseEntity<?> registerUser(@RequestBody @Valid UserRegistrationRequest userRegistrationRequest) {
         UserAccount userAccount = userRegistrationRequest.toAccount();
         userAccountService.saveUser(userAccount);
 
         //Отправляем ссылку подтверждения на почту пользователю
         userAccountService.sendVerificationEmail(userAccount);
-        return new ResponseEntity<>(HttpStatusCode.valueOf(200));
+        return ResponseEntity.ok("Регистрация прошла успешно! "
+                + "Письмо с подтверждением отправлено на "
+                + userAccount.getEmail());
     }
 
     @Operation(
