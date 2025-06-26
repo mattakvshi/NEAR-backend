@@ -3,12 +3,12 @@ package ru.mattakvshi.near.service.impl.base;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.engine.spi.EntityEntry;
 import org.quartz.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import ru.mattakvshi.near.dao.CommunityDAO;
 import ru.mattakvshi.near.dao.NotificationOptionsDAO;
 import ru.mattakvshi.near.dao.UserDAO;
 import ru.mattakvshi.near.dto.user.UserDTOForUser;
@@ -18,6 +18,7 @@ import ru.mattakvshi.near.entity.base.User;
 import ru.mattakvshi.near.jobs.BirthdayJob;
 import ru.mattakvshi.near.service.UserService;
 
+import java.awt.print.Pageable;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
@@ -158,6 +159,18 @@ public class UserServiceImpl implements UserService {
         }
 
         userDAO.saveUser(user);
+    }
+
+
+    @Override
+    public Page<UserDTOForUser> searchUsers(String query, int page, int size) {
+        Pageable pageable = (Pageable) PageRequest.of(page, size, Sort.by("firstName").ascending().and(Sort.by("lastName").ascending()));
+        Page<User> users = userDAO.findAllByUserNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(
+                query == null ? "" : query,
+                query == null ? "" : query,
+                pageable
+        );
+        return users.map(UserDTOForUser::from);
     }
 
 }

@@ -7,6 +7,7 @@ import jakarta.security.auth.message.AuthException;
 import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,6 +17,7 @@ import ru.mattakvshi.near.controller.BaseController;
 import ru.mattakvshi.near.dto.actions.AddFriendsRequest;
 import ru.mattakvshi.near.dto.actions.SubscribeRequest;
 import ru.mattakvshi.near.dto.community.UserDTOForCommunity;
+import ru.mattakvshi.near.dto.user.CommunityDTOForUser;
 import ru.mattakvshi.near.dto.user.UserDTOForUser;
 import ru.mattakvshi.near.dto.user.UserUpdateRequest;
 import ru.mattakvshi.near.entity.auth.UserAccount;
@@ -82,7 +84,6 @@ public class UserController extends BaseController {
         }
     }
 
-
     @Operation(
             summary = "Эндпоинт для получения выбранных пользователем каналов оповещения"
     )
@@ -93,6 +94,23 @@ public class UserController extends BaseController {
         } catch (AuthException ae) {
             return new ResponseEntity<>(HttpStatusCode.valueOf(400));
         }
+    }
+
+    @GetMapping("/community/all")
+    @Operation(
+            summary = "Получить список пользователей с пагинацией и поиском.",
+            description = "На данный момент эндпоинт принимает 3 параметра: " +
+                    "search - тег для поиска по имени или описнию всообщества, " +
+                    "page - получаемая страница из набора всех сообществ, " +
+                    "size - колличество элементов на странице"
+    )
+    public ResponseEntity<Page<UserDTOForUser>> getUsers(
+            @RequestParam(name = "search", required = false) String searchQuery,
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "20") int size
+    ) {
+        Page<UserDTOForUser> users = userService.searchUsers(searchQuery, page, size);
+        return ResponseEntity.ok(users);
     }
 
 

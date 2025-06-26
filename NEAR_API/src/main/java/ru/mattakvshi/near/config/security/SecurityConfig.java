@@ -44,8 +44,8 @@ public class SecurityConfig {
                 }))
                 .authorizeHttpRequests(authorizeHttpRequests ->
                         authorizeHttpRequests
-                                .requestMatchers("*/user/**").hasAnyAuthority(SystemRole.User.name())
-                                .requestMatchers("*/community/**").hasAnyAuthority(SystemRole.Community.name())
+                                .requestMatchers("*/user/**", "/community/all", "/community/get").hasAnyAuthority(SystemRole.User.name())
+                                .requestMatchers("*/community/**", "/user/all", "/user/get").hasAnyAuthority(SystemRole.Community.name())
                                 .requestMatchers(
                                         "*/signup/account",
                                         "*/login/account",

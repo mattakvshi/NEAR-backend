@@ -1,13 +1,13 @@
 package ru.mattakvshi.near.dao.impl;
 
-import jakarta.transaction.Transactional;
-import org.reactivestreams.Publisher;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 import ru.mattakvshi.near.dao.UserDAO;
 import ru.mattakvshi.near.dao.repository.UserRepository;
 import ru.mattakvshi.near.entity.base.User;
 
+import java.awt.print.Pageable;
 import java.util.List;
 import java.util.UUID;
 
@@ -33,4 +33,11 @@ public class UserDAOImpl implements UserDAO {
     public List<User> findAllById(List<UUID> ids) {
         return (List<User>) userRepository.findAllById(ids);
     }
+
+    @Override
+    public Page<User> findAllByUserNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(
+            String nameQuery, String descriptionQuery, Pageable pageable
+    ){
+        return userRepository.findAllByUserNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(nameQuery,descriptionQuery, pageable);
+    };
 }

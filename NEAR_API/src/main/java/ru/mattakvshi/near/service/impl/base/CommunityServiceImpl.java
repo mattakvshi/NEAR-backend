@@ -2,18 +2,20 @@ package ru.mattakvshi.near.service.impl.base;
 
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.mattakvshi.near.dao.CommunityDAO;
 import ru.mattakvshi.near.dao.EmergencyTypeDAO;
 import ru.mattakvshi.near.dto.community.CommunityDTOForCommunity;
 import ru.mattakvshi.near.dto.community.CommunityUpdateRequest;
-import ru.mattakvshi.near.dto.user.UserDTOForUser;
+import ru.mattakvshi.near.dto.user.CommunityDTOForUser;
 import ru.mattakvshi.near.entity.EmergencyTypes;
-import ru.mattakvshi.near.entity.auth.CommunityAccount;
 import ru.mattakvshi.near.entity.base.Community;
 import ru.mattakvshi.near.service.CommunityService;
 
+import java.awt.print.Pageable;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -98,6 +100,15 @@ public class CommunityServiceImpl  implements CommunityService {
         communityDAO.saveCommunity(community);
     }
 
-
+    @Override
+    public Page<CommunityDTOForUser> searchCommunities(String query, int page, int size) {
+        Pageable pageable = (Pageable) PageRequest.of(page, size, Sort.by("communityName").ascending());
+        Page<Community> communities = communityDAO.findAllByCommunityNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(
+                query == null ? "" : query,
+                query == null ? "" : query,
+                pageable
+        );
+        return communities.map(CommunityDTOForUser::from);
+    }
 
 }
