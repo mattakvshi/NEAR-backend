@@ -23,9 +23,11 @@ import ru.mattakvshi.near.entity.auth.EmailChangeStorage;
 import ru.mattakvshi.near.entity.auth.EmailVerificationToken;
 import ru.mattakvshi.near.entity.auth.UserRefreshStorage;
 import ru.mattakvshi.near.entity.auth.UserAccount;
+import ru.mattakvshi.near.entity.base.User;
 import ru.mattakvshi.near.service.MailSender;
 import ru.mattakvshi.near.service.UserAccountService;
 import ru.mattakvshi.near.config.security.JWTProvider;
+import ru.mattakvshi.near.service.UserService;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -62,6 +64,9 @@ public class UserAccountServiceImpl implements UserAccountService {
 
     @Autowired
     private EntityManager entityManager;
+
+    @Autowired
+    private UserService userService;
 
     @Override
     @Transactional
@@ -161,7 +166,7 @@ public class UserAccountServiceImpl implements UserAccountService {
         LocalDateTime expiryDate = LocalDateTime.now().plusHours(24);
         EmailChangeStorage request = new EmailChangeStorage(
                 UUID.fromString(token),
-                userAccount,
+                userAccount.getId(),
                 newEmail,
                 expiryDate
         );
@@ -171,6 +176,7 @@ public class UserAccountServiceImpl implements UserAccountService {
         mailSender.send(userAccount.getEmail(), "Подтверждение изменения почты", verificationLink);
     }
 
+    @Transactional
     @Override
     public boolean verifyEmailChange(UUID token) {
         EmailChangeStorage request = emailChangeStorageDAO.findById(token);
@@ -178,10 +184,17 @@ public class UserAccountServiceImpl implements UserAccountService {
             log.info("Error..." + request);
             return false;
         }
+
         // Обновляем email в UserAccount и User
-        UserAccount userAccount = request.getUserAccount();
+        UserAccount userAccount = findById(request.getUserAccountId());
         userAccount.setEmail(request.getNewEmail());
-        saveUser(userAccount); // Местный метод
+        saveUserWithoutEncrypting(userAccount); // Местный метод без повторного шифрования пароля
+
+        //Обновляем email в User
+        User user = userAccount.getUser();
+        user.setEmail(request.getNewEmail());
+        userService.saveUser(user);
+
         // Удаляем использованный токен
         emailChangeStorageDAO.delete(request);
         return true;
@@ -248,6 +261,15 @@ public class UserAccountServiceImpl implements UserAccountService {
     @Override
     public UserAccount saveUser(UserAccount userAccount) {
         userAccount.setPassword(passwordEncoder.encode(userAccount.getPassword()));
+        var userAccountResponse = userAccountRepository.save(userAccount);
+        entityManager.flush();
+        return userAccountResponse;
+    }
+
+
+    @Override
+    public UserAccount saveUserWithoutEncrypting(UserAccount userAccount) {
+        userAccount.setPassword(userAccount.getPassword());
         var userAccountResponse = userAccountRepository.save(userAccount);
         entityManager.flush();
         return userAccountResponse;

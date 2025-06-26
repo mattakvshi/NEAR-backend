@@ -1,7 +1,9 @@
 package ru.mattakvshi.near.service.impl.base;
 
+import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.engine.spi.EntityEntry;
 import org.quartz.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -35,6 +37,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     Scheduler scheduler;
+
+    @Autowired
+    EntityManager entityManager;
 
     @Override
     @Transactional
@@ -73,9 +78,13 @@ public class UserServiceImpl implements UserService {
         return uuid;
     }
 
+    @Transactional
     @Override
     public UUID saveUser(User user) {
-        return userDAO.saveUser(user);
+        var uuid = userDAO.saveUser(user);
+        entityManager.flush();
+
+        return uuid;
     }
 
 

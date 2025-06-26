@@ -35,6 +35,8 @@ public interface UserAccountService {
 
     UserAccount saveUser(UserAccount userAccount);
 
+    UserAccount saveUserWithoutEncrypting(UserAccount userAccount);
+
     UserAccount findByEmail(String email);
 
     UserAccount findByEmailAndPassword(String email, String password) throws AuthException;

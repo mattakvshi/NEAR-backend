@@ -2,6 +2,7 @@ package ru.mattakvshi.near.service.impl.base;
 
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import ru.mattakvshi.near.dao.CommunityDAO;
 import ru.mattakvshi.near.dao.EmergencyTypeDAO;
@@ -9,6 +10,7 @@ import ru.mattakvshi.near.dto.community.CommunityDTOForCommunity;
 import ru.mattakvshi.near.dto.community.CommunityUpdateRequest;
 import ru.mattakvshi.near.dto.user.UserDTOForUser;
 import ru.mattakvshi.near.entity.EmergencyTypes;
+import ru.mattakvshi.near.entity.auth.CommunityAccount;
 import ru.mattakvshi.near.entity.base.Community;
 import ru.mattakvshi.near.service.CommunityService;
 
@@ -29,6 +31,14 @@ public class CommunityServiceImpl  implements CommunityService {
     @Override
     public UUID saveCommunity(Community community) {
         return communityDAO.saveCommunity(community);
+    }
+
+    public Community getCommunity(UUID id){
+        var community = communityDAO.findById(id);
+        if (community == null) {
+            return null;
+        }
+        return community;
     }
 
     @Override
@@ -87,4 +97,7 @@ public class CommunityServiceImpl  implements CommunityService {
 
         communityDAO.saveCommunity(community);
     }
+
+
+
 }

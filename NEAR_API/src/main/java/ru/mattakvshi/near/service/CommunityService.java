@@ -12,6 +12,8 @@ public interface CommunityService {
 
     UUID saveCommunity(Community community);
 
+    Community getCommunity(UUID id);
+
     CommunityDTOForCommunity getCommunityDTO(UUID id);
 
     void updateCommunity(UUID communityId, CommunityUpdateRequest request);

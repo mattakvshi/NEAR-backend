@@ -20,9 +20,9 @@ public class EmailChangeStorage {
     @Id
     private UUID token; // Уникальный токен для подтверждения
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_account_id")
-    private UserAccount userAccount; // Ссылка на пользователя
+
+    @Column(name = "user_account_id", nullable = false)
+    private UUID userAccountId; // Хранить только ID, а не всю сущность
 
     @Column(name = "new_email", nullable = false)
     private String newEmail; // Новый email, который хочет установить пользователь

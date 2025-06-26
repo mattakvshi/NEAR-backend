@@ -2,6 +2,7 @@ package ru.mattakvshi.near.controller.community;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.security.auth.message.AuthException;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ import java.util.UUID;
 
 @Slf4j
 @Tag(name = "CommunityBaseController")
-@RestController("/community")
+@RestController
 public class CommunityController extends BaseController {
 
     @Autowired
@@ -51,6 +52,18 @@ public class CommunityController extends BaseController {
         } catch (Exception e) {
             log.error("Ошибка обновления данных сообщества", e);
             return ResponseEntity.status(500).body("Internal Server Error");
+        }
+    }
+
+    @Operation(
+            summary = "Эндпоинт для получения выбранных пользователем каналов оповещения"
+    )
+    @GetMapping("/community/get-emergency-type")
+    public ResponseEntity<?> getEmergencyTypeForCommunities() {
+        try{
+            return ResponseEntity.ok(communityService.getCommunity(communityAccountService.getCurrentCommunityUUID()).getMonitoredEmergencyTypes());
+        } catch (AuthException ae) {
+            return new ResponseEntity<>(HttpStatusCode.valueOf(400));
         }
     }
 

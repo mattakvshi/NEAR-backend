@@ -1,12 +1,14 @@
 package ru.mattakvshi.near.controller.community;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.security.auth.message.AuthException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -79,8 +81,11 @@ public class CommunityAuthorizationController extends BaseController {
     @GetMapping("/community/me")
     @Transactional
     public ResponseEntity<Object> getCurrentCommunity() {
-        CommunityAccount communityAccount = (CommunityAccount) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return ResponseEntity.ok(communityAccount.getPrincipal());
+        try{
+            return ResponseEntity.ok(communityService.getCommunityDTO(communityAccountService.getCurrentCommunityUUID()));
+        } catch (AuthException ae) {
+            return new ResponseEntity<>(HttpStatusCode.valueOf(400));
+        }
     }
 
 }

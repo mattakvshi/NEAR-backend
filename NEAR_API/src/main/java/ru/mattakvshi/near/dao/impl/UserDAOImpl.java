@@ -19,7 +19,6 @@ public class UserDAOImpl implements UserDAO {
     private UserRepository userRepository;
 
     @Override
-    @Transactional
     public UUID saveUser(User user) {
         User savedUser = userRepository.save(user);
         return savedUser.getId();

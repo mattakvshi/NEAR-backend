@@ -84,7 +84,7 @@ public class UserController extends BaseController {
 
 
     @Operation(
-            summary = "Эндпоинт для обновления Device Token"
+            summary = "Эндпоинт для получения выбранных пользователем каналов оповещения"
     )
     @GetMapping("/user/get-notification-options")
     public ResponseEntity<?> getNotificationOptionsForUser() {
