@@ -19,6 +19,8 @@ public class CommunityDTOForUser implements Serializable {
     @JsonSerialize(using = ToStringSerializer.class)
     private UUID id;
 
+    private String communityAvatar;
+
     private String communityName;
 
     private String description;
@@ -40,6 +42,7 @@ public class CommunityDTOForUser implements Serializable {
     public static CommunityDTOForUser from(Community community) {
         CommunityDTOForUser dto = new CommunityDTOForUser();
         dto.setId(community.getId());
+        dto.setCommunityAvatar(community.getCommunityAvatar());
         dto.setCommunityName(community.getCommunityName());
         dto.setDescription(community.getDescription());
         dto.setCountry(community.getCountry());

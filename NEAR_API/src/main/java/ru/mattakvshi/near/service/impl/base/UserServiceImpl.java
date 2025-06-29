@@ -124,6 +124,7 @@ public class UserServiceImpl implements UserService {
         }
 
         // Обновляем поля, если они указаны в запросе
+        if (request.getUserAvatar() != null) user.setUserAvatar(request.getUserAvatar());
         if (request.getFirstName() != null) user.setFirstName(request.getFirstName());
         if (request.getLastName() != null) user.setLastName(request.getLastName());
         if (request.getBirthday() != null) {

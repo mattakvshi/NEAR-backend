@@ -27,6 +27,9 @@ public class User extends TemplateOwner implements Serializable {
 
     //Вынес id в супер класс, так как нужны уникальные на уровне двух сущностей, для работы с шаблонами
 
+    @Column(name = "user_avatar")
+    private String userAvatar;
+
     @Column(name = "first_name")
     private String firstName;
 

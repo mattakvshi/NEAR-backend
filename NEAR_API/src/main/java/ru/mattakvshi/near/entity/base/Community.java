@@ -26,6 +26,9 @@ public class Community extends TemplateOwner implements Serializable {
 
     //Вынес id в супер класс, так как нужны уникальные на уровне двух сущностей, для работы с шаблонами
 
+    @Column(name = "community_avatar")
+    private String communityAvatar;
+
     @Column(name = "community_name")
     private String communityName;
 

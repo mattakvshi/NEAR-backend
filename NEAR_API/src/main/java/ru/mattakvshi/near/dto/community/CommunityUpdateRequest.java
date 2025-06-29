@@ -10,6 +10,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CommunityUpdateRequest {
+    private String communityAvatar;
     private String communityName;
     private String description;
     private String country;

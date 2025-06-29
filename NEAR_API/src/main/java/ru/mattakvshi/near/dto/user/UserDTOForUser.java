@@ -26,6 +26,8 @@ public class UserDTOForUser implements Serializable {
     @JsonSerialize(using = ToStringSerializer.class)
     private UUID id;
 
+    private String userAvatar;
+
     private String firstName;
 
     private String lastName;
@@ -62,6 +64,7 @@ public class UserDTOForUser implements Serializable {
     public static UserDTOForUser from(User user) {
         UserDTOForUser dto = new UserDTOForUser();
         dto.setId(user.getId());
+        dto.setUserAvatar(user.getUserAvatar());
         dto.setFirstName(user.getFirstName());
         dto.setLastName(user.getLastName());
         dto.setBirthday(user.getBirthday());

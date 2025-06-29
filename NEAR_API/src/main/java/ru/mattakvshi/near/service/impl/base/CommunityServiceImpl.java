@@ -61,6 +61,9 @@ public class CommunityServiceImpl  implements CommunityService {
         }
 
         // Обновляем поля, если они указаны в запросе
+        if (request.getCommunityAvatar() != null) {
+            community.setCommunityAvatar(request.getCommunityAvatar());
+        }
         if (request.getCommunityName() != null) {
             community.setCommunityName(request.getCommunityName());
         }

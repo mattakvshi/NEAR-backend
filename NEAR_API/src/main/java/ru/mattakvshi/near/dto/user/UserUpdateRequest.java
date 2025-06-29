@@ -15,6 +15,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserUpdateRequest {
+    private String userAvatar;
     private String firstName;
     private String lastName;
     private LocalDate birthday;

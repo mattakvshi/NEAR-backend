@@ -20,6 +20,8 @@ public class CommunityDTOForCommunity {
     @JsonSerialize(using = ToStringSerializer.class)
     private UUID id;
 
+    private String communityAvatar;
+
     private String communityName;
 
     private String description;
@@ -43,6 +45,7 @@ public class CommunityDTOForCommunity {
     public static CommunityDTOForCommunity from(Community community) {
         CommunityDTOForCommunity dto = new CommunityDTOForCommunity();
         dto.setId(community.getId());
+        dto.setCommunityAvatar(community.getCommunityAvatar());
         dto.setCommunityName(community.getCommunityName());
         dto.setDescription(community.getDescription());
         dto.setCountry(community.getCountry());
