@@ -109,7 +109,7 @@ public class UserAccountServiceImpl implements UserAccountService {
 
         emailVerificationTokenDAO.save(verificationToken);
 
-        String verificationLink = "http://localhost:8080/NEAR/verify-email-user?token=" + token;
+        String verificationLink = "http://31.129.107.60:8080/NEAR/verify-email-user?token=" + token;
         mailSender.send(userAccount.getEmail(), "Подтверждение почты", verificationLink);
     }
 
@@ -172,7 +172,7 @@ public class UserAccountServiceImpl implements UserAccountService {
         );
         emailChangeStorageDAO.save(request);
         // Отправляем ссылку для подтверждения
-        String verificationLink = "http://localhost:8080/NEAR/confirm-email-change-user?token=" + token;
+        String verificationLink = "http://31.129.107.60:8080/NEAR/confirm-email-change-user?token=" + token;
         mailSender.send(userAccount.getEmail(), "Подтверждение изменения почты", verificationLink);
     }
 

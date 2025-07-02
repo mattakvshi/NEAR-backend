@@ -100,7 +100,7 @@ public class CommunityAccountServiceImpl implements CommunityAccountService {
 
         emailVerificationTokenCommunityDAO.save(verificationToken);
 
-        String verificationLink = "http://localhost:8080/NEAR/verify-email-community?token=" + token;
+        String verificationLink = "http://31.129.107.60:8080/NEAR/verify-email-community?token=" + token;
         mailSender.send(communityAccount.getEmail(), "Подтверждение почты", verificationLink);
     }
 
@@ -163,7 +163,7 @@ public class CommunityAccountServiceImpl implements CommunityAccountService {
         );
         emailChangeStorageCommunityDAO.save(request);
         // Отправляем ссылку для подтверждения
-        String verificationLink = "http://localhost:8080/NEAR/confirm-email-change-community?token=" + token;
+        String verificationLink = "http://31.129.107.60:8080/NEAR/confirm-email-change-community?token=" + token;
         mailSender.send(communityAccount.getEmail(), "Подтверждение изменения почты", verificationLink);
     }
 
