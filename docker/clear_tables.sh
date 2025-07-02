@@ -6,7 +6,7 @@ DB_NAME="FirstDB4NEAR"       # имя вашей БД
 DB_USER="postgres"           # пользователь БД
 
 # Таблицы, которые НЕ нужно очищать
-EXCLUDE_TABLES=("emergency_type" "notification_options")  # <-- добавляй сюда те, что не трогаем
+#EXCLUDE_TABLES=("emergency_type" "notification_options")  # <-- добавляй сюда те, что не трогаем
 
 echo "Очистка таблиц в БД '$DB_NAME', кроме: ${EXCLUDE_TABLES[*]}..."
 
@@ -56,9 +56,50 @@ echo "Выполняется очистка..."
 docker exec -i "$DB_CONTAINER" psql -U "$DB_USER" -d "$DB_NAME" -c "$TRUNCATE_SQL"
 
 # Проверяем результат
-if [ $? -eq 0 ]; then
-  echo "✅ Успешно очищено: ${#TABLES_TO_CLEAR[@]} таблиц."
-else
+if [ $? -ne 0 ]; then
   echo "❌ Ошибка при очистке таблиц."
   exit 1
 fi
+
+echo "✅ Успешно очищено: ${#TABLES_TO_CLEAR[@]} таблиц."
+
+# Вставка данных в emergency_type
+echo "Вставка данных в таблицу emergency_type..."
+EMERGENCY_TYPE_INSERT_SQL="
+INSERT INTO public.emergency_type (type_id, bg_color, color, title) VALUES
+(1, 'rgb(18%, 22%, 29%, 0.3)', '#2D384A', 'Earthquake'),
+(2, 'rgb(13%, 20%, 40%, 0.3)', '#236', 'Flood'),
+(3, 'rgb(13%, 27%, 47%, 0.3)', '#214678', 'Tsunami'),
+(4, 'rgb(35%, 36%, 51%, 0.3)', '#595B82', 'Hurricane'),
+(5, 'rgb(100%, 30%, 17%, 0.3)', '#FF4C2B', 'Forest fire'),
+(6, 'rgb(59%, 33%, 26%, 0.3)', '#965443', 'Terrorist attack');
+"
+docker exec -i "$DB_CONTAINER" psql -U "$DB_USER" -d "$DB_NAME" -c "$EMERGENCY_TYPE_INSERT_SQL"
+
+# Проверяем результат
+if [ $? -ne 0 ]; then
+  echo "❌ Ошибка при вставке данных в таблицу emergency_type."
+  exit 1
+fi
+
+echo "✅ Данные успешно вставлены в таблицу emergency_type."
+
+# Вставка данных в notification_options
+echo "Вставка данных в таблицу notification_options..."
+NOTIFICATION_OPTIONS_INSERT_SQL="
+INSERT INTO public.notification_options (options_id, bg_color, bg_color_dark, color, color_dark, title) VALUES
+(1, 'rgb(16%, 31%, 45%, 0.3)', 'rgb(96%, 96%, 96%, 0.6)', '#294F74', '#152376', 'Telegram'),
+(2, 'rgb(35%, 36%, 51%, 0.3)', 'rgb(52%, 14%, 32%, 0.7)', '#595B82', '#f55477', 'Email'),
+(3, 'rgb(100%, 30%, 17%, 0.3)', 'rgb(100%, 30%, 17%, 0.45)', '#FF4C2B', '#FF4C2B', 'Mobile Notification');
+"
+docker exec -i "$DB_CONTAINER" psql -U "$DB_USER" -d "$DB_NAME" -c "$NOTIFICATION_OPTIONS_INSERT_SQL"
+
+# Проверяем результат
+if [ $? -ne 0 ]; then
+  echo "❌ Ошибка при вставке данных в таблицу notification_options."
+  exit 1
+fi
+
+echo "✅ Данные успешно вставлены в таблицу notification_options."
+
+echo "Скрипт завершил работу успешно."
